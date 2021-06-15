@@ -1,6 +1,6 @@
-const HashParams = () => {
-  var hashParams = {};
-  var exec,
+export const hashParams = () => {
+  const hashParams = {};
+  let exec,
     regex = /([^&;=]+)=?([^&;]*)/g,
     query = window.location.hash.substring(1);
   exec = regex.exec(query);
@@ -12,4 +12,3 @@ const HashParams = () => {
   return hashParams;
 };
 
-export default HashParams;
