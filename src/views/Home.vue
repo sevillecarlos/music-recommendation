@@ -2,7 +2,8 @@
   <div class="home">
     <b-modal
       no-close-on-backdrop
-      centered="true"
+      no-close-on-esc
+      centered
       id="modal-1"
       v-model="modalShow"
     >
@@ -19,7 +20,12 @@
           </div>
         </template>
         <b-card>
-          <b-button class="login-spotify-btn" pill variant="outline-success">
+          <b-button
+            class="login-spotify-btn"
+            pill
+            variant="outline-success"
+            href="http://localhost:3000/login-spotify"
+          >
             <img
               class="spotify-logo"
               src="../assets/spotify-logo.png"
@@ -42,11 +48,15 @@
       </template>
     </b-modal>
 
-    <!-- <b-table :items="items"></b-table> -->
+    <button @click="getTrack">Apreta</button>
   </div>
 </template>
 
 <script>
+import SpotifyWebApi from "spotify-web-api-js";
+import getHashParams from "../helpers/hash-params";
+const spotifyApi = new SpotifyWebApi();
+
 export default {
   data() {
     return {
@@ -59,6 +69,15 @@ export default {
       modalShow: true,
       showOverlay: false,
     };
+  },
+  created() {
+    const params = getHashParams();
+    const token = params.code;
+    console.log(token);
+    if (token) {
+      this.modalShow = false;
+      spotifyApi.setAccessToken(token);
+    }
   },
   methods: {
     returnToLogin() {

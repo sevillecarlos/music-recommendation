@@ -66,7 +66,7 @@ export default new Vuex.Store({
           commit("setSuccessMsg", valideUser.data.msg);
         }
       } catch (error) {
-        console.log(error);
+        console.log(error+78484);
       }
     },
     getToken({ commit }) {
