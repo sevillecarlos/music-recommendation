@@ -7,7 +7,6 @@
       v-model="modalShow"
     >
       <template #modal-header>
-        <!-- Emulate built in modal header close button action -->
         <h5>Authenticate to Spotify</h5>
         <img class="logo-model" src="../assets/logo.png" alt="logo" />
       </template>
@@ -80,7 +79,7 @@ export default {
   width: 50%;
   margin-left: 25%;
 }
-.logo-model{
+.logo-model {
   width: 50px;
 }
 </style>

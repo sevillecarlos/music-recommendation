@@ -7,6 +7,8 @@ export default new Vuex.Store({
   state: {
     token: "",
     error: "",
+    errorRegister: "",
+    successMsg: "",
   },
   mutations: {
     setToken(state, payload) {
@@ -14,6 +16,12 @@ export default new Vuex.Store({
     },
     setError(state, payload) {
       state.error = payload;
+    },
+    setErrorRegister(state, payload) {
+      state.errorRegister = payload;
+    },
+    setSuccessMsg(state, payload) {
+      state.successMsg = payload;
     },
   },
   actions: {
@@ -35,6 +43,28 @@ export default new Vuex.Store({
         }
         commit("setToken", valideUser.data.jwtToken);
         localStorage.setItem("auth-token", valideUser.data.jwtToken);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async signUp({ commit }, user) {
+      try {
+        const res = await fetch(`http://localhost:3000/signup`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(user),
+        });
+
+        const valideUser = await res.json();
+
+        if (valideUser.error) {
+          commit("setErrorRegister", valideUser.error);
+          return;
+        } else {
+          commit("setSuccessMsg", valideUser.data.msg);
+        }
       } catch (error) {
         console.log(error);
       }
