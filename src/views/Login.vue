@@ -82,7 +82,7 @@
                               show password
                             </b-form-checkbox>
                           </b-form-group>
-
+                          <p class="error-msg" v-show="showErrorMsg">{{ errorMsg }}</p>
                           <b-button
                             type="submit"
                             class="btn-login"
@@ -112,6 +112,7 @@
                             label-for="input-1"
                           >
                             <b-form-input
+                              signOut
                               id="input-1"
                               type="email"
                               placeholder="Enter name"
@@ -207,14 +208,23 @@ export default {
       showPassword: false,
       showPasswordRegister: false,
       showOverlay: false,
+      errorMsg: "",
+      showErrorMsg: false,
     };
   },
   methods: {
-    submitLogin() {
-      this.showOverlay = true;
-      setTimeout(() => {
-        this.$router.push("home");
-      }, 3000);
+    async submitLogin() {
+      await this.$store.dispatch("signIn", this.formLogin);
+      if (this.$store.state.error) {
+        this.showErrorMsg = true;
+        this.errorMsg = this.$store.state.error;
+      } else {
+        this.showOverlay = true;
+        console.log(this.$store.state.error);
+        setTimeout(() => {
+          this.$router.push("login");
+        }, 3000);
+      }
     },
   },
 };
@@ -225,9 +235,12 @@ export default {
 .signin-pill {
   font-family: "Quicksand", sans-serif;
 }
-
+.login {
+  background-color: antiquewhite;
+  height: 90vh;
+}
 .btn-login {
-  margin-top: 10px;
+  margin-top: 20px;
   width: 100%;
 }
 .form-login {
@@ -265,6 +278,9 @@ export default {
   font-family: "Quicksand", sans-serif;
   letter-spacing: 1px;
   list-style: none;
+}
+.error-msg{
+  color: crimson;
 }
 
 #login {
