@@ -60,23 +60,22 @@ const spotifyApi = new SpotifyWebApi();
 export default {
   data() {
     return {
-      items: [
-        { age: 40, first_name: "Dickerson", last_name: "Macdonald" },
-        { age: 21, first_name: "Larsen", last_name: "Shaw" },
-        { age: 89, first_name: "Geneva", last_name: "Wilson" },
-        { age: 38, first_name: "Jami", last_name: "Carney" },
-      ],
+      savedTracks: [],
       modalShow: true,
       showOverlay: false,
     };
   },
   created() {
     const params = getHashParams();
-    const token = params.code;
-    console.log(token);
+    const token = params.access_token;
     if (token) {
       this.modalShow = false;
       spotifyApi.setAccessToken(token);
+
+      spotifyApi.getMySavedTracks({ limit: 10, offset: 10 }).then((res) => {
+        this.savedTracks = [...res.items];
+        console.log(this.savedTracks)
+      });
     }
   },
   methods: {
