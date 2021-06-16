@@ -21,7 +21,7 @@
                   <b-th sticky-column>
                     <b-icon
                       class="like-icon"
-                      @click="likeTrack(tracks.id)"
+                      @click="likeTrack(tracks)"
                       :icon="
                         likeSongs.indexOf(tracks.id) !== -1
                           ? 'heart-fill'
@@ -129,6 +129,7 @@ export default {
       showRecommendateTable: false,
       like: false,
       likeSongs: [],
+      savedTrack: [],
     };
   },
   created() {
@@ -165,7 +166,7 @@ export default {
               return {
                 albumCover: el.album.images[0].url,
                 album: el.album.name,
-                track: el.name.slice(0, el.name.indexOf("(") - 1),
+                track: el.name,
                 artists: el.artists.map((artist) => artist.name).join(" x "),
                 linkTrack: el.external_urls.spotify,
                 demoUrl: el.preview_url,
@@ -185,8 +186,31 @@ export default {
         this.$router.push("/");
       }, 3000);
     },
-    likeTrack(track) {
-      this.likeSongs.push(track);
+    async likeTrack(track) {
+      this.savedTrack = [];
+      this.savedTrack.push({
+        albumCover: track.albumCoverm,
+        album: track.album,
+        track: track.track,
+        artists: track.artists,
+        linkTrack: track.linkTrack,
+        id: track.id,
+      });
+      await fetch(`http://localhost:3000/save-track`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: "sevillecarlos@gmail.com",
+          tracks: this.savedTrack,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          const { tracks } = data.data;
+          tracks.map((track) => this.likeSongs.push(track.id));
+        });
     },
   },
 };
