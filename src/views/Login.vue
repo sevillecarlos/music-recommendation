@@ -171,7 +171,11 @@
                               show passwords
                             </b-form-checkbox>
                           </b-form-group>
-                          <p :class="successMsg ? 'success-msg':'error-msg'" v-show="showErrorMsgRegister" class="register-msg">
+                          <p
+                            :class="successMsg ? 'success-msg' : 'error-msg'"
+                            v-show="showErrorMsgRegister"
+                            class="register-msg"
+                          >
                             {{ success ? successMsg : errorMsgRegister }}
                           </p>
                           <b-button
@@ -228,7 +232,6 @@ export default {
         this.errorMsg = this.$store.state.error;
       } else {
         this.showOverlay = true;
-        console.log(this.$store.state.error);
         setTimeout(() => {
           this.$router.push("home");
         }, 3000);
@@ -261,7 +264,7 @@ export default {
   margin-top: 20px;
   width: 100%;
 }
-.success-msg{
+.success-msg {
   color: green;
 }
 
