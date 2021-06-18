@@ -26,15 +26,15 @@ const router = new VueRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
-  const authenticatedUser = null;
-  const requiresAuth = to;
+// router.beforeEach((to, from, next) => {
+//   const authenticatedUser = null;
+//   const requiresAuth = to;
 
-  console.log(authenticatedUser)
-  console.log(requiresAuth)
-  console.log(from)
-  console.log(next)
-  next();
-});
+//   console.log(authenticatedUser)
+//   console.log(requiresAuth)
+//   console.log(from)
+//   console.log(next)
+//   next();
+// });
 
 export default router;

@@ -54,9 +54,39 @@
                 </b-tr>
               </b-tbody> </b-table-simple
           ></b-tab>
-          <b-tab title="Likes Tracks"
-            ><b-card-text>Tab contents 2</b-card-text></b-tab
-          >
+          <b-tab title="Likes Tracks">
+            <b-table-simple v-show="showSaveTable" responsive>
+              <b-thead>
+                <b-tr>
+                  <b-th>Album Cover</b-th>
+                  <b-th>Name</b-th>
+                  <b-th>Artist/Artists</b-th>
+                  <b-th>Album</b-th>
+                  <b-th></b-th>
+                </b-tr>
+              </b-thead>
+              <b-tbody v-for="tracks in savesTrack" :key="tracks.id">
+                <b-tr>
+                  <b-td
+                    ><img
+                      class="album-cover-img"
+                      :src="tracks.albumCover"
+                      alt="Album Cover"
+                  /></b-td>
+                  <b-td>{{ tracks.track }}</b-td>
+                  <b-td>{{ tracks.artists }}</b-td>
+                  <b-td>{{ tracks.album }}</b-td>
+                  <b-td
+                    ><a :href="tracks.linkTrack" target="_blank">
+                      <img
+                        class="spotify-logo"
+                        src="../assets/listen-on-spotify.png"
+                        alt="spotify-logo"
+                      /> </a
+                  ></b-td>
+                </b-tr>
+              </b-tbody> </b-table-simple
+          ></b-tab>
         </b-tabs>
       </b-card>
 
@@ -130,66 +160,109 @@ export default {
       like: false,
       likeSongs: [],
       savedTrack: [],
+      showSaveTable: false,
+      savesTrack: [],
+      email: [],
     };
   },
   created() {
-    const params = hashParams();
-    const token = params.access_token;
-    if (token) {
-      this.modalShow = false;
-      spotifyApi.setAccessToken(token);
-      spotifyApi.getMySavedTracks().then((res) => {
-        this.savedTracks = [...res.items];
-        const sizeSavedTracks = this.savedTracks.length;
-        const {
-          track: { artists: artistName, id },
-        } = this.savedTracks[randomNumber(sizeSavedTracks, 0)];
-
-        const seeds = {
-          seedArtist: artistName[0].id,
-          seedTrack: id,
-          accessToken: token,
-        };
-        fetch(`http://localhost:3000/recommendation`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-
-          body: JSON.stringify(seeds),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            const { tracks } = data;
-            this.recommenedTracks = [...tracks];
-            this.recommenedTracks = this.recommenedTracks.map((el) => {
-              return {
-                albumCover: el.album.images[0].url,
-                album: el.album.name,
-                track: el.name,
-                artists: el.artists.map((artist) => artist.name).join(" x "),
-                linkTrack: el.external_urls.spotify,
-                demoUrl: el.preview_url,
-                id: el.id,
-              };
-            });
-            console.log(this.recommenedTracks);
-            this.showRecommendateTable = true;
-          });
-      });
+    this.exe();
+  },
+  updated() {
+    if (this.likeSongsC) {
+      this.getSavedTracks();
     }
   },
+  computed: {
+    likeSongsC() {
+      return this.likeSongs.length;
+    },
+  },
   methods: {
+    async exe() {
+      await this.$store.dispatch("getToken");
+      await this.$store.dispatch("getLog");
+      if (this.$store.state.userEmail) {
+        console.log(this.$store.state.userEmail);
+        this.getSavedTracks();
+        this.getRecommendateTracks();
+      }
+    },
     returnToLogin() {
       this.showOverlay = true;
+
       setTimeout(() => {
         this.$router.push("/");
       }, 3000);
     },
+    async getRecommendateTracks() {
+      const params = hashParams();
+      const token = params.access_token;
+      if (token) {
+        this.modalShow = false;
+        spotifyApi.setAccessToken(token);
+        spotifyApi.getMySavedTracks().then((res) => {
+          this.savedTracks = [...res.items];
+          const sizeSavedTracks = this.savedTracks.length;
+          const {
+            track: { artists: artistName, id },
+          } = this.savedTracks[randomNumber(sizeSavedTracks, 0)];
+
+          const seeds = {
+            seedArtist: artistName[0].id,
+            seedTrack: id,
+            accessToken: token,
+          };
+          fetch(`http://localhost:3000/recommendation`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+
+            body: JSON.stringify(seeds),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              const { tracks } = data;
+              this.recommenedTracks = [...tracks];
+              this.recommenedTracks = this.recommenedTracks.map((el) => {
+                return {
+                  albumCover: el.album.images[0].url,
+                  album: el.album.name,
+                  track: el.name,
+                  artists: el.artists.map((artist) => artist.name).join(" x "),
+                  linkTrack: el.external_urls.spotify,
+                  demoUrl: el.preview_url,
+                  id: el.id,
+                };
+              });
+              this.showRecommendateTable = true;
+            });
+        });
+      }
+    },
+    async getSavedTracks() {
+      console.log("asd");
+      fetch(`http://localhost:3000/save-tracks`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({ email: this.$store.state.userEmail }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          const { tracks } = data.data;
+          this.savesTrack = [...tracks];
+          console.log(this.savesTrack);
+          this.showSaveTable = true;
+        });
+    },
     async likeTrack(track) {
       this.savedTrack = [];
       this.savedTrack.push({
-        albumCover: track.albumCoverm,
+        albumCover: track.albumCover,
         album: track.album,
         track: track.track,
         artists: track.artists,
@@ -202,7 +275,7 @@ export default {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: "sevillecarlos@gmail.com",
+          email: this.$store.state.userEmail,
           tracks: this.savedTrack,
         }),
       })

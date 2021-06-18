@@ -9,6 +9,9 @@ export default new Vuex.Store({
     error: "",
     errorRegister: "",
     successMsg: "",
+    showLogOut: false,
+    userName: "",
+    userEmail: "",
   },
   mutations: {
     setToken(state, payload) {
@@ -23,6 +26,12 @@ export default new Vuex.Store({
     setSuccessMsg(state, payload) {
       state.successMsg = payload;
     },
+    setUserName(state, payload) {
+      state.userName = payload;
+    },
+    setUserEmail(state, payload) {
+      state.userEmail = payload;
+    },
   },
   actions: {
     async signIn({ commit }, user) {
@@ -36,13 +45,17 @@ export default new Vuex.Store({
         });
 
         const valideUser = await res.json();
+
+        console.log(valideUser);
         if (valideUser.error) {
           console.log(valideUser.error);
           commit("setError", valideUser.error);
           return;
         }
         commit("setToken", valideUser.data.jwtToken);
+
         localStorage.setItem("auth-token", valideUser.data.jwtToken);
+        localStorage.setItem("ref-log", valideUser.data.userID);
       } catch (error) {
         console.log(error);
       }
@@ -66,15 +79,37 @@ export default new Vuex.Store({
           commit("setSuccessMsg", valideUser.data.msg);
         }
       } catch (error) {
-        console.log(error+78484);
+        console.log(error + 78484);
       }
     },
     getToken({ commit }) {
       const token = localStorage.getItem("auth-token");
+      console.log(this.state.userEmail);
       if (token) {
         commit("setToken", token);
       } else {
         commit("setToken", "");
+      }
+    },
+    async getLog({ commit }) {
+      const idLog = localStorage.getItem("ref-log");
+      console.log(idLog);
+      try {
+        const res = await fetch(`http://localhost:3000/get-user`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            _id: idLog,
+          }),
+        });
+        const user = await res.json();
+console.log(user)
+        commit("setUserName", user.name);
+        commit("setUserEmail", user.email);
+      } catch (err) {
+        console.log(err);
       }
     },
     signOut({ commit }) {
