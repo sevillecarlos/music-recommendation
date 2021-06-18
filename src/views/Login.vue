@@ -82,7 +82,9 @@
                               show password
                             </b-form-checkbox>
                           </b-form-group>
-
+                          <p class="error-msg" v-show="showErrorMsg">
+                            {{ errorMsg }}
+                          </p>
                           <b-button
                             type="submit"
                             class="btn-login"
@@ -105,15 +107,16 @@
                           />
                           Register
                         </p>
-                        <b-form>
+                        <b-form @submit.prevent="submitRegister">
                           <b-form-group
                             id="input-group-1"
                             label="Fullname:"
                             label-for="input-1"
                           >
                             <b-form-input
+                              signOut
                               id="input-1"
-                              type="email"
+                              type="text"
                               placeholder="Enter name"
                               required
                               v-model="formRegister.fullName"
@@ -168,7 +171,9 @@
                               show passwords
                             </b-form-checkbox>
                           </b-form-group>
-
+                          <p :class="successMsg ? 'success-msg':'error-msg'" v-show="showErrorMsgRegister" class="register-msg">
+                            {{ success ? successMsg : errorMsgRegister }}
+                          </p>
                           <b-button
                             type="submit"
                             variant="success"
@@ -207,14 +212,37 @@ export default {
       showPassword: false,
       showPasswordRegister: false,
       showOverlay: false,
+      errorMsg: "",
+      showErrorMsg: false,
+      showErrorMsgRegister: false,
+      errorMsgRegister: "",
+      successMsg: "",
+      success: false,
     };
   },
   methods: {
-    submitLogin() {
-      this.showOverlay = true;
-      setTimeout(() => {
-        this.$router.push("home");
-      }, 3000);
+    async submitLogin() {
+      await this.$store.dispatch("signIn", this.formLogin);
+      if (this.$store.state.error) {
+        this.showErrorMsg = true;
+        this.errorMsg = this.$store.state.error;
+      } else {
+        this.showOverlay = true;
+        console.log(this.$store.state.error);
+        setTimeout(() => {
+          this.$router.push("home");
+        }, 3000);
+      }
+    },
+    async submitRegister() {
+      await this.$store.dispatch("signUp", this.formRegister);
+      if (this.$store.state.errorRegister) {
+        this.errorMsgRegister = this.$store.state.errorRegister;
+      } else {
+        this.success = true;
+        this.successMsg = this.$store.state.successMsg;
+      }
+      this.showErrorMsgRegister = true;
     },
   },
 };
@@ -225,11 +253,18 @@ export default {
 .signin-pill {
   font-family: "Quicksand", sans-serif;
 }
-
+.login {
+  background-color: antiquewhite;
+  height: 90vh;
+}
 .btn-login {
-  margin-top: 10px;
+  margin-top: 20px;
   width: 100%;
 }
+.success-msg{
+  color: green;
+}
+
 .form-login {
   margin-top: 20%;
   margin-left: auto;
@@ -247,7 +282,7 @@ export default {
   background-color: blueviolet;
 }
 .check-box {
-  padding: 20px;
+  padding: 5px;
 }
 .img-cover {
   margin-top: 10%;
@@ -265,6 +300,9 @@ export default {
   font-family: "Quicksand", sans-serif;
   letter-spacing: 1px;
   list-style: none;
+}
+.error-msg {
+  color: crimson;
 }
 
 #login {
