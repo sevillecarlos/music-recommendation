@@ -15,7 +15,7 @@ export default {};
   width: 100%;
   color: white;
   text-align: center;
-  background-color:rgba(39, 121, 108, 0.58);
+  background-color: #14141a;
 }
 .text-footer {
   padding: 10px;
