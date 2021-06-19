@@ -12,6 +12,7 @@ export default new Vuex.Store({
     showLogOut: false,
     userName: "",
     userEmail: "",
+    overLayHome: false,
   },
   mutations: {
     setToken(state, payload) {
@@ -26,11 +27,17 @@ export default new Vuex.Store({
     setSuccessMsg(state, payload) {
       state.successMsg = payload;
     },
+    setLogOutShow(state, payload) {
+      state.showLogOut = payload;
+    },
     setUserName(state, payload) {
       state.userName = payload;
     },
     setUserEmail(state, payload) {
       state.userEmail = payload;
+    },
+    setOverLayHome(state, payload) {
+      state.overLayHome = payload;
     },
   },
   actions: {
@@ -53,7 +60,6 @@ export default new Vuex.Store({
           return;
         }
         commit("setToken", valideUser.data.jwtToken);
-
         localStorage.setItem("auth-token", valideUser.data.jwtToken);
         localStorage.setItem("ref-log", valideUser.data.userID);
       } catch (error) {
@@ -87,6 +93,7 @@ export default new Vuex.Store({
       console.log(this.state.userEmail);
       if (token) {
         commit("setToken", token);
+        commit("setLogOutShow", true);
       } else {
         commit("setToken", "");
       }
@@ -105,7 +112,6 @@ export default new Vuex.Store({
           }),
         });
         const user = await res.json();
-console.log(user)
         commit("setUserName", user.name);
         commit("setUserEmail", user.email);
       } catch (err) {
@@ -114,7 +120,10 @@ console.log(user)
     },
     signOut({ commit }) {
       commit("setToken", "");
+      commit("setOverLayHome", true);
       localStorage.removeItem("auth-token");
+      localStorage.removeItem("ref-log");
+      localStorage.removeItem("access-token");
     },
   },
   modules: {},

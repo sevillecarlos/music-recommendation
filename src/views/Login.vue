@@ -1,11 +1,18 @@
 <template>
   <div class="login">
-    <b-overlay :show="showOverlay" rounded="sm">
+    <b-overlay
+      :show="showOverlay"
+      rounded="sm"
+      class="overlay"
+      variant="transparent"
+      opacity="0.91"
+      blur="1rem"
+    >
       <template #overlay>
         <div class="d-flex align-items-center">
-          <b-spinner small type="grow" variant="secondary"></b-spinner>
-          <b-spinner type="grow" variant="dark"></b-spinner>
-          <b-spinner small type="grow" variant="secondary"></b-spinner>
+          <b-spinner small type="grow" class="small-spiner"></b-spinner>
+          <b-spinner type="grow" class="big-spiner"></b-spinner>
+          <b-spinner small type="grow" class="small-spiner"></b-spinner>
         </div>
       </template>
       <b-container class="bv-example-row">
@@ -37,155 +44,152 @@
                         ></b-spinner
                         >Sign In
                       </template>
-                      <b-card-text>
-                        <p>
-                          <img
-                            class="logo-img"
-                            src="../assets/logo.png"
-                            alt="Logo"
-                          />
-                          Login
-                        </p>
-                        <b-form @submit.prevent="submitLogin">
-                          <b-form-group
-                            id="input-group-1"
-                            label="Email address:"
-                            label-for="input-1"
-                          >
-                            <b-form-input
-                              id="input-1"
-                              type="email"
-                              placeholder="Enter email"
-                              required
-                              v-model="formLogin.email"
-                            ></b-form-input>
-                          </b-form-group>
+                      <p>
+                        <img
+                          class="logo-img"
+                          src="../assets/logo.png"
+                          alt="Logo"
+                        />
+                        Login
+                      </p>
+                      <b-form @submit.prevent="submitLogin">
+                        <b-form-group
+                          id="input-group-1"
+                          label="Email address:"
+                          label-for="input-1"
+                        >
+                          <b-form-input
+                            id="input-1"
+                            type="email"
+                            placeholder="Enter email"
+                            required
+                            v-model="formLogin.email"
+                          ></b-form-input>
+                        </b-form-group>
 
-                          <b-form-group
-                            id="input-group-2"
-                            label="Your Password:"
-                            label-for="input-2"
+                        <b-form-group
+                          id="input-group-2"
+                          label="Your Password:"
+                          label-for="input-2"
+                        >
+                          <b-form-input
+                            id="input-2"
+                            placeholder="Enter Password"
+                            :type="showPassword ? 'text' : 'password'"
+                            v-model="formLogin.password"
+                            required212F45
+                          ></b-form-input>
+                          <b-form-checkbox
+                            id="show-password-login"
+                            v-model="showPassword"
+                            name="show-password-login"
+                            class="check-box"
                           >
-                            <b-form-input
-                              id="input-2"
-                              placeholder="Enter Password"
-                              :type="showPassword ? 'text' : 'password'"
-                              v-model="formLogin.password"
-                              required
-                            ></b-form-input>
-                            <b-form-checkbox
-                              id="show-password-login"
-                              v-model="showPassword"
-                              name="show-password-login"
-                              class="check-box"
-                            >
-                              show password
-                            </b-form-checkbox>
-                          </b-form-group>
-                          <p class="error-msg" v-show="showErrorMsg">
-                            {{ errorMsg }}
-                          </p>
-                          <b-button
-                            type="submit"
-                            class="btn-login"
-                            variant="success"
-                            >Log In</b-button
-                          >
-                        </b-form>
-                      </b-card-text></b-tab
-                    >
+                            show password
+                          </b-form-checkbox>
+                        </b-form-group>
+                        <p class="error-msg" v-show="showErrorMsg">
+                          {{ errorMsg }}
+                        </p>
+                        <b-button
+                          type="submit"
+                          class="btn-login"
+                          variant="success"
+                          >Log In</b-button
+                        >
+                      </b-form>
+                    </b-tab>
                     <b-tab
                       class="signin-pill"
                       title="Sign Up"
                       :title-item-class="'tab-title-class'"
-                      ><b-card-text>
-                        <p>
-                          <img
-                            class="logo-img"
-                            src="../assets/logo.png"
-                            alt="Logo"
-                          />
-                          Register
+                    >
+                      <p>
+                        <img
+                          class="logo-img"
+                          src="../assets/logo.png"
+                          alt="Logo"
+                        />
+                        Register
+                      </p>
+                      <b-form @submit.prevent="submitRegister">
+                        <b-form-group
+                          id="input-group-1"
+                          label="Fullname:"
+                          label-for="input-1"
+                        >
+                          <b-form-input
+                            signOut
+                            id="input-1"
+                            type="text"
+                            placeholder="Enter name"
+                            required
+                            v-model="formRegister.fullName"
+                          ></b-form-input>
+                        </b-form-group>
+                        <b-form-group
+                          id="input-group-1"
+                          label="Email address:"
+                          label-for="input-1"
+                        >
+                          <b-form-input
+                            id="input-1"
+                            type="email"
+                            placeholder="Enter email"
+                            required
+                            v-model="formRegister.email"
+                          ></b-form-input>
+                        </b-form-group>
+
+                        <b-form-group
+                          id="input-group-2"
+                          label="Your Password:"
+                          label-for="input-2"
+                        >
+                          <b-form-input
+                            id="input-2"
+                            placeholder="Enter Password"
+                            required
+                            :type="showPasswordRegister ? 'text' : 'password'"
+                            v-model="formRegister.password"
+                          ></b-form-input>
+                        </b-form-group>
+
+                        <b-form-group
+                          id="input-group-2"
+                          label="Confirm Password:"
+                          label-for="input-2"
+                        >
+                          <b-form-input
+                            id="input-2"
+                            placeholder="Enter Password"
+                            required
+                            :type="showPasswordRegister ? 'text' : 'password'"
+                            v-model="confirmPassword"
+                          ></b-form-input>
+                          <b-form-checkbox
+                            id="show-password-login2"
+                            v-model="showPasswordRegister"
+                            name="show-password-login2"
+                            class="check-box"
+                          >
+                            show passwords
+                          </b-form-checkbox>
+                        </b-form-group>
+                        <p
+                          :class="successMsg ? 'success-msg' : 'error-msg'"
+                          v-show="showErrorMsgRegister"
+                          class="register-msg"
+                        >
+                          {{ success ? successMsg : errorMsgRegister }}
                         </p>
-                        <b-form @submit.prevent="submitRegister">
-                          <b-form-group
-                            id="input-group-1"
-                            label="Fullname:"
-                            label-for="input-1"
-                          >
-                            <b-form-input
-                              signOut
-                              id="input-1"
-                              type="text"
-                              placeholder="Enter name"
-                              required
-                              v-model="formRegister.fullName"
-                            ></b-form-input>
-                          </b-form-group>
-                          <b-form-group
-                            id="input-group-1"
-                            label="Email address:"
-                            label-for="input-1"
-                          >
-                            <b-form-input
-                              id="input-1"
-                              type="email"
-                              placeholder="Enter email"
-                              required
-                              v-model="formRegister.email"
-                            ></b-form-input>
-                          </b-form-group>
-
-                          <b-form-group
-                            id="input-group-2"
-                            label="Your Password:"
-                            label-for="input-2"
-                          >
-                            <b-form-input
-                              id="input-2"
-                              placeholder="Enter Password"
-                              required
-                              :type="showPasswordRegister ? 'text' : 'password'"
-                              v-model="formRegister.password"
-                            ></b-form-input>
-                          </b-form-group>
-
-                          <b-form-group
-                            id="input-group-2"
-                            label="Confirm Password:"
-                            label-for="input-2"
-                          >
-                            <b-form-input
-                              id="input-2"
-                              placeholder="Enter Password"
-                              required
-                              :type="showPasswordRegister ? 'text' : 'password'"
-                              v-model="confirmPassword"
-                            ></b-form-input>
-                            <b-form-checkbox
-                              id="show-password-login2"
-                              v-model="showPasswordRegister"
-                              name="show-password-login2"
-                              class="check-box"
-                            >
-                              show passwords
-                            </b-form-checkbox>
-                          </b-form-group>
-                          <p
-                            :class="successMsg ? 'success-msg' : 'error-msg'"
-                            v-show="showErrorMsgRegister"
-                            class="register-msg"
-                          >
-                            {{ success ? successMsg : errorMsgRegister }}
-                          </p>
-                          <b-button
-                            type="submit"
-                            variant="success"
-                            class="btn-login"
-                            >Register</b-button
-                          >
-                        </b-form></b-card-text
-                      ></b-tab
+                        <b-button
+                          type="submit"
+                          variant="success"
+                          class="btn-login"
+                          >Register</b-button
+                        >
+                      </b-form></b-tab
                     >
                   </b-tabs>
                 </b-card>
@@ -224,15 +228,30 @@ export default {
       success: false,
     };
   },
+  created() {
+    this.$store.dispatch("getToken");
+    const accessToken = localStorage.getItem("access-token");
+
+    if (this.$store.state.token) {
+      if (accessToken) {
+        this.$router.push(`/home#access_token=${accessToken}`);
+      } else {
+        this.$router.push("/home");
+      }
+    }
+  },
   methods: {
     async submitLogin() {
       await this.$store.dispatch("signIn", this.formLogin);
       if (this.$store.state.error) {
         this.showErrorMsg = true;
         this.errorMsg = this.$store.state.error;
+        this.$store.state.error = "";
       } else {
         this.showOverlay = true;
         setTimeout(() => {
+          this.$store.commit("setLogOutShow", true);
+
           this.$router.push("home");
         }, 3000);
       }
@@ -241,9 +260,14 @@ export default {
       await this.$store.dispatch("signUp", this.formRegister);
       if (this.$store.state.errorRegister) {
         this.errorMsgRegister = this.$store.state.errorRegister;
+        this.$store.state.errorRegister = "";
       } else {
         this.success = true;
         this.successMsg = this.$store.state.successMsg;
+        this.formRegister.fullName = "";
+        this.formRegister.email = "";
+        this.formRegister.password = "";
+        this.confirmPassword = "";
       }
       this.showErrorMsgRegister = true;
     },
@@ -257,7 +281,7 @@ export default {
   font-family: "Quicksand", sans-serif;
 }
 .login {
-  background-color: antiquewhite;
+  background-color: #25252c;
   height: 90vh;
 }
 .btn-login {
@@ -307,7 +331,15 @@ export default {
 .error-msg {
   color: crimson;
 }
-
+.overlay {
+  height: 85vh;
+}
+.small-spiner {
+  color: #d4d700;
+}
+.big-spiner {
+  color: #dddf00;
+}
 #login {
   background-color: rgba(216, 214, 209, 0.473);
   height: 90vh;
@@ -326,7 +358,13 @@ export default {
     opacity: 0;
   }
   .form-login {
-    margin-top: 20%;
+    margin-top: 10%;
+  }
+  figure {
+    display: none;
+  }
+  .logo-img {
+    width: 30px;
   }
 }
 </style>

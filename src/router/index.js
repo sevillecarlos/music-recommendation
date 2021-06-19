@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Login from "../views/Login.vue";
 import Home from "../views/Home.vue";
-//import store from "../store/index";
+// import store from "../store";
 Vue.use(VueRouter);
 
 const routes = [
@@ -27,14 +27,20 @@ const router = new VueRouter({
 });
 
 // router.beforeEach((to, from, next) => {
-//   const authenticatedUser = null;
-//   const requiresAuth = to;
+//   // const accessToken = localStorage.getItem("access-token");
 
-//   console.log(authenticatedUser)
-//   console.log(requiresAuth)
-//   console.log(from)
-//   console.log(next)
-//   next();
+//   if (to.matched.some((record) => record.meta.requiresAuth)) {
+//     console.log(store.state.token);
+
+//     if (!store.state.token) {
+//       next({
+//         path: "/",
+//       });
+//     } else {
+//       next();
+//     }
+//   } else {
+//     next();
+//   }
 // });
-
 export default router;
