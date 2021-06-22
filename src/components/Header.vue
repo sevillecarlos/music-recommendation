@@ -8,12 +8,15 @@
       <b-navbar-toggle v-show="show" target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
-          <b-nav-item-dropdown v-show="show" right>
+          <b-nav-item-dropdown class="drop" v-show="show" right>
             <template #button-content>
-              <em>Hi, {{ name.split(' ')[0] }}</em>
+              <em>Hi, {{name.split(" ")[0]}}</em>
             </template>
-            <b-dropdown-item>{{ email }}</b-dropdown-item>
-            <b-dropdown-item class="signout-btn" @click="signOut">Sign Out</b-dropdown-item>
+            <b-dropdown-header id="dropdown-header-1">{{
+              email
+            }}</b-dropdown-header>
+            <b-dropdown-divider></b-dropdown-divider>
+            <b-dropdown-item @click="signOut">Sign Out</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
@@ -82,13 +85,30 @@ export default {
   font-family: "Quicksand", sans-serif;
 }
 .header {
-  background-color: #14141a;
+  background: rgb(37, 37, 44);
+  background: -moz-linear-gradient(
+    0deg,
+    rgba(37, 37, 44, 1) 0%,
+    rgba(20, 20, 26, 1) 100%
+  );
+  background: -webkit-linear-gradient(
+    0deg,
+    rgba(37, 37, 44, 1) 0%,
+    rgba(20, 20, 26, 1) 100%
+  );
+  background: linear-gradient(
+    0deg,
+    rgba(37, 37, 44, 1) 0%,
+    rgba(20, 20, 26, 1) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#25252c",endColorstr="#14141a",GradientType=1);
 }
-.signout-btn{
+.signout-btn {
   background-color: rgb(19, 19, 19);
   color: aliceblue;
 }
-.signout-btn a{
+.signout-btn a {
   color: rgb(50, 205, 50);
 }
+
 </style>

@@ -1,20 +1,20 @@
 <template>
-  <div class="login">
-    <b-overlay
-      :show="showOverlay"
-      rounded="sm"
-      class="overlay"
-      variant="transparent"
-      opacity="0.91"
-      blur="1rem"
-    >
-      <template #overlay>
-        <div class="d-flex align-items-center">
-          <b-spinner small type="grow" class="small-spiner"></b-spinner>
-          <b-spinner type="grow" class="big-spiner"></b-spinner>
-          <b-spinner small type="grow" class="small-spiner"></b-spinner>
-        </div>
-      </template>
+  <b-overlay
+    :show="showOverlay"
+    rounded="sm"
+    class="overlay"
+    variant="transparent"
+    opacity="0.91"
+    blur="1rem"
+  >
+    <template #overlay>
+      <div class="d-flex align-items-center">
+        <b-spinner small type="grow" class="small-spiner"></b-spinner>
+        <b-spinner type="grow" class="big-spiner"></b-spinner>
+        <b-spinner small type="grow" class="small-spiner"></b-spinner>
+      </div>
+    </template>
+    <div class="login">
       <b-container class="bv-example-row">
         <b-row class="justify-content-md-center">
           <b-col>
@@ -198,8 +198,8 @@
           >
         </b-row>
       </b-container>
-    </b-overlay>
-  </div>
+    </div>
+  </b-overlay>
 </template>
 
 <script>
@@ -332,7 +332,6 @@ export default {
   color: crimson;
 }
 .overlay {
-  height: 85vh;
 }
 .small-spiner {
   color: #d4d700;

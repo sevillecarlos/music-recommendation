@@ -15,7 +15,23 @@ export default {};
   width: 100%;
   color: white;
   text-align: center;
-  background-color: #14141a;
+  background: rgb(20, 20, 26);
+  background: -moz-linear-gradient(
+    0deg,
+    rgba(20, 20, 26, 1) 0%,
+    rgba(37, 37, 44, 1) 100%
+  );
+  background: -webkit-linear-gradient(
+    0deg,
+    rgba(20, 20, 26, 1) 0%,
+    rgba(37, 37, 44, 1) 100%
+  );
+  background: linear-gradient(
+    0deg,
+    rgba(20, 20, 26, 1) 0%,
+    rgba(37, 37, 44, 1) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#14141a",endColorstr="#25252c",GradientType=1);
 }
 .text-footer {
   padding: 10px;

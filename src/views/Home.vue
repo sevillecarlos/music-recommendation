@@ -1,12 +1,21 @@
 <template>
   <div class="home">
     <b-container fluid>
-      <b-overlay rounded="sm">
+      <b-button variant="success" @click="getRecommendateTracks"
+        >Get Music</b-button
+      >
+      <b-overlay
+        rounded="sm"
+        class="overlay"
+        variant="transparent"
+        opacity="0.91"
+        blur="1rem"
+      >
         <template #overlay>
           <div class="d-flex align-items-center">
-            <b-spinner small type="grow" variant="secondary"></b-spinner>
-            <b-spinner type="grow" variant="dark"></b-spinner>
-            <b-spinner small type="grow" variant="secondary"></b-spinner>
+            <b-spinner small type="grow" class="small-spiner"></b-spinner>
+            <b-spinner type="grow" class="big-spiner"></b-spinner>
+            <b-spinner small type="grow" class="small-spiner"></b-spinner>
           </div>
         </template>
         <b-card no-body class="tabs-table">
@@ -17,6 +26,7 @@
                 responsive
                 class="table-recommendate"
                 borderless
+                sticky-header
               >
                 <b-thead>
                   <b-tr>
@@ -33,7 +43,11 @@
                     <b-th>
                       <b-icon
                         class="like-icon"
-                        @click="likeTrack(tracks)"
+                        @click="
+                          likeSongs.indexOf(tracks.id) !== -1
+                            ? removeLikeTrack(tracks)
+                            : likeTrack(tracks)
+                        "
                         :icon="
                           likeSongs.indexOf(tracks.id) !== -1
                             ? 'heart-fill'
@@ -60,14 +74,7 @@
                     <b-td>{{ tracks.artists }}</b-td>
 
                     <b-td>{{ tracks.album }}</b-td>
-                    <b-td
-                      ><a :href="tracks.linkTrack" target="_blank">
-                        <img
-                          class="spotify-logo"
-                          src="../assets/listen-on-spotify.png"
-                          alt="spotify-logo"
-                        /> </a
-                    ></b-td>
+                    <b-td></b-td>
                   </b-tr>
                 </b-tbody> </b-table-simple
             ></b-tab>
@@ -116,49 +123,54 @@
         no-close-on-backdrop
         no-close-on-esc
         centered
+        hide-header
+        hide-footer
         id="modal-1"
         v-model="modalShow"
+        class="model-spotify-auth"
       >
-        <template #modal-header>
-          <h5>Authenticate to Spotify</h5>
-          <img class="logo-model" src="../assets/logo.png" alt="logo" />
-        </template>
-        <b-overlay :show="showOverlay" rounded="sm">
+        <b-overlay
+          :show="showOverlay"
+          rounded="sm"
+          class="overlay"
+          variant="transparent"
+          opacity="0.91"
+          blur="1rem"
+        >
           <template #overlay>
             <div class="d-flex align-items-center">
-              <b-spinner small type="grow" variant="secondary"></b-spinner>
-              <b-spinner type="grow" variant="dark"></b-spinner>
-              <b-spinner small type="grow" variant="secondary"></b-spinner>
+              <b-spinner small type="grow" class="small-spiner"></b-spinner>
+              <b-spinner type="grow" class="big-spiner"></b-spinner>
+              <b-spinner small type="grow" class="small-spiner"></b-spinner>
             </div>
           </template>
-          <b-card>
+          <b-card bg-variant="dark">
+            <template #header>
+              <h5 class="title-modal-header">
+                Log to Spotify
+                <img class="logo-model" src="../assets/logo.png" alt="logo" />
+              </h5>
+            </template>
             <b-button
               class="login-spotify-btn"
               pill
               variant="outline-success"
               href="http://localhost:3000/login-spotify"
             >
-              <img
-                class="spotify-logo"
-                src="../assets/spotify-logo.png"
-                alt="spotify-logo"
-              />
             </b-button>
+            <div class="w-100">
+              <b-button
+                @click="returnToLogin"
+                pill
+                size="md"
+                class="float-right return-btn"
+                variant="outline-secondary"
+              >
+                Sign Out
+              </b-button>
+            </div>
           </b-card>
         </b-overlay>
-        <template #modal-footer>
-          <div class="w-100">
-            <b-button
-              @click="returnToLogin"
-              pill
-              variant="primary"
-              size="md"
-              class="float-right"
-            >
-              Return
-            </b-button>
-          </div>
-        </template>
       </b-modal>
     </b-container>
   </div>
@@ -197,6 +209,7 @@ export default {
   },
   watch: {
     likeSongsLength() {
+      console.log("asdsa");
       this.getSavedTracks();
     },
   },
@@ -336,18 +349,46 @@ export default {
           this.likeSongsLength = this.likeSongs.length;
         });
     },
+    async removeLikeTrack(track) {
+      await fetch(`http://localhost:3000/remove-save-track`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: this.$store.state.userEmail,
+          trackId: track.id,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          const { trackId } = data.data;
+          const removeTrackIndex = this.savesTrack.findIndex(
+            (track) => track.id === trackId
+          );
+          this.savesTrack.splice(removeTrackIndex, 1);
+          console.log(this.savesTrack);
+          this.likeSongs.splice(this.likeSongs.indexOf(track.id), 1);
+          this.likeSongsLength = this.likeSongs.length;
+        });
+    },
   },
 };
 </script>
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap");
-.spotify-logo {
-  width: 150px;
-}
+
 .login-spotify-btn {
   margin: auto;
   width: 50%;
   margin-left: 25%;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.11), 0 2px 2px rgba(0, 0, 0, 0.11),
+    0 4px 4px rgba(0, 0, 0, 0.11), 0 6px 8px rgba(0, 0, 0, 0.11),
+    0 8px 16px rgba(0, 0, 0, 0.11);
+  content: url("../assets/spotify-logo.png");
+}
+.login-spotify-btn:hover {
+  content: url("../assets/spotify-logo-black.png");
 }
 .logo-model {
   width: 50px;
@@ -387,5 +428,39 @@ thead {
 .home {
   background-color: #25252c;
   height: 90vh;
+}
+.modal-header {
+  padding: 9px 15px;
+  border-bottom: 1px solid #292b2c;
+  background-color: #339b0b;
+  border: none;
+}
+.modal {
+  background-color: rgba(55, 66, 43, 0.24);
+}
+.modal-body {
+  padding: 9px 15px;
+  background-color: #292b2c;
+  border: none;
+}
+
+.modal-footer {
+  padding: 9px 15px;
+  background-color: #292b2c;
+}
+.title-modal-header {
+  font-size: 150%;
+  color: rgb(255, 255, 255);
+}
+.return-btn {
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.11), 0 2px 2px rgba(0, 0, 0, 0.11),
+    0 4px 4px rgba(0, 0, 0, 0.11), 0 6px 8px rgba(0, 0, 0, 0.11),
+    0 8px 16px rgba(0, 0, 0, 0.11);
+}
+.small-spiner {
+  color: #d4d700;
+}
+.big-spiner {
+  color: #dddf00;
 }
 </style>
