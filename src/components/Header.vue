@@ -10,7 +10,7 @@
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown class="drop" v-show="show" right>
             <template #button-content>
-              <em>Hi, {{name.split(" ")[0]}}</em>
+              <em>Hi, {{ name.split(" ")[0] }}</em>
             </template>
             <b-dropdown-header id="dropdown-header-1">{{
               email
@@ -83,6 +83,8 @@ export default {
 .logo-img {
   font-size: 30px;
   font-family: "Quicksand", sans-serif;
+  color: #fff;
+  text-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
 }
 .header {
   background: rgb(37, 37, 44);
@@ -110,5 +112,4 @@ export default {
 .signout-btn a {
   color: rgb(50, 205, 50);
 }
-
 </style>

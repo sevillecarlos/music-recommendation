@@ -37,5 +37,7 @@ export default {};
   padding: 10px;
   font-size: 20px;
   font-family: "Quicksand", sans-serif;
+   color: #fff;
+  text-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
 }
 </style>
