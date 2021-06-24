@@ -1,22 +1,26 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" class="header">
-      <b-navbar-brand class="logo-img" href="#"
+      <b-navbar-brand class="logo-img-text" href="#"
         ><img class="logo-img" src="../assets/logo.png" alt="Logo" /> Music
         Recommendation Spotify</b-navbar-brand
       >
       <b-navbar-toggle v-show="show" target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
-          <b-nav-item-dropdown class="drop" v-show="show" right>
-            <template #button-content>
-              <em>Hi, {{ name.split(" ")[0] }}</em>
-            </template>
-            <b-dropdown-header id="dropdown-header-1">{{
+          <b-nav-item-dropdown
+            class="drop-down-signout"
+            menu-class="menu-drop-down-signout"
+            v-show="show"
+          >
+            <template #button-content> Hi, {{ name.split(" ")[0] }} </template>
+            <b-dropdown-header id="dropdown-header">{{
               email
             }}</b-dropdown-header>
             <b-dropdown-divider></b-dropdown-divider>
-            <b-dropdown-item @click="signOut">Sign Out</b-dropdown-item>
+            <b-dropdown-item id="dropdown-btn" @click="signOut"
+              >Sign Out</b-dropdown-item
+            >
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
@@ -80,30 +84,21 @@ export default {
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap");
-.logo-img {
+.logo-img-text {
   font-size: 30px;
   font-family: "Quicksand", sans-serif;
+  color: #fff;
+  text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
+}
+.logo-img:hover {
   color: #fff;
   text-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
 }
 .header {
-  background: rgb(37, 37, 44);
-  background: -moz-linear-gradient(
-    0deg,
-    rgba(37, 37, 44, 1) 0%,
-    rgba(20, 20, 26, 1) 100%
-  );
-  background: -webkit-linear-gradient(
-    0deg,
-    rgba(37, 37, 44, 1) 0%,
-    rgba(20, 20, 26, 1) 100%
-  );
-  background: linear-gradient(
-    0deg,
-    rgba(37, 37, 44, 1) 0%,
-    rgba(20, 20, 26, 1) 100%
-  );
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#25252c",endColorstr="#14141a",GradientType=1);
+  background-image: url("../assets/background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-color: #cccccc;
 }
 .signout-btn {
   background-color: rgb(19, 19, 19);
@@ -111,5 +106,57 @@ export default {
 }
 .signout-btn a {
   color: rgb(50, 205, 50);
+}
+.drop-down-signout {
+  font-size: 30px;
+  font-family: "Quicksand", sans-serif;
+  color: #fff;
+  text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
+}
+.menu-drop-down-signout {
+  background-color: rgb(18, 20, 15) !important;
+  border-radius: 20px !important;
+  border: 3px solid rgba(0, 128, 0, 0.418) !important;
+  box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0) !important;
+}
+#dropdown-header {
+  font-size: 23px;
+  color: #53e21b;
+  text-shadow: 0 0 0px rgb(5, 34, 12), 0 0 0px rgb(228, 255, 184);
+  letter-spacing: 1px;
+}
+
+#dropdown-btn {
+  font-size: 23px;
+  background-color: rgb(18, 20, 15) !important;
+  box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
+  color: rgba(0, 255, 21) !important;
+  border: 3px solid !important;
+  border-radius: 15px;
+  border-top-right-radius: 10px !important;
+  border-top-left-radius: 10px !important;
+  border-bottom-right-radius: 10px !important;
+  border-bottom-left-radius: 10px !important;
+  border-right: none !important;
+  border-left: none !important;
+  letter-spacing: 1px;
+}
+#dropdown-btn:hover {
+  box-shadow: 0 0 7px #fff, 0 0 30px rgb(157, 255, 0);
+}
+
+@media only screen and (max-width: 1200px) {
+}
+/* Small tablets to big tablets: from 768 to 1032*/
+@media only screen and (max-width: 1032px) {
+}
+/* Small phones to small tablets: from 481 to 767*/
+@media only screen and (max-width: 767px) {
+}
+/*Small Phone from 0 to 480px*/
+@media only screen and (max-width: 400px) {
+  .logo-img-text{
+    font-size: 15px !important;
+  }
 }
 </style>

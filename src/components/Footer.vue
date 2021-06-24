@@ -15,29 +15,20 @@ export default {};
   width: 100%;
   color: white;
   text-align: center;
-  background: rgb(20, 20, 26);
-  background: -moz-linear-gradient(
-    0deg,
-    rgba(20, 20, 26, 1) 0%,
-    rgba(37, 37, 44, 1) 100%
-  );
-  background: -webkit-linear-gradient(
-    0deg,
-    rgba(20, 20, 26, 1) 0%,
-    rgba(37, 37, 44, 1) 100%
-  );
-  background: linear-gradient(
-    0deg,
-    rgba(20, 20, 26, 1) 0%,
-    rgba(37, 37, 44, 1) 100%
-  );
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#14141a",endColorstr="#25252c",GradientType=1);
+  background-image: url("../assets/background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-color: #cccccc;
+}
+.footer p:hover {
+  color: #fff;
+  text-shadow: 0 0 7px #fff, 0 0 30px rgb(157, 255, 0);
 }
 .text-footer {
   padding: 10px;
   font-size: 20px;
   font-family: "Quicksand", sans-serif;
-   color: #fff;
+  color: #fff;
   text-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
 }
 </style>

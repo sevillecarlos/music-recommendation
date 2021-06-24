@@ -1,7 +1,7 @@
 <template>
   <b-overlay
     :show="showOverlay"
-    rounded="sm"
+    rounded="lg"
     class="overlay"
     variant="transparent"
     opacity="0.91"
@@ -30,21 +30,18 @@
             ><div class="form-login">
               <div>
                 <b-card class="tab" no-body>
-                  <b-tabs pills card class="tabs">
-                    <b-tab
-                      class="signin-pill"
-                      active
-                      :title-item-class="'tab-title-class'"
-                    >
+                  <b-tabs
+                    pills
+                    card
+                    class="tabs"
+                    active-nav-item-class="active-class"
+                    nav-wrapper-class="control-tab"
+                  >
+                    <b-tab class="signin-pill" title-link-class="title-tab">
                       <template #title class="tab-sigin">
-                        <b-spinner
-                          class="spinner-signin"
-                          type="grow"
-                          small
-                        ></b-spinner
-                        >Sign In
+                        Sign In
                       </template>
-                      <p>
+                      <p class="text">
                         <img
                           class="logo-img"
                           src="../assets/logo.png"
@@ -56,10 +53,12 @@
                         <b-form-group
                           id="input-group-1"
                           label="Email address:"
+                          class="text-label"
                           label-for="input-1"
                         >
                           <b-form-input
                             id="input-1"
+                            class="text-input-auth"
                             type="email"
                             placeholder="Enter email"
                             required
@@ -69,11 +68,13 @@
 
                         <b-form-group
                           id="input-group-2"
+                          class="text-label"
                           label="Your Password:"
                           label-for="input-2"
                         >
                           <b-form-input
                             id="input-2"
+                            class="text-input-auth"
                             placeholder="Enter Password"
                             :type="showPassword ? 'text' : 'password'"
                             v-model="formLogin.password"
@@ -102,9 +103,9 @@
                     <b-tab
                       class="signin-pill"
                       title="Sign Up"
-                      :title-item-class="'tab-title-class'"
+                      title-link-class="title-tab"
                     >
-                      <p>
+                      <p class="text">
                         <img
                           class="logo-img"
                           src="../assets/logo.png"
@@ -115,12 +116,14 @@
                       <b-form @submit.prevent="submitRegister">
                         <b-form-group
                           id="input-group-1"
+                          class="text-label"
                           label="Fullname:"
                           label-for="input-1"
                         >
                           <b-form-input
                             signOut
                             id="input-1"
+                            class="text-input-auth"
                             type="text"
                             placeholder="Enter name"
                             required
@@ -128,12 +131,14 @@
                           ></b-form-input>
                         </b-form-group>
                         <b-form-group
-                          id="input-group-1"
+                          id="input-group-2"
+                          class="text-label"
                           label="Email address:"
                           label-for="input-1"
                         >
                           <b-form-input
-                            id="input-1"
+                            id="input-2"
+                            class="text-input-auth"
                             type="email"
                             placeholder="Enter email"
                             required
@@ -142,12 +147,14 @@
                         </b-form-group>
 
                         <b-form-group
-                          id="input-group-2"
+                          class="text-label"
+                          id="input-group-3"
                           label="Your Password:"
-                          label-for="input-2"
+                          label-for="input-3"
                         >
                           <b-form-input
-                            id="input-2"
+                            id="input-3"
+                            class="text-input-auth"
                             placeholder="Enter Password"
                             required
                             :type="showPasswordRegister ? 'text' : 'password'"
@@ -156,12 +163,14 @@
                         </b-form-group>
 
                         <b-form-group
-                          id="input-group-2"
+                          id="input-group-4"
+                          class="text-label"
                           label="Confirm Password:"
-                          label-for="input-2"
+                          label-for="input-4"
                         >
                           <b-form-input
-                            id="input-2"
+                            id="input-4"
+                            class="text-input-auth"
                             placeholder="Enter Password"
                             required
                             :type="showPasswordRegister ? 'text' : 'password'"
@@ -280,13 +289,19 @@ export default {
 .signin-pill {
   font-family: "Quicksand", sans-serif;
 }
-.login {
-  background-color: #25252c;
-  height: 90vh;
-}
 .btn-login {
-  margin-top: 20px;
   width: 100%;
+  background-color: rgb(18, 20, 15) !important;
+  font-size: 20px !important;
+  letter-spacing: 2px;
+  box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
+  color: rgba(0, 255, 21) !important;
+  border-radius: 100px !important;
+  font-family: "Quicksand", sans-serif;
+  margin-top: 2%;
+}
+.btn-login:hover {
+  box-shadow: 0 0 7px #fff, 0 0 30px rgb(157, 255, 0);
 }
 .success-msg {
   color: green;
@@ -301,13 +316,12 @@ export default {
   color: rgb(56, 160, 143);
 }
 .tab {
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.11), 0 2px 2px rgba(0, 0, 0, 0.11),
-    0 4px 4px rgba(0, 0, 0, 0.11), 0 6px 8px rgba(0, 0, 0, 0.11),
-    0 8px 16px rgba(0, 0, 0, 0.11);
+  border: 3px solid rgba(0, 128, 0, 0.418);
+  box-shadow: 0 0 7px #fff, 0 0 15px rgb(157, 255, 0);
+  background-color: rgba(18, 20, 15, 0.705) !important;
+  border-radius: 10px !important;
 }
-.tab.active {
-  background-color: blueviolet;
-}
+
 .check-box {
   padding: 5px;
 }
@@ -315,9 +329,11 @@ export default {
   margin-top: 10%;
   width: 100%;
   border-radius: 10px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.11), 0 2px 2px rgba(0, 0, 0, 0.11),
-    0 4px 4px rgba(0, 0, 0, 0.11), 0 6px 8px rgba(0, 0, 0, 0.11),
-    0 8px 16px rgba(0, 0, 0, 0.11);
+  border: 3px solid rgba(0, 128, 0, 0.418);
+  box-shadow: 0 0 7px #fff, 0 0 30px rgb(157, 255, 0);
+}
+.img-cover:hover {
+  box-shadow: 0 0 7px #fff, 0 0 40px rgb(157, 255, 0);
 }
 .tab-sigin {
   background-color: cadetblue;
@@ -331,13 +347,32 @@ export default {
 .error-msg {
   color: crimson;
 }
-.overlay {
+.text {
+  color: #fff;
+  text-shadow: 0 0 7px rgb(5, 34, 12), 0 0 10px rgb(228, 255, 184);
+  font-family: "Quicksand", sans-serif;
+  font-size: 25px;
 }
+.text-label {
+  color: #fff;
+  text-shadow: 0 0 7px rgb(5, 34, 12), 0 0 10px rgb(228, 255, 184);
+  font-family: "Quicksand", sans-serif;
+  font-size: 15px;
+}
+
 .small-spiner {
   color: #d4d700;
 }
 .big-spiner {
   color: #dddf00;
+}
+.text-input-auth {
+  background-color: transparent !important;
+  border: 2px solid yellowgreen !important;
+  border-radius: 20px !important;
+  color: #fff !important;
+  text-shadow: 0 0 1px rgb(5, 34, 12), 0 0 5px rgb(228, 255, 184) !important;
+  font-size: 20px !important;
 }
 #login {
   background-color: rgba(216, 214, 209, 0.473);
@@ -350,9 +385,34 @@ export default {
 }
 /* Small phones to small tablets: from 481 to 767*/
 @media only screen and (max-width: 767px) {
+  .text {
+    font-size: 22px !important ;
+  }
+  .text-input-auth {
+    font-size: 17px !important;
+  }
+  .form-login {
+    margin-top: 20%;
+  }
+  figure {
+    display: none;
+  }
+  .logo-img {
+    width: 30px;
+  }
+  .btn-login {
+    font-size: 18px !important;
+  }
 }
-/*Small Phone from 0 to 480px*/
-@media only screen and (max-width: 400px) {
+/*Medium Phome*/
+@media only screen and (max-width: 568px) {
+  .text {
+    font-size: 20px !important ;
+  }
+  .text-input-auth {
+    font-size: 15px !important;
+  }
+
   .cover-img {
     opacity: 0;
   }
@@ -365,5 +425,37 @@ export default {
   .logo-img {
     width: 30px;
   }
+  .btn-login {
+    font-size: 15px !important;
+  }
+}
+/*Small Phone from 0 to 480px*/
+@media only screen and (max-width: 400px) {
+  .text {
+    font-size: 20px !important ;
+  }
+  .text-input-auth {
+    font-size: 15px !important;
+  }
+
+  .cover-img {
+    opacity: 0;
+  }
+  .form-login {
+    margin-top: 10%;
+  }
+  figure {
+    display: none;
+  }
+  .logo-img {
+    width: 30px;
+  }
+  .btn-login {
+    font-size: 15px !important;
+  }
+}
+::placeholder {
+  color: rgb(0, 255, 21) !important;
+  text-shadow: 0 0 0px rgb(5, 34, 12), 0 0 0px rgb(228, 255, 184) !important;
 }
 </style>

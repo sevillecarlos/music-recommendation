@@ -1,36 +1,50 @@
 <template>
-  <div class="home">
-    <b-container fluid>
-      <button class="get-tracks-btn" @click="shuffleBtn">
-        Shuffle!
-        <b-icon
-          class="btn-get-icon"
-          :icon="shuffleIcons"
-          font-scale="1"
-        ></b-icon>
-      </button>
-      <b-overlay
-        :show="showOverlayCard"
-        rounded="sm"
-        class="overlay"
-        variant="transparent"
-        opacity="0.91"
-        blur="1rem"
-      >
-        <template #overlay>
-          <div class="d-flex align-items-center">
-            <b-spinner small type="grow" class="small-spiner"></b-spinner>
-            <b-spinner type="grow" class="big-spiner"></b-spinner>
-            <b-spinner small type="grow" class="small-spiner"></b-spinner>
-          </div>
-        </template>
-        <b-card no-body class="tabs-table" bg-variant="dark">
+  <b-overlay
+    :show="showOverlayHome"
+    rounded="lg"
+    class="overlay"
+    variant="transparent"
+    opacity="0.91"
+    blur="1rem"
+  >
+    <template #overlay>
+      <div class="d-flex align-items-center">
+        <b-spinner small type="grow" class="small-spiner"></b-spinner>
+        <b-spinner type="grow" class="big-spiner"></b-spinner>
+        <b-spinner small type="grow" class="small-spiner"></b-spinner>
+      </div>
+    </template>
+    <div class="home">
+      <b-container fluid>
+        <button class="get-tracks-btn" @click="shuffleBtn">
+          Shuffle!
+          <b-icon
+            class="btn-get-icon"
+            :icon="shuffleIcons"
+            font-scale="1"
+          ></b-icon>
+        </button>
+        <b-overlay
+          :show="showOverlayCard"
+          rounded="pill"
+          class="overlay-card"
+          variant="transparent"
+          opacity="0.91"
+          blur="1rem"
+        >
+          <template #overlay>
+            <div class="d-flex align-items-center">
+              <b-spinner small type="grow" class="small-spiner"></b-spinner>
+              <b-spinner type="grow" class="big-spiner"></b-spinner>
+              <b-spinner small type="grow" class="small-spiner"></b-spinner>
+            </div>
+          </template>
           <b-tabs
             nav-class="item-tab"
-            content-class="addas"
             pills
             active-nav-item-class="active-class"
             nav-wrapper-class="control-tab"
+            class="tabs-control-table"
           >
             <b-tab
               title="Recommendate Tracks"
@@ -44,7 +58,6 @@
               <b-overlay
                 :show="showOverlayRecommendTable"
                 rounded="sm"
-                class="overlay"
                 variant="transparent"
                 opacity="0.91"
                 blur="1rem"
@@ -164,64 +177,64 @@
                 </b-tbody> </b-table-simple
             ></b-tab>
           </b-tabs>
-        </b-card>
-      </b-overlay>
-
-      <b-modal
-        no-close-on-backdrop
-        no-close-on-esc
-        centered
-        hide-header
-        hide-footer
-        id="modal-1"
-        v-model="modalShow"
-        class="model-spotify-auth"
-      >
-        <b-overlay
-          :show="showOverlay"
-          rounded="sm"
-          class="overlay"
-          variant="transparent"
-          opacity="0.91"
-          blur="1rem"
-        >
-          <template #overlay>
-            <div class="d-flex align-items-center">
-              <b-spinner small type="grow" class="small-spiner"></b-spinner>
-              <b-spinner type="grow" class="big-spiner"></b-spinner>
-              <b-spinner small type="grow" class="small-spiner"></b-spinner>
-            </div>
-          </template>
-          <b-card bg-variant="dark">
-            <template #header>
-              <h5 class="title-modal-header">
-                Log to Spotify
-                <img class="logo-model" src="../assets/logo.png" alt="logo" />
-              </h5>
-            </template>
-            <b-button
-              class="login-spotify-btn"
-              pill
-              variant="outline-success"
-              href="http://localhost:3000/login-spotify"
-            >
-            </b-button>
-            <div class="w-100">
-              <b-button
-                @click="returnToLogin"
-                pill
-                size="md"
-                class="float-right return-btn"
-                variant="outline-secondary"
-              >
-                Sign Out
-              </b-button>
-            </div>
-          </b-card>
         </b-overlay>
-      </b-modal>
-    </b-container>
-  </div>
+
+        <b-modal
+          no-close-on-backdrop
+          no-close-on-esc
+          centered
+          hide-header
+          hide-footer
+          id="modal-1"
+          modal-class="modal"
+          v-model="modalShow"
+        >
+          <b-overlay
+            :show="showOverlay"
+            rounded="sm"
+            class="overlay"
+            variant="transparent"
+            opacity="0.91"
+            blur="1rem"
+          >
+            <template #overlay>
+              <div class="d-flex align-items-center">
+                <b-spinner small type="grow" class="small-spiner"></b-spinner>
+                <b-spinner type="grow" class="big-spiner"></b-spinner>
+                <b-spinner small type="grow" class="small-spiner"></b-spinner>
+              </div>
+            </template>
+            <b-card class="card-auth">
+              <template #header>
+                <h5 class="title-modal-header">
+                  Log to Spotify
+                  <img class="logo-model" src="../assets/logo.png" alt="logo" />
+                </h5>
+              </template>
+              <b-button
+                class="login-spotify-btn"
+                pill
+                variant="outline-success"
+                href="http://localhost:3000/login-spotify"
+              >
+              </b-button>
+              <div class="w-100">
+                <b-button
+                  @click="returnToLogin"
+                  pill
+                  size="md"
+                  class="float-right return-btn"
+                  variant="outline-secondary"
+                >
+                  Sign Out
+                </b-button>
+              </div>
+            </b-card>
+          </b-overlay>
+        </b-modal>
+      </b-container>
+    </div>
+  </b-overlay>
 </template>
 
 <script>
@@ -255,15 +268,27 @@ export default {
       shuffleIcons: "dice-1-fill",
       showOverlayRecommendTable: false,
       showOverlayCard: false,
+      showOverlayHome: false,
     };
   },
   created() {
     this.exe();
+    this.showOverlayCard = true;
   },
   watch: {
     likeSongsLength() {
       console.log("asdsa");
       this.getSavedTracks();
+    },
+    showOverlayHomeC() {
+      if (this.showOverlayHomeC) {
+        this.showOverlayHome = this.showOverlayHomeC;
+      }
+    },
+  },
+  computed: {
+    showOverlayHomeC() {
+      return this.$store.state.overLayHome;
     },
   },
   methods: {
@@ -299,7 +324,6 @@ export default {
       const token = params.access_token;
       if (token) {
         localStorage.setItem("access-token", token);
-        this.showOverlayCard = true;
         this.modalShow = false;
         spotifyApi.setAccessToken(token);
         spotifyApi.getMySavedTracks().then((res) => {
@@ -448,13 +472,17 @@ export default {
   margin: auto;
   width: 50%;
   margin-left: 25%;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.11), 0 2px 2px rgba(0, 0, 0, 0.11),
-    0 4px 4px rgba(0, 0, 0, 0.11), 0 6px 8px rgba(0, 0, 0, 0.11),
-    0 8px 16px rgba(0, 0, 0, 0.11);
   content: url("../assets/spotify-logo.png");
+  box-shadow: 0 0 7px #fff, 0 0 5px rgb(157, 255, 0);
 }
 .login-spotify-btn:hover {
-  content: url("../assets/spotify-logo-black.png");
+  box-shadow: 0 0 7px #fff, 0 0 30px rgb(157, 255, 0);
+  background-color: transparent !important;
+}
+.card-auth {
+  background-color: transparent !important;
+  border: 1px solid green !important;
+  box-shadow: 0 0 7px #fff, 0 0 5px rgb(157, 255, 0);
 }
 .logo-model {
   width: 50px;
@@ -480,7 +508,8 @@ export default {
   height: 75vh;
 }
 .table-recommendate {
-  background-color: rgb(18, 20, 15);
+  background-color: rgba(18, 20, 15, 0.568);
+  width: 100%;
   border-radius: 10px;
   border: 3px solid rgba(0, 128, 0, 0.418);
   box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
@@ -506,22 +535,15 @@ thead {
   border-radius: 30px;
 }
 
-.home {
-  background-color: #25252c;
-  height: 90vh;
-}
 .modal-header {
   padding: 9px 15px;
   border-bottom: 1px solid #292b2c;
   background-color: #339b0b;
   border: none;
 }
-.modal {
-  background-color: rgba(55, 66, 43, 0.24);
-}
 .modal-body {
   padding: 9px 15px;
-  background-color: #292b2c;
+  background-color: rgb(18, 20, 15);
   border: none;
 }
 
@@ -539,22 +561,34 @@ thead {
   font-size: 20px;
   font-weight: 30px;
   letter-spacing: 3px;
-  color: rgb(75, 197, 50) !important;
+  color: rgb(0, 255, 21) !important;
   text-shadow: 0 0 1px rgb(0, 0, 0), 0 0 3px;
   border-radius: 16px !important;
 }
 .active-class {
   font-family: "Quicksand", sans-serif;
-  color: #339b0b !important;
   box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
+  border-radius: 16px !important;
+  background-color: rgb(0, 255, 21) !important;
+  color: rgb(0, 0, 0) !important;
+}
+.active-class:hover {
+  background-color: rgba(0, 0, 0, 0.432) !important;
+  color: rgb(0, 255, 21) !important;
 }
 
 .return-btn {
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.11), 0 2px 2px rgba(0, 0, 0, 0.11),
-    0 4px 4px rgba(0, 0, 0, 0.11), 0 6px 8px rgba(0, 0, 0, 0.11),
-    0 8px 16px rgba(0, 0, 0, 0.11);
-  color: #fff;
-  text-shadow: 0 0 7px rgb(5, 34, 12), 0 0 10px rgb(228, 255, 184);
+  box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
+  color: rgba(0, 255, 21) !important;
+  font-size: 20px !important;
+  letter-spacing: 2px;
+  background-color: rgb(18, 20, 15) !important;
+  font-family: "Quicksand", sans-serif;
+  transition: color background-color 0.3s !important;
+}
+.return-btn:hover {
+  box-shadow: 0 0 7px #fff, 0 0 30px rgb(157, 255, 0);
+  background-color: transparent !important;
 }
 .small-spiner {
   color: #d4d700;
@@ -570,21 +604,14 @@ thead {
 .vue-aplyer {
   width: 100%;
 }
-.active {
-  border-radius: 16px !important;
-  background-color: rgba(0, 255, 21, 0.486) !important;
-  color: rgb(0, 0, 0) !important;
-}
-.active:hover {
-  background-color: rgba(0, 0, 0, 0.432) !important;
-  color: rgb(0, 255, 21) !important;
-}
+
 .get-tracks-btn {
   width: 20%;
   box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
   color: rgb(0, 255, 21);
   height: 60px;
   font-size: 30px;
+  margin-left: 40%;
   letter-spacing: 2px;
   background-color: rgb(18, 20, 15);
   border-radius: 100px;
@@ -595,11 +622,14 @@ thead {
   color: rgb(18, 20, 15);
   background-color: rgb(0, 255, 21);
 }
-.spotify-logo{
+.spotify-logo {
   width: 50%;
 }
-.spotify-logo:hover{
+.spotify-logo:hover {
   content: url("../assets/listen-on-spotif-whitey.png");
+}
+#overlay {
+  border-radius: 20px !important;
 }
 
 ::-webkit-scrollbar {
@@ -612,5 +642,50 @@ thead {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(10, 179, 24);
+}
+.overlay-card {
+  margin-left: 15%;
+  margin-top: 1%;
+  width: 70%;
+}
+.tabs-control-table {
+  width: 100%;
+}
+.modal {
+  background-color: rgba(55, 66, 43, 0.24);
+}
+
+@media only screen and (max-width: 1200px) {
+}
+/* Small tablets to big tablets: from 768 to 1032*/
+@media only screen and (max-width: 1032px) {
+}
+/* Small phones to small tablets: from 481 to 767*/
+@media only screen and (max-width: 767px) {
+}
+/*Medium Phome*/
+@media only screen and (max-width: 568px) {
+}
+/*Small Phone from 0 to 480px*/
+@media only screen and (max-width: 400px) {
+  .table-recommendate {
+    font-size: 15px;
+    height: 70vh;
+  }
+  th {
+    font-size: 10px;
+  }
+  tr {
+    font-size: 10px;
+  }
+  .overlay-card {
+    margin-left: 0%;
+  margin-top: 2%;
+  width: 100%;
+}
+.tabs-control-table {
+  width: 100%;
+}
+
 }
 </style>
