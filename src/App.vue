@@ -6,6 +6,7 @@
 </template>
 <script>
 import Header from "@/components/Header.vue";
+
 export default {
   name: "App",
   components: {
@@ -14,12 +15,4 @@ export default {
 };
 </script>
 <style>
-.app {
-  height: 100%;
-}
-body {
-  background-image: url("./assets/background.jpg");
-  background-size: cover;
-  background-position: center;
-}
 </style>

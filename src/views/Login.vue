@@ -286,6 +286,7 @@ export default {
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap");
+
 .signin-pill {
   font-family: "Quicksand", sans-serif;
 }

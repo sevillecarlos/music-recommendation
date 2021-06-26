@@ -5,7 +5,11 @@
         ><img class="logo-img" src="../assets/logo.png" alt="Logo" /> Music
         Recommendation Spotify</b-navbar-brand
       >
-      <b-navbar-toggle v-show="show" target="nav-collapse"></b-navbar-toggle>
+      <b-navbar-toggle
+        class="toggle"
+        v-show="show"
+        target="nav-collapse"
+      ></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown
@@ -99,6 +103,11 @@ export default {
   background-size: cover;
   background-position: center;
   background-color: #cccccc;
+  box-shadow: 0 0 7px #fff, 0 0 30px rgb(157, 255, 0);
+}
+.header:hover{
+  box-shadow: 0 0 7px #fff, 0 0 50px rgb(157, 255, 0);
+
 }
 .signout-btn {
   background-color: rgb(19, 19, 19);
@@ -120,14 +129,14 @@ export default {
   box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0) !important;
 }
 #dropdown-header {
-  font-size: 23px;
+  font-size: 100%;
   color: #53e21b;
   text-shadow: 0 0 0px rgb(5, 34, 12), 0 0 0px rgb(228, 255, 184);
   letter-spacing: 1px;
 }
 
 #dropdown-btn {
-  font-size: 23px;
+  font-size: 100%;
   background-color: rgb(18, 20, 15) !important;
   box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
   color: rgba(0, 255, 21) !important;
@@ -149,14 +158,89 @@ export default {
 }
 /* Small tablets to big tablets: from 768 to 1032*/
 @media only screen and (max-width: 1032px) {
+  .logo-img-text {
+    font-size: 100% !important;
+  }
+  .signout-btn {
+    background-color: rgb(19, 19, 19);
+    color: aliceblue;
+  }
+  .signout-btn a {
+    color: rgb(50, 205, 50);
+  }
+  .drop-down-signout {
+    font-size: 25px;
+  }
+  .menu-drop-down-signout {
+    width: 30% !important;
+    margin-left: 10% !important;
+  }
+  #dropdown-header {
+    font-size: 80%;
+  }
+
+  #dropdown-btn {
+    font-size: 80%;
+  }
+  .drop-down-signout {
+    margin-left: 20px !important;
+  }
 }
 /* Small phones to small tablets: from 481 to 767*/
 @media only screen and (max-width: 767px) {
+  .logo-img-text {
+    font-size: 15px !important;
+  }
+  .signout-btn {
+    background-color: rgb(19, 19, 19);
+    color: aliceblue;
+  }
+  .signout-btn a {
+    color: rgb(50, 205, 50);
+  }
+  .drop-down-signout {
+    font-size: 15px;
+  }
+  .menu-drop-down-signout {
+    width: 50% !important;
+    margin-left: 10% !important;
+  }
+  #dropdown-header {
+    font-size: 70%;
+  }
+
+  #dropdown-btn {
+    font-size: 70%;
+  }
+  .drop-down-signout {
+    margin-left: 20px !important;
+  }
 }
 /*Small Phone from 0 to 480px*/
 @media only screen and (max-width: 400px) {
-  .logo-img-text{
+  .logo-img-text {
     font-size: 15px !important;
+  }
+  .signout-btn {
+    background-color: rgb(19, 19, 19);
+    color: aliceblue;
+  }
+  .signout-btn a {
+    color: rgb(50, 205, 50);
+  }
+  .drop-down-signout {
+    font-size: 15px;
+  }
+  .menu-drop-down-signout {
+    width: 50% !important;
+    margin-left: 10% !important;
+  }
+  #dropdown-header {
+    font-size: 60%;
+  }
+
+  #dropdown-btn {
+    font-size: 70%;
   }
 }
 </style>

@@ -49,11 +49,11 @@
             <b-tab
               title="Recommendate Tracks"
               active
-              title-link-class="title-tab text-"
+              title-link-class="title-tab"
             >
               <template #title>
-                <b-spinner class="spinner-rec" type="grow" small></b-spinner
-                >Recommendate Tracks
+                <b-icon icon="music-note-list" font-scale="1"></b-icon>
+                Recommendate Tracks
               </template>
               <b-overlay
                 :show="showOverlayRecommendTable"
@@ -80,8 +80,7 @@
 
                 <b-table-simple
                   responsive
-                  class="table-recommendate "
-                  borderless
+                  class="table-recommendate borderless"
                   v-show="showRecommendateTable"
                 >
                   <b-thead>
@@ -116,6 +115,7 @@
                       <b-th>
                         <VueAPlayer
                           class="vue-aplyer"
+                          theme="rgb(0, 255, 21)"
                           :mini="true"
                           :music="{
                             src: tracks.demoUrl,
@@ -138,12 +138,19 @@
               </b-overlay>
             </b-tab>
 
-            <b-tab title="Likes Tracks" title-link-class="title-tab">
+            <b-tab title-link-class="title-tab">
+              <template #title title-link-class="title-tab">
+                <b-icon
+                  icon="lightning"
+                  animation="fade"
+                  font-scale="1"
+                ></b-icon>
+                <strong>Likes Tracks</strong>
+              </template>
               <b-table-simple
                 v-show="showSaveTable"
                 responsive
-                class="table-recommendate"
-                borderless
+                class="table-recommendate borderless"
               >
                 <b-thead>
                   <b-tr>
@@ -215,7 +222,7 @@
                 class="login-spotify-btn"
                 pill
                 variant="outline-success"
-                href="http://localhost:3000/login-spotify"
+                :href="`${process.env.URL}/login-spotify`"
               >
               </b-button>
               <div class="w-100">
@@ -338,14 +345,17 @@ export default {
             seedTrack: id,
             accessToken: token,
           };
-          fetch(`http://localhost:3000/recommendation`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
+          fetch(
+            `${process.env.URL}/recommendation`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
 
-            body: JSON.stringify(seeds),
-          })
+              body: JSON.stringify(seeds),
+            }
+          )
             .then((res) => res.json())
             .then((data) => {
               if (data) {
@@ -377,7 +387,7 @@ export default {
       }
     },
     async getSavedTracks() {
-      fetch(`http://localhost:3000/save-tracks`, {
+      fetch(`${process.env.URL}/save-tracks`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -395,7 +405,7 @@ export default {
         });
     },
     async fillIdSongs() {
-      fetch(`http://localhost:3000/save-tracks`, {
+      fetch(`${process.env.URL}/save-tracks`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -422,16 +432,19 @@ export default {
         linkTrack: track.linkTrack,
         id: track.id,
       });
-      await fetch(`http://localhost:3000/save-track`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: this.$store.state.userEmail,
-          tracks: this.savedTrack,
-        }),
-      })
+      await fetch(
+        `${process.env.URL}/save-track`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: this.$store.state.userEmail,
+            tracks: this.savedTrack,
+          }),
+        }
+      )
         .then((res) => res.json())
         .then((data) => {
           const { tracks } = data.data;
@@ -440,16 +453,19 @@ export default {
         });
     },
     async removeLikeTrack(track) {
-      await fetch(`http://localhost:3000/remove-save-track`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: this.$store.state.userEmail,
-          trackId: track.id,
-        }),
-      })
+      await fetch(
+        `${process.env.URL}/remove-save-track`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: this.$store.state.userEmail,
+            trackId: track.id,
+          }),
+        }
+      )
         .then((res) => res.json())
         .then((data) => {
           const { trackId } = data.data;
@@ -488,19 +504,18 @@ export default {
   width: 50px;
 }
 .listen-spotify-btn {
-  width: 150px;
+  width: 100px;
 }
 .album-cover-img {
   width: 100px;
 }
 .like-icon {
-  color: greenyellow;
+  text-align: center;
+  color: rgb(0, 255, 21);
   width: 50px;
   transition: width 0.2s;
 }
-.like-icon:hover {
-  width: 30px;
-}
+
 .tabs-table {
   margin-top: 1%;
   margin-left: 15%;
@@ -511,7 +526,7 @@ export default {
   background-color: rgba(18, 20, 15, 0.568);
   width: 100%;
   border-radius: 10px;
-  border: 3px solid rgba(0, 128, 0, 0.418);
+  border: 1px solid rgba(0, 128, 0, 0.418);
   box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
   font-size: 20px;
   height: 70vh;
@@ -559,7 +574,6 @@ thead {
 .title-tab {
   font-family: "Quicksand", sans-serif;
   font-size: 20px;
-  font-weight: 30px;
   letter-spacing: 3px;
   color: rgb(0, 255, 21) !important;
   text-shadow: 0 0 1px rgb(0, 0, 0), 0 0 3px;
@@ -576,7 +590,9 @@ thead {
   background-color: rgba(0, 0, 0, 0.432) !important;
   color: rgb(0, 255, 21) !important;
 }
-
+.borderless td, .borderless th {
+    border: none;
+}
 .return-btn {
   box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
   color: rgba(0, 255, 21) !important;
@@ -601,16 +617,12 @@ thead {
   border-radius: 20px;
   box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
 }
-.vue-aplyer {
-  width: 100%;
-}
 
 .get-tracks-btn {
   width: 20%;
   box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
   color: rgb(0, 255, 21);
-  height: 60px;
-  font-size: 30px;
+  font-size: 200%;
   margin-left: 40%;
   letter-spacing: 2px;
   background-color: rgb(18, 20, 15);
@@ -622,9 +634,7 @@ thead {
   color: rgb(18, 20, 15);
   background-color: rgb(0, 255, 21);
 }
-.spotify-logo {
-  width: 50%;
-}
+
 .spotify-logo:hover {
   content: url("../assets/listen-on-spotif-whitey.png");
 }
@@ -654,23 +664,60 @@ thead {
 .modal {
   background-color: rgba(55, 66, 43, 0.24);
 }
-
-@media only screen and (max-width: 1200px) {
+.spotify-logo {
+  width: 200px;
 }
+
 /* Small tablets to big tablets: from 768 to 1032*/
 @media only screen and (max-width: 1032px) {
-}
-/* Small phones to small tablets: from 481 to 767*/
-@media only screen and (max-width: 767px) {
-}
-/*Medium Phome*/
-@media only screen and (max-width: 568px) {
-}
-/*Small Phone from 0 to 480px*/
-@media only screen and (max-width: 400px) {
   .table-recommendate {
     font-size: 15px;
     height: 70vh;
+    box-shadow: 0 0 7px #fff, 0 0 13px rgb(157, 255, 0);
+  }
+  th {
+    font-size: 20px;
+  }
+  tr {
+    font-size: 20px;
+  }
+  .overlay-card {
+    margin-left: 0%;
+    margin-top: 2%;
+    width: 100%;
+  }
+  .tabs-control-table {
+    width: 100%;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .title-tab {
+    font-size: 15px;
+    letter-spacing: 1px;
+  }
+  .get-tracks-btn {
+    width: 50%;
+    font-size: 100%;
+    letter-spacing: 2px;
+    margin-top: 2%;
+    margin-left: 25%;
+  }
+  .album-cover-img {
+    width: 100%;
+  }
+  .spotify-logo {
+    width: 150px;
+  }
+}
+/* Small phones to small tablets: from 481 to 767*/
+@media only screen and (max-width: 767px) {
+  .table-recommendate {
+    font-size: 15px;
+    height: 70vh;
+    box-shadow: 0 0 7px #fff, 0 0 13px rgb(157, 255, 0);
   }
   th {
     font-size: 10px;
@@ -680,12 +727,154 @@ thead {
   }
   .overlay-card {
     margin-left: 0%;
-  margin-top: 2%;
-  width: 100%;
+    margin-top: 2%;
+    width: 100%;
+  }
+  .tabs-control-table {
+    width: 100%;
+    padding: 10px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  .title-tab {
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+  .get-tracks-btn {
+    width: 70%;
+    font-size: 100%;
+    letter-spacing: 2px;
+    margin-top: 2%;
+    margin-left: 15%;
+  }
+  .album-cover-img {
+    width: 100%;
+  }
+  .spotify-logo {
+    width: 100px;
+  }
+  .return-btn {
+    font-size: 100% !important;
+    margin-top: 25px;
+  }
+  .title-modal-header {
+    font-size: 120%;
+  }
+  .logo-model {
+    width: 30px;
+  }
 }
-.tabs-control-table {
-  width: 100%;
+/*Medium Phome*/
+@media only screen and (max-width: 568px) {
+  .table-recommendate {
+    font-size: 15px;
+    height: 70vh;
+    box-shadow: 0 0 7px #fff, 0 0 13px rgb(157, 255, 0);
+  }
+  th {
+    font-size: 10px;
+  }
+  tr {
+    font-size: 10px;
+  }
+  .overlay-card {
+    margin-left: 0%;
+    margin-top: 2%;
+    width: 100%;
+  }
+  .tabs-control-table {
+    width: 100%;
+    padding: 10px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  .title-tab {
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+  .get-tracks-btn {
+    width: 70%;
+    font-size: 100%;
+    letter-spacing: 2px;
+    margin-top: 2%;
+    margin-left: 15%;
+  }
+  .album-cover-img {
+    width: 100%;
+  }
+  .spotify-logo {
+    width: 100px;
+  }
+  .return-btn {
+    font-size: 100% !important;
+    margin-top: 25px;
+  }
+  .title-modal-header {
+    font-size: 120%;
+  }
+  .logo-model {
+    width: 30px;
+  }
 }
 
+/*Small Phone from 0 to 480px*/
+@media only screen and (max-width: 400px) {
+  .table-recommendate {
+    font-size: 15px;
+    height: 70vh;
+    box-shadow: 0 0 7px #fff, 0 0 13px rgb(157, 255, 0);
+  }
+  th {
+    font-size: 10px;
+  }
+  tr {
+    font-size: 10px;
+  }
+  .overlay-card {
+    margin-left: 0%;
+    margin-top: 2%;
+    width: 100%;
+  }
+  .tabs-control-table {
+    width: 100%;
+  }
+
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  .title-tab {
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+  .get-tracks-btn {
+    width: 70%;
+    font-size: 100%;
+    letter-spacing: 2px;
+    margin-top: 2%;
+    margin-left: 15%;
+  }
+  .album-cover-img {
+    width: 100%;
+  }
+  .spotify-logo {
+    width: 100px;
+  }
+  .return-btn {
+    font-size: 100% !important;
+    margin-top: 25px;
+  }
+  .title-modal-header {
+    font-size: 120%;
+  }
+  .logo-model {
+    width: 30px;
+  }
 }
 </style>
