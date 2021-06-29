@@ -10,6 +10,7 @@
         v-show="show"
         target="nav-collapse"
       ></b-navbar-toggle>
+
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown
@@ -89,7 +90,6 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap");
 .logo-img-text {
-  font-size: 30px;
   font-family: "Quicksand", sans-serif;
   color: #fff;
   text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
@@ -99,15 +99,10 @@ export default {
   text-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
 }
 .header {
-  background-image: url("../assets/background.jpg");
-  background-size: cover;
-  background-position: center;
-  background-color: #cccccc;
-  box-shadow: 0 0 7px #fff, 0 0 30px rgb(157, 255, 0);
+  box-shadow: 0 0 7px #fff, 0 0 25px rgb(157, 255, 0);
 }
-.header:hover{
-  box-shadow: 0 0 7px #fff, 0 0 50px rgb(157, 255, 0);
-
+.header:hover {
+  box-shadow: 0 0 7px #fff, 0 0 30px rgb(157, 255, 0);
 }
 .signout-btn {
   background-color: rgb(19, 19, 19);
@@ -125,7 +120,7 @@ export default {
 .menu-drop-down-signout {
   background-color: rgb(18, 20, 15) !important;
   border-radius: 20px !important;
-  border: 3px solid rgba(0, 128, 0, 0.418) !important;
+  border: 1px solid rgba(0, 128, 0, 0.418) !important;
   box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0) !important;
 }
 #dropdown-header {
@@ -138,20 +133,9 @@ export default {
 #dropdown-btn {
   font-size: 100%;
   background-color: rgb(18, 20, 15) !important;
-  box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
   color: rgba(0, 255, 21) !important;
-  border: 3px solid !important;
-  border-radius: 15px;
-  border-top-right-radius: 10px !important;
-  border-top-left-radius: 10px !important;
-  border-bottom-right-radius: 10px !important;
-  border-bottom-left-radius: 10px !important;
-  border-right: none !important;
-  border-left: none !important;
   letter-spacing: 1px;
-}
-#dropdown-btn:hover {
-  box-shadow: 0 0 7px #fff, 0 0 30px rgb(157, 255, 0);
+  border-radius: 20px;
 }
 
 @media only screen and (max-width: 1200px) {
@@ -176,7 +160,7 @@ export default {
     margin-left: 10% !important;
   }
   #dropdown-header {
-    font-size: 80%;
+    font-size: 9px;
   }
 
   #dropdown-btn {
@@ -206,7 +190,7 @@ export default {
     margin-left: 10% !important;
   }
   #dropdown-header {
-    font-size: 70%;
+    font-size: 9px;
   }
 
   #dropdown-btn {
@@ -236,7 +220,7 @@ export default {
     margin-left: 10% !important;
   }
   #dropdown-header {
-    font-size: 60%;
+    font-size: 9px;
   }
 
   #dropdown-btn {

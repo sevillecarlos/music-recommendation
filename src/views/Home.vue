@@ -222,7 +222,7 @@
                 class="login-spotify-btn"
                 pill
                 variant="outline-success"
-                :href="`${process.env.URL}/login-spotify`"
+                :href="urlRedirect"
               >
               </b-button>
               <div class="w-100">
@@ -276,6 +276,7 @@ export default {
       showOverlayRecommendTable: false,
       showOverlayCard: false,
       showOverlayHome: false,
+      urlRedirect: `${process.env.VUE_APP_URL}/login-spotify`,
     };
   },
   created() {
@@ -345,17 +346,14 @@ export default {
             seedTrack: id,
             accessToken: token,
           };
-          fetch(
-            `${process.env.URL}/recommendation`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
+          fetch(`${process.env.VUE_APP_URL}/recommendation`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
 
-              body: JSON.stringify(seeds),
-            }
-          )
+            body: JSON.stringify(seeds),
+          })
             .then((res) => res.json())
             .then((data) => {
               if (data) {
@@ -387,7 +385,7 @@ export default {
       }
     },
     async getSavedTracks() {
-      fetch(`${process.env.URL}/save-tracks`, {
+      fetch(`${process.env.VUE_APP_URL}/save-tracks`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -399,13 +397,13 @@ export default {
         .then((data) => {
           const { tracks } = data.data;
           if (tracks) {
-            this.savesTrack = [...tracks];
+            this.savesTrack = [...tracks].reverse();
             this.showSaveTable = true;
           }
         });
     },
     async fillIdSongs() {
-      fetch(`${process.env.URL}/save-tracks`, {
+      fetch(`${process.env.VUE_APP_URL}/save-tracks`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -432,19 +430,16 @@ export default {
         linkTrack: track.linkTrack,
         id: track.id,
       });
-      await fetch(
-        `${process.env.URL}/save-track`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: this.$store.state.userEmail,
-            tracks: this.savedTrack,
-          }),
-        }
-      )
+      await fetch(`${process.env.VUE_APP_URL}/save-track`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: this.$store.state.userEmail,
+          tracks: this.savedTrack,
+        }),
+      })
         .then((res) => res.json())
         .then((data) => {
           const { tracks } = data.data;
@@ -453,19 +448,16 @@ export default {
         });
     },
     async removeLikeTrack(track) {
-      await fetch(
-        `${process.env.URL}/remove-save-track`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: this.$store.state.userEmail,
-            trackId: track.id,
-          }),
-        }
-      )
+      await fetch(`${process.env.VUE_APP_URL}/remove-save-track`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: this.$store.state.userEmail,
+          trackId: track.id,
+        }),
+      })
         .then((res) => res.json())
         .then((data) => {
           const { trackId } = data.data;
@@ -491,10 +483,7 @@ export default {
   content: url("../assets/spotify-logo.png");
   box-shadow: 0 0 7px #fff, 0 0 5px rgb(157, 255, 0);
 }
-.login-spotify-btn:hover {
-  box-shadow: 0 0 7px #fff, 0 0 30px rgb(157, 255, 0);
-  background-color: transparent !important;
-}
+
 .card-auth {
   background-color: transparent !important;
   border: 1px solid green !important;
@@ -523,10 +512,11 @@ export default {
   height: 75vh;
 }
 .table-recommendate {
-  background-color: rgba(18, 20, 15, 0.568);
+  background-color: rgba(17, 17, 17, 0.274);
   width: 100%;
   border-radius: 10px;
-  border: 1px solid rgba(0, 128, 0, 0.418);
+  border: none;
+
   box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
   font-size: 20px;
   height: 70vh;
@@ -543,7 +533,7 @@ tr {
   text-shadow: 0 0 7px rgb(5, 34, 12), 0 0 10px rgb(228, 255, 184);
   font-family: "Quicksand", sans-serif;
   font-size: 25px;
-  border: 3px solid green;
+  border: none;
 }
 thead {
   background-color: rgba(41, 46, 33, 0.582);
@@ -586,12 +576,10 @@ thead {
   background-color: rgb(0, 255, 21) !important;
   color: rgb(0, 0, 0) !important;
 }
-.active-class:hover {
-  background-color: rgba(0, 0, 0, 0.432) !important;
-  color: rgb(0, 255, 21) !important;
-}
-.borderless td, .borderless th {
-    border: none;
+
+.borderless td,
+.borderless th {
+  border: none;
 }
 .return-btn {
   box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
@@ -602,10 +590,7 @@ thead {
   font-family: "Quicksand", sans-serif;
   transition: color background-color 0.3s !important;
 }
-.return-btn:hover {
-  box-shadow: 0 0 7px #fff, 0 0 30px rgb(157, 255, 0);
-  background-color: transparent !important;
-}
+
 .small-spiner {
   color: #d4d700;
 }
@@ -613,7 +598,6 @@ thead {
   color: #dddf00;
 }
 .item-tab {
-  border: 3px solid green;
   border-radius: 20px;
   box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
 }
@@ -630,14 +614,7 @@ thead {
   font-family: "Quicksand", sans-serif;
   margin-top: 2%;
 }
-.get-tracks-btn:hover {
-  color: rgb(18, 20, 15);
-  background-color: rgb(0, 255, 21);
-}
 
-.spotify-logo:hover {
-  content: url("../assets/listen-on-spotif-whitey.png");
-}
 #overlay {
   border-radius: 20px !important;
 }
@@ -650,9 +627,7 @@ thead {
   background: rgb(0, 255, 21);
   border-radius: 10px;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: rgb(10, 179, 24);
-}
+
 .overlay-card {
   margin-left: 15%;
   margin-top: 1%;
@@ -875,6 +850,31 @@ thead {
   }
   .logo-model {
     width: 30px;
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .return-btn:hover {
+    box-shadow: 0 0 7px #fff, 0 0 30px rgb(157, 255, 0);
+    background-color: transparent !important;
+  }
+  .login-spotify-btn:hover {
+    box-shadow: 0 0 7px #fff, 0 0 30px rgb(157, 255, 0);
+    background-color: transparent !important;
+  }
+  .active-class:hover {
+    background-color: rgba(0, 0, 0, 0.432) !important;
+    color: rgb(0, 255, 21) !important;
+  }
+  .get-tracks-btn:hover {
+    color: rgb(18, 20, 15);
+    background-color: rgb(0, 255, 21);
+  }
+
+  .spotify-logo:hover {
+    content: url("../assets/listen-on-spotify-whitey.png");
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(10, 179, 24);
   }
 }
 </style>

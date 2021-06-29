@@ -6,6 +6,10 @@ node_modules
 # local env files
 .env.local
 .env.*.local
+.env.production
+.env.*.production
+.env.development
+.env.*.development
 
 # Log files
 npm-debug.log*
@@ -24,3 +28,6 @@ pnpm-debug.log*
 
 # Local Netlify folder
 .netlify
+
+# Bash Script
+*.bash

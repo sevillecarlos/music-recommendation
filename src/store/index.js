@@ -43,7 +43,7 @@ export default new Vuex.Store({
   actions: {
     async signIn({ commit }, user) {
       try {
-        const res = await fetch(`${process.env.URL}/signin`, {
+        const res = await fetch(`${process.env.VUE_APP_URL}/signin`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -68,7 +68,7 @@ export default new Vuex.Store({
     },
     async signUp({ commit }, user) {
       try {
-        const res = await fetch(`${process.env.URL}/signup`, {
+        const res = await fetch(`${process.env.VUE_APP_URL}/signup`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -102,7 +102,7 @@ export default new Vuex.Store({
       const idLog = localStorage.getItem("ref-log");
       console.log(idLog);
       try {
-        const res = await fetch(`${process.env.URL}/get-user`, {
+        const res = await fetch(`${process.env.VUE_APP_URL}/get-user`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

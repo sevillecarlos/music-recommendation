@@ -1,6 +1,25 @@
-body {
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap");
+
+.main {
   height: 100%;
+  width: 100%;
+  background-color: black;
   background-image: url("./assets/background.jpg");
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: "Quicksand", sans-serif;
+}
+
+@media (max-width: 576px) {
+  .banner {
+    background-image: url("./assets/background.jpg");
+    align-items: flex-start;
+    height: 400px;
+  }
 }
