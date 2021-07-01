@@ -267,6 +267,7 @@ export default {
       signUp: "signUp",
       getToken: "getToken",
     }),
+    
     async submitLogin() {
       await this.signIn(this.formLogin);
       if (this.error.length) {

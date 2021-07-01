@@ -123,11 +123,7 @@
                           }"
                         />
                       </b-th>
-                      <b-td>{{
-                        tracks.track.indexOf("(") !== -1
-                          ? tracks.track.slice(0, tracks.track.indexOf("("))
-                          : tracks.track
-                      }}</b-td>
+                      <b-td>{{ tracks.track }}</b-td>
                       <b-td>{{ tracks.artists }}</b-td>
 
                       <b-td>{{ tracks.album }}</b-td>
@@ -250,12 +246,19 @@ import SpotifyWebApi from "spotify-web-api-js";
 import { hashParams } from "../helpers/hash-params";
 import { randomNumber } from "../helpers/random-number";
 import { randomNumberMinOne } from "../helpers/random-number-one";
+import { removeParanthesisContent } from "../helpers/remove-para-content";
+import { mapState, mapActions } from "vuex";
 
 const spotifyApi = new SpotifyWebApi();
 
 export default {
+  name: "Home",
   components: {
     VueAPlayer,
+  },
+  created() {
+    this.exe();
+    this.showOverlayCard = true;
   },
   data() {
     return {
@@ -279,13 +282,18 @@ export default {
       urlRedirect: `${process.env.VUE_APP_URL}/login-spotify`,
     };
   },
-  created() {
-    this.exe();
-    this.showOverlayCard = true;
+  computed: {
+    ...mapState({
+      userEmail: "userEmail",
+      overLayHome: "overLayHome",
+    }),
+    showOverlayHomeC() {
+      return this.overLayHome;
+    },
   },
+
   watch: {
     likeSongsLength() {
-      console.log("asdsa");
       this.getSavedTracks();
     },
     showOverlayHomeC() {
@@ -294,94 +302,102 @@ export default {
       }
     },
   },
-  computed: {
-    showOverlayHomeC() {
-      return this.$store.state.overLayHome;
-    },
-  },
+
   methods: {
-    getShuffleDiceIcom() {
+    ...mapActions({
+      getToken: "getToken",
+      getLog: "getLog",
+      signOut: "signOut",
+    }),
+
+    shuffleBtn() {
       this.shuffleIcons = `dice-${randomNumberMinOne(6)}-fill`;
       this.showOverlayRecommendTable = true;
-    },
-    shuffleBtn() {
-      this.getShuffleDiceIcom();
       this.getRecommendateTracks();
     },
-    async exe() {
-      await this.$store.dispatch("getToken");
-      await this.$store.dispatch("getLog");
 
-      if (this.$store.state.userEmail) {
+    async exe() {
+      await this.getToken();
+      await this.getLog();
+      if (this.userEmail) {
         this.getSavedTracks();
         this.getRecommendateTracks();
         this.fillIdSongs();
       }
     },
+
     async returnToLogin() {
       this.showOverlay = true;
-      await this.$store.dispatch("signOut");
-
+      await this.signOut();
       setTimeout(() => {
         this.$router.push("/");
         this.$store.commit("setLogOutShow", false);
       }, 3000);
     },
-    async getRecommendateTracks() {
+
+    getAccessToken() {
       const params = hashParams();
-      const token = params.access_token;
+      return params.access_token;
+    },
+
+    async authToSpotify(token) {
+      spotifyApi.setAccessToken(token);
+      let seeds = {};
+      await spotifyApi.getMySavedTracks().then((res) => {
+        this.savedTracks = [...res.items];
+        const sizeSavedTracks = this.savedTracks.length;
+        const {
+          track: { artists: artistName, id },
+        } = this.savedTracks[randomNumber(sizeSavedTracks, 0)];
+        seeds = Object.assign({
+          seedArtist: artistName[0].id,
+          seedTrack: id,
+          accessToken: token,
+        });
+      });
+      return seeds;
+    },
+
+    async getRecommendateTracks() {
+      const token = this.getAccessToken();
       if (token) {
         localStorage.setItem("access-token", token);
         this.modalShow = false;
-        spotifyApi.setAccessToken(token);
-        spotifyApi.getMySavedTracks().then((res) => {
-          this.savedTracks = [...res.items];
-          const sizeSavedTracks = this.savedTracks.length;
-          const {
-            track: { artists: artistName, id },
-          } = this.savedTracks[randomNumber(sizeSavedTracks, 0)];
+        const seeds = await this.authToSpotify(token);
+        fetch(`${process.env.VUE_APP_URL}/recommendation`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
 
-          const seeds = {
-            seedArtist: artistName[0].id,
-            seedTrack: id,
-            accessToken: token,
-          };
-          fetch(`${process.env.VUE_APP_URL}/recommendation`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
+          body: JSON.stringify(seeds),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data) {
+              const { tracks } = data;
+              this.recommenedTracks = [...tracks]
+                .map((el) => {
+                  return {
+                    albumCover: el.album.images[0].url,
+                    album: removeParanthesisContent(el.album.name),
+                    track: removeParanthesisContent(el.name),
+                    artists: el.artists
+                      .map((artist) => artist.name)
+                      .join(" x "),
+                    linkTrack: el.external_urls.spotify,
+                    demoUrl: el.preview_url,
+                    id: el.id,
+                  };
+                })
+                .filter((track) => track.demoUrl)
+                .slice(0, 30);
 
-            body: JSON.stringify(seeds),
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              if (data) {
-                const { tracks } = data;
-                this.recommenedTracks = [...tracks];
-                this.recommenedTracks = this.recommenedTracks
-                  .map((el) => {
-                    return {
-                      albumCover: el.album.images[0].url,
-                      album: el.album.name,
-                      track: el.name,
-                      artists: el.artists
-                        .map((artist) => artist.name)
-                        .join(" x "),
-                      linkTrack: el.external_urls.spotify,
-                      demoUrl: el.preview_url,
-                      id: el.id,
-                    };
-                  })
-                  .filter((track) => track.demoUrl)
-                  .slice(0, 20);
-                console.log(this.recommenedTracks);
-                this.showRecommendateTable = true;
-                this.showOverlayRecommendTable = false;
-                this.showOverlayCard = false;
-              }
-            });
-        });
+              this.showRecommendateTable = true;
+              this.showOverlayRecommendTable = false;
+              this.showOverlayCard = false;
+            }
+          });
       }
     },
     async getSavedTracks() {
@@ -391,7 +407,7 @@ export default {
           "Content-Type": "application/json",
         },
 
-        body: JSON.stringify({ email: this.$store.state.userEmail }),
+        body: JSON.stringify({ email: this.userEmail }),
       })
         .then((res) => res.json())
         .then((data) => {
@@ -402,6 +418,7 @@ export default {
           }
         });
     },
+
     async fillIdSongs() {
       fetch(`${process.env.VUE_APP_URL}/save-tracks`, {
         method: "POST",
@@ -409,17 +426,17 @@ export default {
           "Content-Type": "application/json",
         },
 
-        body: JSON.stringify({ email: this.$store.state.userEmail }),
+        body: JSON.stringify({ email: this.userEmail }),
       })
         .then((res) => res.json())
         .then((data) => {
           const { tracks } = data.data;
           if (tracks) {
             tracks.map((track) => this.likeSongs.push(track.id));
-            console.log(this.likeSongs);
           }
         });
     },
+
     async likeTrack(track) {
       this.savedTrack = [];
       this.savedTrack.push({
@@ -436,7 +453,7 @@ export default {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: this.$store.state.userEmail,
+          email: this.userEmail,
           tracks: this.savedTrack,
         }),
       })
@@ -454,7 +471,7 @@ export default {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: this.$store.state.userEmail,
+          email: this.userEmail,
           trackId: track.id,
         }),
       })
@@ -465,7 +482,6 @@ export default {
             (track) => track.id === trackId
           );
           this.savesTrack.splice(removeTrackIndex, 1);
-          console.log(this.savesTrack);
           this.likeSongs.splice(this.likeSongs.indexOf(track.id), 1);
           this.likeSongsLength = this.likeSongs.length;
         });
