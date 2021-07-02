@@ -1,19 +1,5 @@
 <template>
-  <b-overlay
-    :show="showOverlayHome"
-    rounded="lg"
-    class="overlay"
-    variant="transparent"
-    opacity="0.91"
-    blur="1rem"
-  >
-    <template #overlay>
-      <div class="d-flex align-items-center">
-        <b-spinner small type="grow" class="small-spiner"></b-spinner>
-        <b-spinner type="grow" class="big-spiner"></b-spinner>
-        <b-spinner small type="grow" class="small-spiner"></b-spinner>
-      </div>
-    </template>
+  <Overlay :showOverlay="showOverlayHome">
     <div class="home">
       <b-container fluid>
         <button class="get-tracks-btn" @click="shuffleBtn">
@@ -24,28 +10,9 @@
             font-scale="1"
           ></b-icon>
         </button>
-        <b-overlay
-          :show="showOverlayCard"
-          rounded="pill"
-          class="overlay-card"
-          variant="transparent"
-          opacity="0.91"
-          blur="1rem"
-        >
-          <template #overlay>
-            <div class="d-flex align-items-center">
-              <b-spinner small type="grow" class="small-spiner"></b-spinner>
-              <b-spinner type="grow" class="big-spiner"></b-spinner>
-              <b-spinner small type="grow" class="small-spiner"></b-spinner>
-            </div>
-          </template>
-          <b-tabs
-            nav-class="item-tab"
-            pills
-            active-nav-item-class="active-class"
-            nav-wrapper-class="control-tab"
-            class="tabs-control-table"
-          >
+
+        <Overlay class="overlay-card" :showOverlay="showOverlayCard">
+          <Tabs nav-class="item-tab" pills class="tabs-control-table">
             <b-tab
               title="Recommendate Tracks"
               active
@@ -55,83 +22,15 @@
                 <b-icon icon="music-note-list" font-scale="1"></b-icon>
                 Recommendate Tracks
               </template>
-              <b-overlay
-                :show="showOverlayRecommendTable"
-                rounded="sm"
-                variant="transparent"
-                opacity="0.91"
-                blur="1rem"
-              >
-                <template #overlay>
-                  <div class="d-flex align-items-center">
-                    <b-spinner
-                      small
-                      type="grow"
-                      class="small-spiner"
-                    ></b-spinner>
-                    <b-spinner type="grow" class="big-spiner"></b-spinner>
-                    <b-spinner
-                      small
-                      type="grow"
-                      class="small-spiner"
-                    ></b-spinner>
-                  </div>
-                </template>
-
-                <b-table-simple
-                  responsive
-                  class="table-recommendate borderless"
-                  v-show="showRecommendateTable"
-                >
-                  <b-thead>
-                    <b-tr>
-                      <b-th>Save</b-th>
-                      <b-th>Track</b-th>
-                      <b-th>Name</b-th>
-                      <b-th>Artist/Artists</b-th>
-                      <b-th>Album</b-th>
-                      <b-th></b-th>
-                    </b-tr>
-                  </b-thead>
-                  <b-tbody v-for="tracks in recommenedTracks" :key="tracks.id">
-                    <b-tr>
-                      <b-th>
-                        <b-icon
-                          class="like-icon"
-                          @click="
-                            likeSongs.indexOf(tracks.id) !== -1
-                              ? removeLikeTrack(tracks)
-                              : likeTrack(tracks)
-                          "
-                          :icon="
-                            likeSongs.indexOf(tracks.id) !== -1
-                              ? 'lightning-fill'
-                              : 'lightning'
-                          "
-                          :id="tracks.id"
-                          font-scale="2"
-                        ></b-icon>
-                      </b-th>
-                      <b-th>
-                        <VueAPlayer
-                          class="vue-aplyer"
-                          theme="rgb(0, 255, 21)"
-                          :mini="true"
-                          :music="{
-                            src: tracks.demoUrl,
-                            pic: tracks.albumCover,
-                          }"
-                        />
-                      </b-th>
-                      <b-td>{{ tracks.track }}</b-td>
-                      <b-td>{{ tracks.artists }}</b-td>
-
-                      <b-td>{{ tracks.album }}</b-td>
-                      <b-td></b-td>
-                    </b-tr>
-                  </b-tbody>
-                </b-table-simple>
-              </b-overlay>
+              <Overlay :showOverlay="showOverlayRecommendTable">
+                <Table
+                  :showRecommendateTable="showRecommendateTable"
+                  :recommenedTracks="recommenedTracks"
+                  :likeSongs="likeSongs"
+                  :removeLikeTrack="removeLikeTrack"
+                  :likeTrack="likeTrack"
+                />
+              </Overlay>
             </b-tab>
 
             <b-tab title-link-class="title-tab">
@@ -179,8 +78,8 @@
                   </b-tr>
                 </b-tbody> </b-table-simple
             ></b-tab>
-          </b-tabs>
-        </b-overlay>
+          </Tabs>
+        </Overlay>
 
         <b-modal
           no-close-on-backdrop
@@ -192,21 +91,7 @@
           modal-class="modal"
           v-model="modalShow"
         >
-          <b-overlay
-            :show="showOverlay"
-            rounded="sm"
-            class="overlay"
-            variant="transparent"
-            opacity="0.91"
-            blur="1rem"
-          >
-            <template #overlay>
-              <div class="d-flex align-items-center">
-                <b-spinner small type="grow" class="small-spiner"></b-spinner>
-                <b-spinner type="grow" class="big-spiner"></b-spinner>
-                <b-spinner small type="grow" class="small-spiner"></b-spinner>
-              </div>
-            </template>
+          <Overlay :showOverlay="showOverlay">
             <b-card class="card-auth">
               <template #header>
                 <h5 class="title-modal-header">
@@ -233,28 +118,31 @@
                 </b-button>
               </div>
             </b-card>
-          </b-overlay>
+          </Overlay>
         </b-modal>
       </b-container>
     </div>
-  </b-overlay>
+  </Overlay>
 </template>
 
 <script>
-import VueAPlayer from "vue-aplayer";
 import SpotifyWebApi from "spotify-web-api-js";
 import { hashParams } from "../helpers/hash-params";
 import { randomNumber } from "../helpers/random-number";
 import { randomNumberMinOne } from "../helpers/random-number-one";
 import { removeParanthesisContent } from "../helpers/remove-para-content";
 import { mapState, mapActions } from "vuex";
-
+import Table from "../components/Table.vue";
+import Tabs from "../components/Tabs.vue";
+import Overlay from "../components/Overlay.vue";
 const spotifyApi = new SpotifyWebApi();
 
 export default {
   name: "Home",
   components: {
-    VueAPlayer,
+    Table,
+    Overlay,
+    Tabs,
   },
   created() {
     this.exe();
@@ -464,6 +352,7 @@ export default {
           this.likeSongsLength = this.likeSongs.length;
         });
     },
+
     async removeLikeTrack(track) {
       await fetch(`${process.env.VUE_APP_URL}/remove-save-track`, {
         method: "DELETE",
@@ -527,16 +416,6 @@ export default {
   width: 70%;
   height: 75vh;
 }
-.table-recommendate {
-  background-color: rgba(17, 17, 17, 0.274);
-  width: 100%;
-  border-radius: 10px;
-  border: none;
-
-  box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
-  font-size: 20px;
-  height: 70vh;
-}
 
 th {
   color: rgb(62, 228, 29);
@@ -593,10 +472,6 @@ thead {
   color: rgb(0, 0, 0) !important;
 }
 
-.borderless td,
-.borderless th {
-  border: none;
-}
 .return-btn {
   box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
   color: rgba(0, 255, 21) !important;
@@ -629,10 +504,6 @@ thead {
   border-radius: 100px;
   font-family: "Quicksand", sans-serif;
   margin-top: 2%;
-}
-
-#overlay {
-  border-radius: 20px !important;
 }
 
 ::-webkit-scrollbar {

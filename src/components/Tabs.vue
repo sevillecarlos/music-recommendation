@@ -1,24 +1,18 @@
 <template>
-  <b-card class="tab" no-body>
     <b-tabs
       pills
-      card
-      class="tabs"
+      :card="card"
       active-nav-item-class="active-class"
       nav-wrapper-class="control-tab"
     >
       <slot />
     </b-tabs>
-  </b-card>
 </template>
 
 <script>
 export default {
   name: "Tabs",
-  props: {
-    firstTitle: String,
-    secondTitle: String,
-  },
+  props:["card"]
 };
 </script>
 
