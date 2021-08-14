@@ -13,8 +13,8 @@
         <b-col sm="4"
           ><div class="form-login">
             <div>
-              <Overlay :showOverlay="showOverlay">
-                <b-card class="tab" no-body>
+              <b-card class="tab" no-body>
+                <Overlay :showOverlay="showOverlay">
                   <Tabs class="tabs" :card="true">
                     <b-tab class="signin-pill" title-link-class="title-tab">
                       <template #title class="tab-sigin">
@@ -181,8 +181,8 @@
                       </b-form></b-tab
                     >
                   </Tabs>
-                </b-card>
-              </Overlay>
+                </Overlay>
+              </b-card>
             </div>
           </div></b-col
         >
@@ -231,6 +231,8 @@ export default {
     };
   },
   created() {
+    const cookies = document.cookie
+    console.log(cookies);
     this.getToken();
     const accessToken = localStorage.getItem("access-token");
     if (this.token) {
@@ -313,10 +315,10 @@ export default {
   color: rgb(56, 160, 143);
 }
 .tab {
-  border: 1px solid rgba(0, 128, 0, 0.418);
   box-shadow: 0 0 7px #fff, 0 0 15px rgb(157, 255, 0);
   background-color: rgba(18, 20, 15, 0.705) !important;
   border-radius: 10px !important;
+  width: 80%;
 }
 
 .check-box {
@@ -324,7 +326,7 @@ export default {
 }
 .img-cover {
   margin-top: 10%;
-  width: 100%;
+  width: 80%;
   border-radius: 10px;
   box-shadow: 0 0 7px #fff, 0 0 30px rgb(157, 255, 0);
 }

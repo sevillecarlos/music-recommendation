@@ -413,7 +413,7 @@ export default {
 .tabs-table {
   margin-top: 1%;
   margin-left: 15%;
-  width: 70%;
+  width: 100%;
   height: 75vh;
 }
 
@@ -513,6 +513,7 @@ thead {
 ::-webkit-scrollbar-thumb {
   background: rgb(0, 255, 21);
   border-radius: 10px;
+  box-shadow: 0 0 5px #fff, 0 0 5px rgb(157, 255, 0);
 }
 
 .overlay-card {
@@ -527,7 +528,7 @@ thead {
   background-color: rgba(55, 66, 43, 0.24);
 }
 .spotify-logo {
-  width: 200px;
+  width: auto;
 }
 
 /* Small tablets to big tablets: from 768 to 1032*/

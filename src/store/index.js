@@ -40,6 +40,7 @@ export default new Vuex.Store({
       state.overLayHome = payload;
     },
   },
+
   actions: {
     async signIn({ commit }, user) {
       try {
@@ -124,6 +125,8 @@ export default new Vuex.Store({
       localStorage.removeItem("auth-token");
       localStorage.removeItem("ref-log");
       localStorage.removeItem("access-token");
+      document.cookie = "sp_dc=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;"
+      document.cookie = "sp_key=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;"
     },
   },
   modules: {},

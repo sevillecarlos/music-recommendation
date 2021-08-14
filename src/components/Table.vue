@@ -73,14 +73,11 @@ export default {
 
 <style>
 .table-recommendate {
-  background-color: rgba(17, 17, 17, 0.274);
-  width: 100%;
+  width:100%;
   border-radius: 10px;
   border: none;
-
-  box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
   font-size: 20px;
-  height: 70vh;
+  height: 65vh;
 }
 .borderless td,
 .borderless th {
