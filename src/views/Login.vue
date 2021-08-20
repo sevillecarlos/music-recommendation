@@ -3,12 +3,18 @@
     <b-container class="bv-example-row">
       <b-row class="justify-content-lg-center">
         <b-col>
-          <b-img-lazy
-            class="img-cover"
-            :src="require('../assets/cover-image.jpeg')"
-            alt="cover-image"
-          >
-          </b-img-lazy>
+          <div class="login-image-container">
+            <b-img-lazy
+              class="img-cover"
+              :src="require('../assets/login-image-cover.gif')"
+              alt="cover-image"
+            >
+            </b-img-lazy>
+            <h5>
+              Music
+            </h5>
+            <h5>Recommendation</h5>
+          </div>
         </b-col>
         <b-col sm="4">
           <Auth />
@@ -31,19 +37,13 @@ export default {
       token: "token",
     }),
   },
-
-  created() {
-    const cookies = document.cookie;
-    console.log(cookies);
-    this.getToken();
-    const accessToken = localStorage.getItem("access-token");
-    if (this.token) {
-      if (accessToken) {
-        this.$router.push(`/home#access_token=${accessToken}`);
-      } else {
+  created() {},
+  watch: {
+    token() {
+      if (this.token) {
         this.$router.push("/home");
       }
-    }
+    },
   },
 };
 </script>
@@ -80,19 +80,23 @@ export default {
   border-radius: 10px !important;
   width: 80%;
 }
-
+.login-image-container {
+  margin-top: 10%;
+  padding: 1px;
+}
+.login-image-container h5 {
+  color: #fff;
+  text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
+  font-size: 100px;
+}
 .check-box {
   padding: 5px;
 }
 .img-cover {
-  margin-top: 10%;
-  width: 80%;
+  width: 25%;
   border-radius: 10px;
-  box-shadow: 0 0 7px #fff, 0 0 30px rgb(157, 255, 0);
 }
-.img-cover:hover {
-  box-shadow: 0 0 7px #fff, 0 0 40px rgb(157, 255, 0);
-}
+
 .tab-sigin {
   background-color: cadetblue;
   color: antiquewhite;

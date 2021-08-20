@@ -194,7 +194,6 @@ export default {
   methods: {
     ...mapActions({
       getToken: "getToken",
-      getLog: "getLog",
       signOut: "signOut",
     }),
 
@@ -206,7 +205,6 @@ export default {
 
     async exe() {
       await this.getToken();
-      await this.getLog();
       if (this.userEmail) {
         this.getSavedTracks();
         this.getRecommendateTracks();

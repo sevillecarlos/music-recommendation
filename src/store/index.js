@@ -1,11 +1,11 @@
 import Vue from "vue";
 import Vuex from "vuex";
-
+import { jwtDecoded } from "../helpers/jwtDecoded";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    token: "",
+    token: null,
     error: "",
     errorRegister: "",
     successMsg: "",
@@ -44,7 +44,7 @@ export default new Vuex.Store({
   actions: {
     async signIn({ commit }, user) {
       try {
-        const res = await fetch(`${process.env.VUE_APP_URL}/signin`, {
+        const res = await fetch(`http://localhost:8888/signin`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -54,22 +54,20 @@ export default new Vuex.Store({
 
         const valideUser = await res.json();
 
-        console.log(valideUser);
         if (valideUser.error) {
           console.log(valideUser.error);
           commit("setError", valideUser.error);
           return;
         }
         commit("setToken", valideUser.data.jwtToken);
-        localStorage.setItem("auth-token", valideUser.data.jwtToken);
-        localStorage.setItem("ref-log", valideUser.data.userID);
+        localStorage.setItem("@$token", valideUser.data.jwtToken);
       } catch (error) {
         console.log(error);
       }
     },
     async signUp({ commit }, user) {
       try {
-        const res = await fetch(`${process.env.VUE_APP_URL}/signup`, {
+        const res = await fetch(`http://localhost:8888/signup`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -82,51 +80,35 @@ export default new Vuex.Store({
         if (valideUser.error) {
           commit("setErrorRegister", valideUser.error);
           return;
-        } else {
-          commit("setSuccessMsg", valideUser.data.msg);
         }
+        commit("setToken", valideUser.data.jwtToken);
+        localStorage.setItem("@$token", valideUser.data.jwtToken);
       } catch (error) {
         console.log(error + 78484);
       }
     },
     getToken({ commit }) {
-      const token = localStorage.getItem("auth-token");
-      console.log(this.state.userEmail);
+      const token = localStorage.getItem("@$token");
       if (token) {
         commit("setToken", token);
         commit("setLogOutShow", true);
+        const {userName,  email } = jwtDecoded(token);
+        console.log(jwtDecoded(token))
+        commit("setUserName", userName);
+        commit("setUserEmail", email);
       } else {
         commit("setToken", "");
       }
     },
-    async getLog({ commit }) {
-      const idLog = localStorage.getItem("ref-log");
-      console.log(idLog);
-      try {
-        const res = await fetch(`${process.env.VUE_APP_URL}/get-user`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            _id: idLog,
-          }),
-        });
-        const user = await res.json();
-        commit("setUserName", user.name);
-        commit("setUserEmail", user.email);
-      } catch (err) {
-        console.log(err);
-      }
-    },
+
     signOut({ commit }) {
       commit("setToken", "");
       commit("setOverLayHome", true);
-      localStorage.removeItem("auth-token");
-      localStorage.removeItem("ref-log");
-      localStorage.removeItem("access-token");
-      document.cookie = "sp_dc=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;"
-      document.cookie = "sp_key=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;"
+      localStorage.removeItem("@$token");
+      document.cookie =
+        "sp_dc=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;";
+      document.cookie =
+        "sp_key=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;";
     },
   },
   modules: {},

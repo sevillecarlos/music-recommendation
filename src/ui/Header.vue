@@ -2,25 +2,23 @@
   <div>
     <b-navbar toggleable="lg" type="dark" class="header">
       <b-navbar-brand class="logo-img-text" href="#"
-        ><img class="logo-img" src="../assets/logo.png" alt="Logo" /> Music
-        Recommendation Spotify</b-navbar-brand
+        ><img class="logo-img" src="../assets/cover-image.png" alt="Logo" />
+        Music Recommendation</b-navbar-brand
       >
-      <b-navbar-toggle
-        class="toggle"
-        v-show="show"
-        target="nav-collapse"
-      ></b-navbar-toggle>
+      <b-navbar-toggle class="toggle" target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown
             class="drop-down-signout"
             menu-class="menu-drop-down-signout"
-            v-show="show"
+            v-show="token"
           >
-            <template #button-content> Hi, {{ name.split(" ")[0] }} </template>
+            <template #button-content>
+              Hi, {{ userName.split(" ")[0] }}
+            </template>
             <b-dropdown-header id="dropdown-header">{{
-              email
+              userEmail
             }}</b-dropdown-header>
             <b-dropdown-divider></b-dropdown-divider>
             <b-dropdown-item id="dropdown-btn" @click="signOut"
@@ -34,52 +32,31 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
 export default {
   data() {
-    return {
-      show: false,
-      name: "",
-      email: "",
-    };
+    return {};
   },
   watch: {
-    showLogOut() {
-      this.show = this.showLogOut;
+    token() {
+      this.getToken();
     },
-    userName() {
-      this.name = this.userName;
-    },
-    userEmail() {
-      this.email = this.userEmail;
-    },
-  },
-  updated() {
-    if (this.userName) {
-      this.name = this.userName;
-    }
-    if (this.userEmail) {
-      this.email = this.userEmail;
-    }
-    if (this.showLogOut) {
-      this.show = this.showLogOut;
-    }
   },
   computed: {
-    showLogOut() {
-      return this.$store.state.showLogOut;
-    },
-    userName() {
-      return this.$store.state.userName;
-    },
-    userEmail() {
-      return this.$store.state.userEmail;
-    },
+    ...mapState({
+      userName: "userName",
+      userEmail: "userEmail",
+      token: "token",
+    }),
   },
   methods: {
+    ...mapActions({
+      getToken: "getToken",
+    }),
     signOut() {
       setTimeout(() => {
         this.$router.push("/");
-      }, 3000);
+      }, 2000);
       this.$store.dispatch("signOut");
       this.$store.commit("setLogOutShow", false);
     },
@@ -89,6 +66,9 @@ export default {
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap");
+.logo-img {
+  width: 80px;
+}
 .logo-img-text {
   font-family: "Quicksand", sans-serif;
   color: #fff;

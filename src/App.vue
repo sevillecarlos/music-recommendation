@@ -29,7 +29,7 @@ export default {
   color: #fff;
   text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
   text-align: center;
-  font-size: 25px;
+  font-size: 20px;
   padding: 15px;
   font-weight: bold;
   cursor: pointer;

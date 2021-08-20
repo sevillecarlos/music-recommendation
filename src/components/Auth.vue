@@ -9,7 +9,6 @@
                 Sign In
               </template>
               <p class="text">
-                <img class="logo-img" src="../assets/logo.png" alt="Logo" />
                 Login
               </p>
               <b-form @submit.prevent="submitLogin">
@@ -41,7 +40,7 @@
                     placeholder="Enter Password"
                     :type="showPassword ? 'text' : 'password'"
                     v-model="formLogin.password"
-                    required212F45
+                    required
                   ></b-form-input>
                   <b-form-checkbox
                     id="show-password-login"
@@ -66,7 +65,6 @@
               title-link-class="title-tab"
             >
               <p class="text">
-                <img class="logo-img" src="../assets/logo.png" alt="Logo" />
                 Register
               </p>
               <b-form @submit.prevent="submitRegister">
@@ -208,16 +206,16 @@ export default {
     }),
 
     async submitLogin() {
+      this.showOverlay = true;
       await this.signIn(this.formLogin);
-      if (this.error.length) {
+
+      if (this.token) {
+        this.$store.commit("setLogOutShow", true);
+        this.$router.push("home");
+      } else {
+        this.showOverlay = false;
         this.errorMsg = this.error;
         this.$store.commit("setError", "");
-      } else {
-        this.showOverlay = true;
-        setTimeout(() => {
-          this.$store.commit("setLogOutShow", true);
-          this.$router.push("home");
-        }, 3000);
       }
     },
 
@@ -226,17 +224,15 @@ export default {
       if (password !== this.confirmPassword) {
         this.errorMsgRegister = "Passwords don't match";
       } else {
+        this.showOverlay = true;
         await this.signUp(this.formRegister);
-        if (this.errorRegister) {
+        if (this.token) {
+          this.$store.commit("setLogOutShow", true);
+          this.$router.push("home");
+        } else {
+          this.showOverlay = false;
           this.errorMsgRegister = this.errorRegister;
           this.$store.commit("setErrorRegister", "");
-        } else {
-          this.success = true;
-          this.successMsg = this.successMsgT;
-          this.formRegister.fullName = "";
-          this.formRegister.email = "";
-          this.formRegister.password = "";
-          this.confirmPassword = "";
         }
       }
     },
