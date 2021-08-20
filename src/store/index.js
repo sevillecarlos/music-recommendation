@@ -40,10 +40,11 @@ export default new Vuex.Store({
       state.overLayHome = payload;
     },
   },
+
   actions: {
     async signIn({ commit }, user) {
       try {
-        const res = await fetch(`http://localhost:3000/signin`, {
+        const res = await fetch(`${process.env.VUE_APP_URL}/signin`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -68,7 +69,7 @@ export default new Vuex.Store({
     },
     async signUp({ commit }, user) {
       try {
-        const res = await fetch(`http://localhost:3000/signup`, {
+        const res = await fetch(`${process.env.VUE_APP_URL}/signup`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -102,7 +103,7 @@ export default new Vuex.Store({
       const idLog = localStorage.getItem("ref-log");
       console.log(idLog);
       try {
-        const res = await fetch(`http://localhost:3000/get-user`, {
+        const res = await fetch(`${process.env.VUE_APP_URL}/get-user`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -124,6 +125,8 @@ export default new Vuex.Store({
       localStorage.removeItem("auth-token");
       localStorage.removeItem("ref-log");
       localStorage.removeItem("access-token");
+      document.cookie = "sp_dc=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;"
+      document.cookie = "sp_key=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;"
     },
   },
   modules: {},
