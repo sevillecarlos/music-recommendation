@@ -132,9 +132,9 @@ import { randomNumber } from "../helpers/random-number";
 import { randomNumberMinOne } from "../helpers/random-number-one";
 import { removeParanthesisContent } from "../helpers/remove-para-content";
 import { mapState, mapActions } from "vuex";
-import Table from "../components/Table.vue";
-import Tabs from "../components/Tabs.vue";
-import Overlay from "../components/Overlay.vue";
+import Table from "../ui/Table.vue";
+import Tabs from "../ui/Tabs.vue";
+import Overlay from "../ui/Overlay.vue";
 const spotifyApi = new SpotifyWebApi();
 
 export default {
