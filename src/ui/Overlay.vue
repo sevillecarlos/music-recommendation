@@ -1,11 +1,9 @@
 <template>
   <b-overlay
     :show="showOverlay"
-    rounded="lg"
-    class="overlay"
+    class="overlay-f"
     variant="transparent"
-    opacity="0.91"
-    blur="1rem"
+    opacity="0"
   >
     <template #overlay>
       <div class="d-flex align-items-center">
@@ -28,6 +26,7 @@ export default {
 .overlay {
   border-radius: 20px !important;
 }
+
 .small-spiner {
   color: #d4d700;
 }

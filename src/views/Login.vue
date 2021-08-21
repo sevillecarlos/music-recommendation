@@ -41,7 +41,7 @@ export default {
   watch: {
     token() {
       if (this.token) {
-        this.$router.push("/home");
+        this.$router.push("home");
       }
     },
   },

@@ -20,6 +20,8 @@ export default {
 <style>
 .app {
   height: 100%;
+  width: 90%;
+  margin: auto;
 }
 .footer {
   position: fixed;

@@ -58,6 +58,7 @@
 import VueAPlayer from "vue-aplayer";
 
 export default {
+  name:'Table',
   props: [
     "showRecommendateTable",
     "recommenedTracks",
@@ -74,6 +75,7 @@ export default {
 <style>
 .table-recommendate {
   width:100%;
+    box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
   border-radius: 10px;
   border: none;
   font-size: 20px;

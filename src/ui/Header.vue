@@ -34,6 +34,7 @@
 <script>
 import { mapState, mapActions } from "vuex";
 export default {
+  name:'Header',
   data() {
     return {};
   },
@@ -70,6 +71,7 @@ export default {
   width: 80px;
 }
 .logo-img-text {
+  margin-left: 30px;
   font-family: "Quicksand", sans-serif;
   color: #fff;
   text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
@@ -80,6 +82,7 @@ export default {
 }
 .header {
   box-shadow: 0 0 7px #fff, 0 0 25px rgb(157, 255, 0);
+  border-radius: 50px !important;
 }
 .header:hover {
   box-shadow: 0 0 7px #fff, 0 0 30px rgb(157, 255, 0);

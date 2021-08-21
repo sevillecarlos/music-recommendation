@@ -13,6 +13,7 @@ export default new Vuex.Store({
     userName: "",
     userEmail: "",
     overLayHome: false,
+    accessToken: null,
   },
   mutations: {
     setToken(state, payload) {
@@ -38,6 +39,9 @@ export default new Vuex.Store({
     },
     setOverLayHome(state, payload) {
       state.overLayHome = payload;
+    },
+    setAccessToken(state, payload) {
+      state.accessToken = payload;
     },
   },
 
@@ -92,8 +96,8 @@ export default new Vuex.Store({
       if (token) {
         commit("setToken", token);
         commit("setLogOutShow", true);
-        const {userName,  email } = jwtDecoded(token);
-        console.log(jwtDecoded(token))
+        const { userName, email } = jwtDecoded(token);
+        console.log(jwtDecoded(token));
         commit("setUserName", userName);
         commit("setUserEmail", email);
       } else {
@@ -102,13 +106,9 @@ export default new Vuex.Store({
     },
 
     signOut({ commit }) {
-      commit("setToken", "");
-      commit("setOverLayHome", true);
+      commit("setToken", null);
+      commit("setAccessToken", null);
       localStorage.removeItem("@$token");
-      document.cookie =
-        "sp_dc=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;";
-      document.cookie =
-        "sp_key=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;";
     },
   },
   modules: {},

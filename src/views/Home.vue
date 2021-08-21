@@ -1,5 +1,5 @@
 <template>
-  <Overlay :showOverlay="showOverlayHome">
+  <Overlay :showOverlay="overLayHome">
     <div class="home">
       <b-container fluid>
         <button class="get-tracks-btn" @click="shuffleBtn">
@@ -80,46 +80,7 @@
             ></b-tab>
           </Tabs>
         </Overlay>
-
-        <b-modal
-          no-close-on-backdrop
-          no-close-on-esc
-          centered
-          hide-header
-          hide-footer
-          id="modal-1"
-          modal-class="modal"
-          v-model="modalShow"
-        >
-          <Overlay :showOverlay="showOverlay">
-            <b-card class="card-auth">
-              <template #header>
-                <h5 class="title-modal-header">
-                  Log to Spotify
-                  <img class="logo-model" src="../assets/logo.png" alt="logo" />
-                </h5>
-              </template>
-              <b-button
-                class="login-spotify-btn"
-                pill
-                variant="outline-success"
-                :href="urlRedirect"
-              >
-              </b-button>
-              <div class="w-100">
-                <b-button
-                  @click="returnToLogin"
-                  pill
-                  size="md"
-                  class="float-right return-btn"
-                  variant="outline-secondary"
-                >
-                  Sign Out
-                </b-button>
-              </div>
-            </b-card>
-          </Overlay>
-        </b-modal>
+        <AuthoToSpotify />
       </b-container>
     </div>
   </Overlay>
@@ -127,7 +88,6 @@
 
 <script>
 import SpotifyWebApi from "spotify-web-api-js";
-import { hashParams } from "../helpers/hash-params";
 import { randomNumber } from "../helpers/random-number";
 import { randomNumberMinOne } from "../helpers/random-number-one";
 import { removeParanthesisContent } from "../helpers/remove-para-content";
@@ -135,6 +95,8 @@ import { mapState, mapActions } from "vuex";
 import Table from "../ui/Table.vue";
 import Tabs from "../ui/Tabs.vue";
 import Overlay from "../ui/Overlay.vue";
+
+import AuthoToSpotify from "../components/AuthToSpotify.vue";
 const spotifyApi = new SpotifyWebApi();
 
 export default {
@@ -143,6 +105,7 @@ export default {
     Table,
     Overlay,
     Tabs,
+    AuthoToSpotify,
   },
   created() {
     this.exe();
@@ -152,8 +115,6 @@ export default {
     return {
       savedTracks: [],
       recommenedTracks: [],
-      modalShow: true,
-      showOverlay: false,
       showRecommendateTable: false,
       like: false,
       likeSongs: [],
@@ -166,28 +127,20 @@ export default {
       shuffleIcons: "dice-1-fill",
       showOverlayRecommendTable: false,
       showOverlayCard: false,
-      showOverlayHome: false,
-      urlRedirect: `${process.env.VUE_APP_URL}/login-spotify`,
     };
   },
   computed: {
     ...mapState({
       userEmail: "userEmail",
       overLayHome: "overLayHome",
+      accessToken: "accessToken",
+      token: "token",
     }),
-    showOverlayHomeC() {
-      return this.overLayHome;
-    },
   },
 
   watch: {
     likeSongsLength() {
       this.getSavedTracks();
-    },
-    showOverlayHomeC() {
-      if (this.showOverlayHomeC) {
-        this.showOverlayHome = this.showOverlayHomeC;
-      }
     },
   },
 
@@ -205,25 +158,11 @@ export default {
 
     async exe() {
       await this.getToken();
-      if (this.userEmail) {
+      if (this.token) {
         this.getSavedTracks();
         this.getRecommendateTracks();
         this.fillIdSongs();
       }
-    },
-
-    async returnToLogin() {
-      this.showOverlay = true;
-      await this.signOut();
-      setTimeout(() => {
-        this.$router.push("/");
-        this.$store.commit("setLogOutShow", false);
-      }, 3000);
-    },
-
-    getAccessToken() {
-      const params = hashParams();
-      return params.access_token;
     },
 
     async authToSpotify(token) {
@@ -245,12 +184,10 @@ export default {
     },
 
     async getRecommendateTracks() {
-      const token = this.getAccessToken();
-      if (token) {
-        localStorage.setItem("access-token", token);
+      if (this.accessToken) {
         this.modalShow = false;
-        const seeds = await this.authToSpotify(token);
-        fetch(`${process.env.VUE_APP_URL}/recommendation`, {
+        const seeds = await this.authToSpotify(this.accessToken);
+        fetch(`http://localhost:8888/recommendation`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -379,22 +316,6 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap");
 
-.login-spotify-btn {
-  margin: auto;
-  width: 50%;
-  margin-left: 25%;
-  content: url("../assets/spotify-logo.png");
-  box-shadow: 0 0 7px #fff, 0 0 5px rgb(157, 255, 0);
-}
-
-.card-auth {
-  background-color: transparent !important;
-  border: 1px solid green !important;
-  box-shadow: 0 0 7px #fff, 0 0 5px rgb(157, 255, 0);
-}
-.logo-model {
-  width: 50px;
-}
 .listen-spotify-btn {
   width: 100px;
 }
@@ -433,27 +354,6 @@ thead {
   border-radius: 30px;
 }
 
-.modal-header {
-  padding: 9px 15px;
-  border-bottom: 1px solid #292b2c;
-  background-color: #339b0b;
-  border: none;
-}
-.modal-body {
-  padding: 9px 15px;
-  background-color: rgb(18, 20, 15);
-  border: none;
-}
-
-.modal-footer {
-  padding: 9px 15px;
-  background-color: #292b2c;
-}
-.title-modal-header {
-  font-size: 150%;
-  color: #fff;
-  text-shadow: 0 0 7px rgb(5, 34, 12), 0 0 10px rgb(228, 255, 184);
-}
 .title-tab {
   font-family: "Quicksand", sans-serif;
   font-size: 20px;
@@ -468,16 +368,6 @@ thead {
   border-radius: 16px !important;
   background-color: rgb(0, 255, 21) !important;
   color: rgb(0, 0, 0) !important;
-}
-
-.return-btn {
-  box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
-  color: rgba(0, 255, 21) !important;
-  font-size: 20px !important;
-  letter-spacing: 2px;
-  background-color: rgb(18, 20, 15) !important;
-  font-family: "Quicksand", sans-serif;
-  transition: color background-color 0.3s !important;
 }
 
 .small-spiner {
@@ -522,9 +412,7 @@ thead {
 .tabs-control-table {
   width: 100%;
 }
-.modal {
-  background-color: rgba(55, 66, 43, 0.24);
-}
+
 .spotify-logo {
   width: auto;
 }
