@@ -87,17 +87,14 @@
 </template>
 
 <script>
-import SpotifyWebApi from "spotify-web-api-js";
-import { randomNumber } from "../helpers/random-number";
 import { randomNumberMinOne } from "../helpers/random-number-one";
-import { removeParanthesisContent } from "../helpers/remove-para-content";
+
 import { mapState, mapActions } from "vuex";
 import Table from "../ui/Table.vue";
 import Tabs from "../ui/Tabs.vue";
 import Overlay from "../ui/Overlay.vue";
 
 import AuthoToSpotify from "../components/AuthToSpotify.vue";
-const spotifyApi = new SpotifyWebApi();
 
 export default {
   name: "Home",
@@ -107,13 +104,11 @@ export default {
     Tabs,
     AuthoToSpotify,
   },
-  created() {
+  mounted() {
     this.exe();
-    this.showOverlayCard = true;
   },
   data() {
     return {
-      savedTracks: [],
       recommenedTracks: [],
       showRecommendateTable: false,
       like: false,
@@ -122,8 +117,6 @@ export default {
       savedTrack: [],
       showSaveTable: false,
       savesTrack: [],
-      email: [],
-      counter: 0,
       shuffleIcons: "dice-1-fill",
       showOverlayRecommendTable: false,
       showOverlayCard: false,
@@ -156,159 +149,114 @@ export default {
       this.getRecommendateTracks();
     },
 
-    async exe() {
-      await this.getToken();
-      if (this.token) {
-        this.getSavedTracks();
+    exe() {
+      this.getToken();
+      if (this.accessToken) {
         this.getRecommendateTracks();
-        this.fillIdSongs();
       }
-    },
-
-    async authToSpotify(token) {
-      spotifyApi.setAccessToken(token);
-      let seeds = {};
-      await spotifyApi.getMySavedTracks().then((res) => {
-        this.savedTracks = [...res.items];
-        const sizeSavedTracks = this.savedTracks.length;
-        const {
-          track: { artists: artistName, id },
-        } = this.savedTracks[randomNumber(sizeSavedTracks, 0)];
-        seeds = Object.assign({
-          seedArtist: artistName[0].id,
-          seedTrack: id,
-          accessToken: token,
-        });
-      });
-      return seeds;
     },
 
     async getRecommendateTracks() {
-      if (this.accessToken) {
-        this.modalShow = false;
-        const seeds = await this.authToSpotify(this.accessToken);
-        fetch(`http://localhost:8888/recommendation`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-
-          body: JSON.stringify(seeds),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data) {
-              const { tracks } = data;
-              this.recommenedTracks = [...tracks]
-                .map((el) => {
-                  return {
-                    albumCover: el.album.images[0].url,
-                    album: removeParanthesisContent(el.album.name),
-                    track: removeParanthesisContent(el.name),
-                    artists: el.artists
-                      .map((artist) => artist.name)
-                      .join(" x "),
-                    linkTrack: el.external_urls.spotify,
-                    demoUrl: el.preview_url,
-                    id: el.id,
-                  };
-                })
-                .filter((track) => track.demoUrl)
-                .slice(0, 30);
-
-              this.showRecommendateTable = true;
-              this.showOverlayRecommendTable = false;
-              this.showOverlayCard = false;
-            }
-          });
-      }
-    },
-    async getSavedTracks() {
-      fetch(`${process.env.VUE_APP_URL}/save-tracks`, {
+      console.log("RecommendateTracks");
+      const res = await fetch(`http://localhost:8888/recommendation`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({ accessToken: this.accessToken }),
+      });
 
-        body: JSON.stringify({ email: this.userEmail }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          const { tracks } = data.data;
-          if (tracks) {
-            this.savesTrack = [...tracks].reverse();
-            this.showSaveTable = true;
-          }
-        });
+      this.recommenedTracks = await res.json();
+      this.showRecommendateTable = true;
+      this.showOverlayRecommendTable = false;
+      this.showOverlayCard = false;
+    },
+
+    async getSavedTracks() {
+      // fetch(`${process.env.VUE_APP_URL}/save-tracks`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ email: this.userEmail }),
+      // })
+      //   .then((res) => res.json())
+      //   .then((data) => {
+      //     const { tracks } = data.data;
+      //     if (tracks) {
+      //       this.savesTrack = [...tracks].reverse();
+      //       this.showSaveTable = true;
+      //     }
+      //   });
     },
 
     async fillIdSongs() {
-      fetch(`${process.env.VUE_APP_URL}/save-tracks`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-
-        body: JSON.stringify({ email: this.userEmail }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          const { tracks } = data.data;
-          if (tracks) {
-            tracks.map((track) => this.likeSongs.push(track.id));
-          }
-        });
+      // fetch(`${process.env.VUE_APP_URL}/save-tracks`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ email: this.userEmail }),
+      // })
+      //   .then((res) => res.json())
+      //   .then((data) => {
+      //     const { tracks } = data.data;
+      //     if (tracks) {
+      //       tracks.map((track) => this.likeSongs.push(track.id));
+      //     }
+      //   });
     },
 
-    async likeTrack(track) {
-      this.savedTrack = [];
-      this.savedTrack.push({
-        albumCover: track.albumCover,
-        album: track.album,
-        track: track.track,
-        artists: track.artists,
-        linkTrack: track.linkTrack,
-        id: track.id,
-      });
-      await fetch(`${process.env.VUE_APP_URL}/save-track`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: this.userEmail,
-          tracks: this.savedTrack,
-        }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          const { tracks } = data.data;
-          this.likeSongs.push(tracks.id);
-          this.likeSongsLength = this.likeSongs.length;
-        });
+    async likeTrack() {
+      // this.savedTrack = [];
+      // this.savedTrack.push({
+      //   albumCover: track.albumCover,
+      //   album: track.album,
+      //   track: track.track,
+      //   artists: track.artists,
+      //   linkTrack: track.linkTrack,
+      //   id: track.id,
+      // });
+      // await fetch(`${process.env.VUE_APP_URL}/save-track`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     email: this.userEmail,
+      //     tracks: this.savedTrack,
+      //   }),
+      // })
+      //   .then((res) => res.json())
+      //   .then((data) => {
+      //     const { tracks } = data.data;
+      //     this.likeSongs.push(tracks.id);
+      //     this.likeSongsLength = this.likeSongs.length;
+      //   });
     },
 
-    async removeLikeTrack(track) {
-      await fetch(`${process.env.VUE_APP_URL}/remove-save-track`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: this.userEmail,
-          trackId: track.id,
-        }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          const { trackId } = data.data;
-          const removeTrackIndex = this.savesTrack.findIndex(
-            (track) => track.id === trackId
-          );
-          this.savesTrack.splice(removeTrackIndex, 1);
-          this.likeSongs.splice(this.likeSongs.indexOf(track.id), 1);
-          this.likeSongsLength = this.likeSongs.length;
-        });
+    async removeLikeTrack() {
+      //   await fetch(`${process.env.VUE_APP_URL}/remove-save-track`, {
+      //     method: "DELETE",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify({
+      //       email: this.userEmail,
+      //       trackId: track.id,
+      //     }),
+      //   })
+      //     .then((res) => res.json())
+      //     .then((data) => {
+      //       const { trackId } = data.data;
+      //       const removeTrackIndex = this.savesTrack.findIndex(
+      //         (track) => track.id === trackId
+      //       );
+      //       this.savesTrack.splice(removeTrackIndex, 1);
+      //       this.likeSongs.splice(this.likeSongs.indexOf(track.id), 1);
+      //       this.likeSongsLength = this.likeSongs.length;
+      //     });
+      // },
     },
   },
 };
