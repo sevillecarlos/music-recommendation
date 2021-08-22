@@ -11,75 +11,115 @@
           ></b-icon>
         </button>
 
-        <Overlay class="overlay-card" :showOverlay="showOverlayCard">
-          <Tabs nav-class="item-tab" pills class="tabs-control-table">
-            <b-tab
-              title="Recommendate Tracks"
-              active
-              title-link-class="title-tab"
-            >
-              <template #title>
-                <b-icon icon="music-note-list" font-scale="1"></b-icon>
-                Recommendate Tracks
-              </template>
-              <Overlay :showOverlay="showOverlayRecommendTable">
-                <Table
-                  :showRecommendateTable="showRecommendateTable"
-                  :recommenedTracks="recommenedTracks"
-                  :likeSongs="likeSongs"
-                  :removeLikeTrack="removeLikeTrack"
-                  :likeTrack="likeTrack"
-                />
-              </Overlay>
-            </b-tab>
-
-            <b-tab title-link-class="title-tab">
-              <template #title title-link-class="title-tab">
-                <b-icon
-                  icon="lightning"
-                  animation="fade"
-                  font-scale="1"
-                ></b-icon>
-                <strong>Likes Tracks</strong>
-              </template>
+        <Tabs nav-class="item-tab" pills class="tabs-control-table">
+          <b-tab
+            title="Recommendate Tracks"
+            active
+            title-link-class="title-tab"
+          >
+            <template #title>
+              <b-icon icon="music-note-list" font-scale="1"></b-icon>
+              Recommendate Tracks
+            </template>
+            <Overlay :showOverlay="showOverlayRecommendTable">
               <b-table-simple
-                v-show="showSaveTable"
                 responsive
                 class="table-recommendate borderless"
+                v-show="recommenedTracks.length !== 0"
               >
                 <b-thead>
                   <b-tr>
-                    <b-th>Album Cover</b-th>
+                    <b-th>Save</b-th>
+                    <b-th>Track</b-th>
                     <b-th>Name</b-th>
                     <b-th>Artist/Artists</b-th>
                     <b-th>Album</b-th>
                     <b-th></b-th>
                   </b-tr>
                 </b-thead>
-                <b-tbody v-for="tracks in savesTrack" :key="tracks.id">
+                <b-tbody v-for="tracks in recommenedTracks" :key="tracks.id">
                   <b-tr>
-                    <b-td
-                      ><img
-                        class="album-cover-img"
-                        :src="tracks.albumCover"
-                        alt="Album Cover"
-                    /></b-td>
+                    <b-th>
+                      <b-icon
+                        class="like-icon"
+                        @click="
+                          likeSongs.indexOf(tracks.id) !== -1
+                            ? removeLikeTrack(tracks)
+                            : likeTrack(tracks)
+                        "
+                        :icon="
+                          likeSongs.indexOf(tracks.id) !== -1
+                            ? 'lightning-fill'
+                            : 'lightning'
+                        "
+                        :id="tracks.id"
+                        font-scale="2"
+                      ></b-icon>
+                    </b-th>
+                    <b-th>
+                      <VueAPlayer
+                        class="vue-aplyer"
+                        theme="rgb(0, 255, 21)"
+                        :mini="true"
+                        :music="{
+                          src: tracks.demoUrl,
+                          pic: tracks.albumCover,
+                        }"
+                      />
+                    </b-th>
                     <b-td>{{ tracks.track }}</b-td>
                     <b-td>{{ tracks.artists }}</b-td>
+
                     <b-td>{{ tracks.album }}</b-td>
-                    <b-td
-                      ><a :href="tracks.linkTrack" target="_blank">
-                        <img
-                          class="spotify-logo"
-                          src="../assets/listen-on-spotify.png"
-                          alt="spotify-logo"
-                        /> </a
-                    ></b-td>
+                    <b-td></b-td>
                   </b-tr>
-                </b-tbody> </b-table-simple
-            ></b-tab>
-          </Tabs>
-        </Overlay>
+                </b-tbody>
+              </b-table-simple>
+            </Overlay>
+          </b-tab>
+
+          <b-tab title-link-class="title-tab">
+            <template #title title-link-class="title-tab">
+              <b-icon icon="lightning" animation="fade" font-scale="1"></b-icon>
+              <strong>Likes Tracks</strong>
+            </template>
+            <b-table-simple
+              v-show="showSaveTable"
+              responsive
+              class="table-recommendate borderless"
+            >
+              <b-thead>
+                <b-tr>
+                  <b-th>Album Cover</b-th>
+                  <b-th>Name</b-th>
+                  <b-th>Artist/Artists</b-th>
+                  <b-th>Album</b-th>
+                  <b-th></b-th>
+                </b-tr>
+              </b-thead>
+              <b-tbody v-for="tracks in savesTrack" :key="tracks.id">
+                <b-tr>
+                  <b-td
+                    ><img
+                      class="album-cover-img"
+                      :src="tracks.albumCover"
+                      alt="Album Cover"
+                  /></b-td>
+                  <b-td>{{ tracks.track }}</b-td>
+                  <b-td>{{ tracks.artists }}</b-td>
+                  <b-td>{{ tracks.album }}</b-td>
+                  <b-td
+                    ><a :href="tracks.linkTrack" target="_blank">
+                      <img
+                        class="spotify-logo"
+                        src="../assets/listen-on-spotify.png"
+                        alt="spotify-logo"
+                      /> </a
+                  ></b-td>
+                </b-tr>
+              </b-tbody> </b-table-simple
+          ></b-tab>
+        </Tabs>
         <AuthoToSpotify />
       </b-container>
     </div>
@@ -90,19 +130,18 @@
 import { randomNumberMinOne } from "../helpers/random-number-one";
 
 import { mapState, mapActions } from "vuex";
-import Table from "../ui/Table.vue";
 import Tabs from "../ui/Tabs.vue";
 import Overlay from "../ui/Overlay.vue";
-
+import VueAPlayer from "vue-aplayer";
 import AuthoToSpotify from "../components/AuthToSpotify.vue";
 
 export default {
   name: "Home",
   components: {
-    Table,
     Overlay,
     Tabs,
     AuthoToSpotify,
+    VueAPlayer,
   },
   mounted() {
     this.exe();
@@ -110,7 +149,6 @@ export default {
   data() {
     return {
       recommenedTracks: [],
-      showRecommendateTable: false,
       like: false,
       likeSongs: [],
       likeSongsLength: 0,
@@ -167,9 +205,7 @@ export default {
       });
 
       this.recommenedTracks = await res.json();
-      this.showRecommendateTable = true;
       this.showOverlayRecommendTable = false;
-      this.showOverlayCard = false;
     },
 
     async getSavedTracks() {
@@ -263,6 +299,75 @@ export default {
 </script>
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap");
+.table-recommendate {
+  width: 70%;
+  box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
+  border-radius: 10px;
+  border: none;
+  font-size: 20px;
+  height: 65vh;
+}
+.borderless td,
+.borderless th {
+  border: none;
+}
+
+@media only screen and (max-width: 1032px) {
+  .table-recommendate {
+    font-size: 15px;
+    height: 70vh;
+    box-shadow: 0 0 7px #fff, 0 0 13px rgb(157, 255, 0);
+  }
+  th {
+    font-size: 20px;
+  }
+  tr {
+    font-size: 20px;
+  }
+}
+/* Small phones to small tablets: from 481 to 767*/
+@media only screen and (max-width: 767px) {
+  .table-recommendate {
+    font-size: 15px;
+    height: 70vh;
+    box-shadow: 0 0 7px #fff, 0 0 13px rgb(157, 255, 0);
+  }
+  th {
+    font-size: 10px;
+  }
+  tr {
+    font-size: 10px;
+  }
+}
+/*Medium Phome*/
+@media only screen and (max-width: 568px) {
+  .table-recommendate {
+    font-size: 15px;
+    height: 70vh;
+    box-shadow: 0 0 7px #fff, 0 0 13px rgb(157, 255, 0);
+  }
+  th {
+    font-size: 10px;
+  }
+  tr {
+    font-size: 10px;
+  }
+}
+
+/*Small Phone from 0 to 480px*/
+@media only screen and (max-width: 400px) {
+  .table-recommendate {
+    font-size: 15px;
+    height: 70vh;
+    box-shadow: 0 0 7px #fff, 0 0 13px rgb(157, 255, 0);
+  }
+  th {
+    font-size: 10px;
+  }
+  tr {
+    font-size: 10px;
+  }
+}
 
 .listen-spotify-btn {
   width: 100px;
@@ -278,8 +383,8 @@ export default {
 }
 
 .tabs-table {
-  margin-top: 1%;
-  margin-left: 15%;
+    margin: auto;
+
   width: 100%;
   height: 75vh;
 }
@@ -326,7 +431,7 @@ thead {
 }
 .item-tab {
   border-radius: 20px;
-  box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
+  box-shadow: 0 0 7px #fff, 0 0 10px rgba(157, 255, 0, 0.719);
 }
 
 .get-tracks-btn {
@@ -358,7 +463,8 @@ thead {
   width: 70%;
 }
 .tabs-control-table {
-  width: 100%;
+  width: 90%;
+  border: white 5px solid;
 }
 
 .spotify-logo {
