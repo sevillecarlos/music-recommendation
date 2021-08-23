@@ -14,7 +14,7 @@
       <b-card class="card-auth">
         <template #header>
           <h5 class="title-modal-header">
-            Log to Spotify {{ modalShow }}
+            Log to Spotify 
             <img
               class="logo-model"
               src="../assets/cover-image.png"
@@ -48,7 +48,6 @@
 <script>
 import { mapActions } from "vuex";
 import Overlay from "../ui/Overlay.vue";
-import { hashParams } from "../helpers/hash-params";
 
 export default {
   name: "AuthToSpotify",
@@ -76,10 +75,10 @@ export default {
     },
 
     getAccessToken() {
-      const { access_token } = hashParams();
-      if (access_token) {
+      const accessToken = localStorage.getItem("_@ccess");
+      if (accessToken) {
         this.modalShow = false;
-        this.$store.commit("setAccessToken", access_token);
+        this.$store.commit("setAccessToken", accessToken);
       }
     },
   },

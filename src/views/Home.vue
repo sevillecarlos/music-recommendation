@@ -160,7 +160,7 @@ import Tabs from "../ui/Tabs.vue";
 import Overlay from "../ui/Overlay.vue";
 import VueAPlayer from "vue-aplayer";
 import AuthoToSpotify from "../components/AuthToSpotify.vue";
-
+import { hashParams } from "../helpers/hash-params";
 export default {
   name: "Home",
   components: {
@@ -171,6 +171,7 @@ export default {
   },
   created() {
     this.getToken();
+    this.getAccessToken();
   },
   data() {
     return {
@@ -238,7 +239,10 @@ export default {
       this.showOverlayRecommendTable = true;
       this.getRecommendateTracks();
     },
-
+    getAccessToken() {
+      const { access_token } = hashParams();
+      if (access_token) localStorage.setItem("_@ccess", access_token);
+    },
     async getRecommendateTracks() {
       const res = await fetch(`http://localhost:8888/recommendation`, {
         method: "POST",
