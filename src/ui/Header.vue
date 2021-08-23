@@ -72,7 +72,6 @@ export default {
 }
 .logo-img-text {
   margin-left: 30px;
-  font-family: "Quicksand", sans-serif;
   color: #fff;
   text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
 }
@@ -96,7 +95,6 @@ export default {
 }
 .drop-down-signout {
   font-size: 30px;
-  font-family: "Quicksand", sans-serif;
   color: #fff;
   text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
 }
@@ -108,9 +106,8 @@ export default {
 }
 #dropdown-header {
   font-size: 100%;
-  color: #53e21b;
-  text-shadow: 0 0 0px rgb(5, 34, 12), 0 0 0px rgb(228, 255, 184);
-  letter-spacing: 1px;
+  color: #fff;
+  text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);  letter-spacing: 1px;
 }
 
 #dropdown-btn {

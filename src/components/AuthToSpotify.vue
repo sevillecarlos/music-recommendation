@@ -134,7 +134,6 @@ export default {
   font-size: 20px !important;
   letter-spacing: 2px;
   background-color: rgb(18, 20, 15) !important;
-  font-family: "Quicksand", sans-serif;
   transition: color background-color 0.3s !important;
 }
 .content-modal-auth-spotify {

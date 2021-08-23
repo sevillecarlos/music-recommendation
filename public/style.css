@@ -4,7 +4,7 @@
 html,
 body {
   height: 100%;
-  font-family: "Quicksand", sans-serif;
+  font-family: "Quicksand", sans-serif !important;
   background-color: black !important;
 }
 

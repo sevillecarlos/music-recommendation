@@ -10,116 +10,125 @@
             font-scale="1"
           ></b-icon>
         </button>
+        <div class="content-table">
+          <Tabs nav-class="item-tab" pills class="tabs-control-table">
+            <b-tab
+              title="Recommendate Tracks"
+              active
+              title-link-class="title-tab"
+              class="tab-recommendate-table"
+            >
+              <template #title>
+                <b-icon icon="music-note-list" font-scale="1"></b-icon>
+                Recommendate Tracks
+              </template>
+              <Overlay :showOverlay="showOverlayRecommendTable">
+                <b-table-simple
+                  responsive
+                  class="table-recommendate borderless"
+                  v-show="recommenedTracks.length !== 0"
+                >
+                  <b-thead>
+                    <b-tr>
+                      <b-th>Save</b-th>
+                      <b-th>Track</b-th>
+                      <b-th>Name</b-th>
+                      <b-th>Artist/Artists</b-th>
+                      <b-th>Album</b-th>
+                      <b-th></b-th>
+                    </b-tr>
+                  </b-thead>
+                  <b-tbody v-for="tracks in recommenedTracks" :key="tracks.id">
+                    <b-tr>
+                      <b-th>
+                        <b-icon
+                          class="like-icon"
+                          @click="toggleSaveTrack(tracks.id)"
+                          :icon="
+                            likeSongs.indexOf(tracks.id) !== -1
+                              ? 'lightning-fill'
+                              : 'lightning'
+                          "
+                          :id="tracks.id"
+                          font-scale="2"
+                        ></b-icon>
+                      </b-th>
+                      <b-th>
+                        <VueAPlayer
+                          class="vue-aplyer"
+                          theme="rgb(0, 255, 21)"
+                          :mini="true"
+                          :music="{
+                            src: tracks.demoUrl,
+                            pic: tracks.albumCover,
+                          }"
+                        />
+                      </b-th>
+                      <b-td>{{ tracks.track }}</b-td>
+                      <b-td>{{ tracks.artists }}</b-td>
 
-        <Tabs nav-class="item-tab" pills class="tabs-control-table">
-          <b-tab
-            title="Recommendate Tracks"
-            active
-            title-link-class="title-tab"
-          >
-            <template #title>
-              <b-icon icon="music-note-list" font-scale="1"></b-icon>
-              Recommendate Tracks
-            </template>
-            <Overlay :showOverlay="showOverlayRecommendTable">
+                      <b-td>{{ tracks.album }}</b-td>
+                      <b-td></b-td>
+                    </b-tr>
+                  </b-tbody>
+                </b-table-simple>
+              </Overlay>
+            </b-tab>
+
+            <b-tab title-link-class="title-tab">
+              <template #title title-link-class="title-tab">
+                <b-icon
+                  icon="lightning"
+                  animation="fade"
+                  font-scale="1"
+                ></b-icon>
+                <strong>Likes Tracks</strong>
+              </template>
               <b-table-simple
+                v-if="savedTracks.length !== 0"
                 responsive
                 class="table-recommendate borderless"
-                v-show="recommenedTracks.length !== 0"
               >
                 <b-thead>
                   <b-tr>
-                    <b-th>Save</b-th>
-                    <b-th>Track</b-th>
+                    <b-th>Cover</b-th>
                     <b-th>Name</b-th>
                     <b-th>Artist/Artists</b-th>
                     <b-th>Album</b-th>
                     <b-th></b-th>
                   </b-tr>
                 </b-thead>
-                <b-tbody v-for="tracks in recommenedTracks" :key="tracks.id">
+                <b-tbody
+                  v-for="tracks in reverseSavedTrackList"
+                  :key="tracks.id"
+                >
                   <b-tr>
-                    <b-th>
-                      <b-icon
-                        class="like-icon"
-                        @click="
-                          likeSongs.indexOf(tracks.id) !== -1
-                            ? removeLikeTrack(tracks)
-                            : likeTrack(tracks)
-                        "
-                        :icon="
-                          likeSongs.indexOf(tracks.id) !== -1
-                            ? 'lightning-fill'
-                            : 'lightning'
-                        "
-                        :id="tracks.id"
-                        font-scale="2"
-                      ></b-icon>
-                    </b-th>
-                    <b-th>
-                      <VueAPlayer
-                        class="vue-aplyer"
-                        theme="rgb(0, 255, 21)"
-                        :mini="true"
-                        :music="{
-                          src: tracks.demoUrl,
-                          pic: tracks.albumCover,
-                        }"
-                      />
-                    </b-th>
+                    <b-td
+                      ><img
+                        class="album-cover-img"
+                        :src="tracks.albumCover"
+                        alt="Album Cover"
+                    /></b-td>
                     <b-td>{{ tracks.track }}</b-td>
                     <b-td>{{ tracks.artists }}</b-td>
-
                     <b-td>{{ tracks.album }}</b-td>
-                    <b-td></b-td>
+                    <b-td
+                      ><a :href="tracks.url" target="_blank">
+                        <img
+                          class="spotify-logo"
+                          src="../assets/listen-on-spotify.png"
+                          alt="spotify-logo"
+                        /> </a
+                    ></b-td>
                   </b-tr>
                 </b-tbody>
               </b-table-simple>
-            </Overlay>
-          </b-tab>
-
-          <b-tab title-link-class="title-tab">
-            <template #title title-link-class="title-tab">
-              <b-icon icon="lightning" animation="fade" font-scale="1"></b-icon>
-              <strong>Likes Tracks</strong>
-            </template>
-            <b-table-simple
-              v-show="showSaveTable"
-              responsive
-              class="table-recommendate borderless"
-            >
-              <b-thead>
-                <b-tr>
-                  <b-th>Album Cover</b-th>
-                  <b-th>Name</b-th>
-                  <b-th>Artist/Artists</b-th>
-                  <b-th>Album</b-th>
-                  <b-th></b-th>
-                </b-tr>
-              </b-thead>
-              <b-tbody v-for="tracks in savesTrack" :key="tracks.id">
-                <b-tr>
-                  <b-td
-                    ><img
-                      class="album-cover-img"
-                      :src="tracks.albumCover"
-                      alt="Album Cover"
-                  /></b-td>
-                  <b-td>{{ tracks.track }}</b-td>
-                  <b-td>{{ tracks.artists }}</b-td>
-                  <b-td>{{ tracks.album }}</b-td>
-                  <b-td
-                    ><a :href="tracks.linkTrack" target="_blank">
-                      <img
-                        class="spotify-logo"
-                        src="../assets/listen-on-spotify.png"
-                        alt="spotify-logo"
-                      /> </a
-                  ></b-td>
-                </b-tr>
-              </b-tbody> </b-table-simple
-          ></b-tab>
-        </Tabs>
+              <div class="empty-save-track" v-else>
+                <span>You don't have any save track </span>
+              </div>
+            </b-tab>
+          </Tabs>
+        </div>
         <AuthoToSpotify />
       </b-container>
     </div>
@@ -143,26 +152,23 @@ export default {
     AuthoToSpotify,
     VueAPlayer,
   },
-  mounted() {
-    this.exe();
+  created() {
+    this.getToken();
   },
   data() {
     return {
       recommenedTracks: [],
-      like: false,
       likeSongs: [],
-      likeSongsLength: 0,
-      savedTrack: [],
-      showSaveTable: false,
-      savesTrack: [],
+      savedTracks: [],
       shuffleIcons: "dice-1-fill",
       showOverlayRecommendTable: false,
       showOverlayCard: false,
+      reverseSavedTrackList: [],
     };
   },
   computed: {
     ...mapState({
-      userEmail: "userEmail",
+      userId: "userId",
       overLayHome: "overLayHome",
       accessToken: "accessToken",
       token: "token",
@@ -170,8 +176,17 @@ export default {
   },
 
   watch: {
-    likeSongsLength() {
-      this.getSavedTracks();
+    accessToken() {
+      if (this.accessToken) this.getRecommendateTracks();
+    },
+    token() {
+      if (this.token) this.getSavedTracks();
+    },
+    savedTracks() {
+      if (this.savedTracks) {
+        this.likeSongs = [...this.savedTracks.map((v) => v.id)];
+        this.reverseSavedTrackList = [...this.savedTracks.slice()].reverse();
+      }
     },
   },
 
@@ -180,22 +195,20 @@ export default {
       getToken: "getToken",
       signOut: "signOut",
     }),
-
+    toggleSaveTrack(trackId) {
+      if (this.likeSongs.indexOf(trackId) !== -1) {
+        this.removeSaveTrack(trackId);
+      } else {
+        this.saveTrack(trackId);
+      }
+    },
     shuffleBtn() {
       this.shuffleIcons = `dice-${randomNumberMinOne(6)}-fill`;
       this.showOverlayRecommendTable = true;
       this.getRecommendateTracks();
     },
 
-    exe() {
-      this.getToken();
-      if (this.accessToken) {
-        this.getRecommendateTracks();
-      }
-    },
-
     async getRecommendateTracks() {
-      console.log("RecommendateTracks");
       const res = await fetch(`http://localhost:8888/recommendation`, {
         method: "POST",
         headers: {
@@ -209,99 +222,68 @@ export default {
     },
 
     async getSavedTracks() {
-      // fetch(`${process.env.VUE_APP_URL}/save-tracks`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({ email: this.userEmail }),
-      // })
-      //   .then((res) => res.json())
-      //   .then((data) => {
-      //     const { tracks } = data.data;
-      //     if (tracks) {
-      //       this.savesTrack = [...tracks].reverse();
-      //       this.showSaveTable = true;
-      //     }
-      //   });
+      const res = await fetch(`http://localhost:8888/saved-tracks`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: this.userId }),
+      });
+      const {
+        data: { tracks },
+      } = await res.json();
+      this.savedTracks = tracks;
     },
 
-    async fillIdSongs() {
-      // fetch(`${process.env.VUE_APP_URL}/save-tracks`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({ email: this.userEmail }),
-      // })
-      //   .then((res) => res.json())
-      //   .then((data) => {
-      //     const { tracks } = data.data;
-      //     if (tracks) {
-      //       tracks.map((track) => this.likeSongs.push(track.id));
-      //     }
-      //   });
+    async saveTrack(idTrack) {
+      const [saveTrack] = this.recommenedTracks.filter((v) => v.id === idTrack);
+      this.likeSongs.push(idTrack);
+      const res = await fetch(`http://localhost:8888/save-track`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: this.userId,
+          track: saveTrack,
+        }),
+      });
+      const {
+        data: { added },
+      } = await res.json();
+
+      if (added) this.savedTracks.push(saveTrack);
     },
 
-    async likeTrack() {
-      // this.savedTrack = [];
-      // this.savedTrack.push({
-      //   albumCover: track.albumCover,
-      //   album: track.album,
-      //   track: track.track,
-      //   artists: track.artists,
-      //   linkTrack: track.linkTrack,
-      //   id: track.id,
-      // });
-      // await fetch(`${process.env.VUE_APP_URL}/save-track`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({
-      //     email: this.userEmail,
-      //     tracks: this.savedTrack,
-      //   }),
-      // })
-      //   .then((res) => res.json())
-      //   .then((data) => {
-      //     const { tracks } = data.data;
-      //     this.likeSongs.push(tracks.id);
-      //     this.likeSongsLength = this.likeSongs.length;
-      //   });
-    },
+    async removeSaveTrack(trackId) {
+      const trackIndex = this.likeSongs.indexOf(trackId);
+      this.likeSongs.splice(trackIndex, 1);
 
-    async removeLikeTrack() {
-      //   await fetch(`${process.env.VUE_APP_URL}/remove-save-track`, {
-      //     method: "DELETE",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify({
-      //       email: this.userEmail,
-      //       trackId: track.id,
-      //     }),
-      //   })
-      //     .then((res) => res.json())
-      //     .then((data) => {
-      //       const { trackId } = data.data;
-      //       const removeTrackIndex = this.savesTrack.findIndex(
-      //         (track) => track.id === trackId
-      //       );
-      //       this.savesTrack.splice(removeTrackIndex, 1);
-      //       this.likeSongs.splice(this.likeSongs.indexOf(track.id), 1);
-      //       this.likeSongsLength = this.likeSongs.length;
-      //     });
-      // },
+      const res = await fetch(`http://localhost:8888/remove-save-track`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: this.userId,
+          trackId: trackId,
+        }),
+      });
+
+      const {
+        data: { removedTrackId },
+      } = await res.json();
+
+      console.log(removedTrackId);
+      if (removedTrackId !== -1) this.savedTracks.splice(removedTrackId, 1);
     },
   },
 };
 </script>
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap");
 .table-recommendate {
-  width: 70%;
-  box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
+  width: 100%;
+  box-shadow: 0 0 10px #fff, 0 0 20px rgb(157, 255, 0);
   border-radius: 10px;
   border: none;
   font-size: 20px;
@@ -369,6 +351,10 @@ export default {
   }
 }
 
+.content-table {
+  width: 90%;
+  margin: auto;
+}
 .listen-spotify-btn {
   width: 100px;
 }
@@ -383,12 +369,15 @@ export default {
 }
 
 .tabs-table {
-    margin: auto;
-
-  width: 100%;
   height: 75vh;
 }
-
+.empty-save-track {
+  text-align: center;
+  font-size: 50px;
+  color: #fff;
+  margin-top: 10%;
+  text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
+}
 th {
   color: rgb(62, 228, 29);
   text-shadow: 0 0 7px rgb(10, 9, 9), 0 0 15px rgb(157, 255, 0);
@@ -398,7 +387,6 @@ th {
 tr {
   color: #fff;
   text-shadow: 0 0 7px rgb(5, 34, 12), 0 0 10px rgb(228, 255, 184);
-  font-family: "Quicksand", sans-serif;
   font-size: 25px;
   border: none;
 }
@@ -408,7 +396,6 @@ thead {
 }
 
 .title-tab {
-  font-family: "Quicksand", sans-serif;
   font-size: 20px;
   letter-spacing: 3px;
   color: rgb(0, 255, 21) !important;
@@ -416,8 +403,7 @@ thead {
   border-radius: 16px !important;
 }
 .active-class {
-  font-family: "Quicksand", sans-serif;
-  box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
+  box-shadow: 0 0 7px #fff, 0 0 10px rgba(157, 255, 0, 0.699);
   border-radius: 16px !important;
   background-color: rgb(0, 255, 21) !important;
   color: rgb(0, 0, 0) !important;
@@ -432,6 +418,7 @@ thead {
 .item-tab {
   border-radius: 20px;
   box-shadow: 0 0 7px #fff, 0 0 10px rgba(157, 255, 0, 0.719);
+  margin: auto;
 }
 
 .get-tracks-btn {
@@ -443,7 +430,6 @@ thead {
   letter-spacing: 2px;
   background-color: rgb(18, 20, 15);
   border-radius: 100px;
-  font-family: "Quicksand", sans-serif;
   margin-top: 2%;
 }
 
@@ -464,7 +450,6 @@ thead {
 }
 .tabs-control-table {
   width: 90%;
-  border: white 5px solid;
 }
 
 .spotify-logo {

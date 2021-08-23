@@ -49,9 +49,6 @@ export default {
 </script>
 
 <style>
-.signin-pill {
-  font-family: "Quicksand", sans-serif;
-}
 .btn-login {
   width: 100%;
   background-color: rgb(18, 20, 15) !important;
@@ -60,7 +57,6 @@ export default {
   box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
   color: rgba(0, 255, 21) !important;
   border-radius: 100px !important;
-  font-family: "Quicksand", sans-serif;
   margin-top: 2%;
 }
 
@@ -87,7 +83,7 @@ export default {
 .login-image-container h5 {
   color: #fff;
   text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
-  font-size: 100px;
+  font-size: 90px;
 }
 .check-box {
   padding: 5px;
@@ -102,7 +98,6 @@ export default {
   color: antiquewhite;
 }
 .tab-title-class {
-  font-family: "Quicksand", sans-serif;
   letter-spacing: 1px;
   list-style: none;
 }
@@ -112,13 +107,11 @@ export default {
 .text {
   color: #fff;
   text-shadow: 0 0 7px rgb(5, 34, 12), 0 0 10px rgb(228, 255, 184);
-  font-family: "Quicksand", sans-serif;
   font-size: 25px;
 }
 .text-label {
   color: #fff;
   text-shadow: 0 0 7px rgb(5, 34, 12), 0 0 10px rgb(228, 255, 184);
-  font-family: "Quicksand", sans-serif;
   font-size: 15px;
 }
 

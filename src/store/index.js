@@ -12,6 +12,7 @@ export default new Vuex.Store({
     showLogOut: false,
     userName: "",
     userEmail: "",
+    userId: "",
     overLayHome: false,
     accessToken: null,
   },
@@ -36,6 +37,9 @@ export default new Vuex.Store({
     },
     setUserEmail(state, payload) {
       state.userEmail = payload;
+    },
+    setUserId(state, payload) {
+      state.userId = payload;
     },
     setOverLayHome(state, payload) {
       state.overLayHome = payload;
@@ -96,10 +100,11 @@ export default new Vuex.Store({
       if (token) {
         commit("setToken", token);
         commit("setLogOutShow", true);
-        const { userName, email } = jwtDecoded(token);
+        const { userName, email, id } = jwtDecoded(token);
         console.log(jwtDecoded(token));
         commit("setUserName", userName);
         commit("setUserEmail", email);
+        commit("setUserId", id);
       } else {
         commit("setToken", "");
       }
