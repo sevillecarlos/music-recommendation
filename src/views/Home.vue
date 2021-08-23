@@ -2,7 +2,11 @@
   <Overlay :showOverlay="overLayHome">
     <div class="home">
       <b-container fluid>
-        <button class="get-tracks-btn" @click="shuffleBtn">
+        <button
+          :disabled="showOverlayRecommendTable"
+          class="get-tracks-btn"
+          @click="shuffleBtn"
+        >
           Shuffle!
           <b-icon
             class="btn-get-icon"
@@ -40,10 +44,13 @@
                   </b-thead>
                   <b-tbody v-for="tracks in recommenedTracks" :key="tracks.id">
                     <b-tr>
-                      <b-th>
+                      <b-th class="save-icon-th">
                         <b-icon
                           class="like-icon"
                           @click="toggleSaveTrack(tracks.id)"
+                          :animation="
+                            loadingTrackSave(tracks.id) ? 'throb' : ''
+                          "
                           :icon="
                             likeSongs.indexOf(tracks.id) !== -1
                               ? 'lightning-fill'
@@ -52,6 +59,16 @@
                           :id="tracks.id"
                           font-scale="2"
                         ></b-icon>
+                        <span
+                          class="saving-track-msg"
+                          v-if="loadingTrackSave(tracks.id)"
+                          >Saving...</span
+                        >
+                        <span
+                          class="remove-track-msg"
+                          v-if="loadingTrackRemove(tracks.id)"
+                          >...Removing</span
+                        >
                       </b-th>
                       <b-th>
                         <VueAPlayer
@@ -124,6 +141,7 @@
                 </b-tbody>
               </b-table-simple>
               <div class="empty-save-track" v-else>
+                <br />
                 <span>You don't have any save track </span>
               </div>
             </b-tab>
@@ -134,7 +152,6 @@
     </div>
   </Overlay>
 </template>
-
 <script>
 import { randomNumberMinOne } from "../helpers/random-number-one";
 
@@ -196,11 +213,25 @@ export default {
       signOut: "signOut",
     }),
     toggleSaveTrack(trackId) {
-      if (this.likeSongs.indexOf(trackId) !== -1) {
-        this.removeSaveTrack(trackId);
-      } else {
-        this.saveTrack(trackId);
+      if (!this.loadingTrackSave(trackId)) {
+        if (this.likeSongs.indexOf(trackId) !== -1) {
+          this.removeSaveTrack(trackId);
+        } else {
+          this.saveTrack(trackId);
+        }
       }
+    },
+    loadingTrackSave(trackId) {
+      return (
+        this.likeSongs.includes(trackId) &&
+        !this.savedTracks.some((v) => v.id === trackId)
+      );
+    },
+    loadingTrackRemove(trackId) {
+      return (
+        !this.likeSongs.includes(trackId) &&
+        this.savedTracks.some((v) => v.id === trackId)
+      );
     },
     shuffleBtn() {
       this.shuffleIcons = `dice-${randomNumberMinOne(6)}-fill`;
@@ -251,7 +282,6 @@ export default {
       const {
         data: { added },
       } = await res.json();
-
       if (added) this.savedTracks.push(saveTrack);
     },
 
@@ -274,7 +304,6 @@ export default {
         data: { removedTrackId },
       } = await res.json();
 
-      console.log(removedTrackId);
       if (removedTrackId !== -1) this.savedTracks.splice(removedTrackId, 1);
     },
   },
@@ -294,6 +323,12 @@ export default {
   border: none;
 }
 
+.saving-track-msg {
+  font-size: 100%;
+}
+.remove-track-msg {
+  font-size: 60%;
+}
 @media only screen and (max-width: 1032px) {
   .table-recommendate {
     font-size: 15px;
@@ -378,6 +413,10 @@ export default {
   margin-top: 10%;
   text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
 }
+.save-icon-th {
+  width: 125px;
+  text-align: center;
+}
 th {
   color: rgb(62, 228, 29);
   text-shadow: 0 0 7px rgb(10, 9, 9), 0 0 15px rgb(157, 255, 0);
@@ -454,6 +493,8 @@ thead {
 
 .spotify-logo {
   width: auto;
+  border-radius: 20px;
+  border: none;
 }
 
 /* Small tablets to big tablets: from 768 to 1032*/
@@ -684,7 +725,7 @@ thead {
   }
 
   .spotify-logo:hover {
-    content: url("../assets/listen-on-spotify-whitey.png");
+    box-shadow: 0 0 7px #fff, 0 0 10px rgba(157, 255, 0, 0.699);
   }
   ::-webkit-scrollbar-thumb:hover {
     background: rgb(10, 179, 24);

@@ -1,9 +1,10 @@
 <template>
   <b-overlay
     :show="showOverlay"
-    class="overlay-f"
+    class="overlay"
     variant="transparent"
-    opacity="0"
+    opacity="0.98"
+    blur="5px"
   >
     <template #overlay>
       <div class="d-flex align-items-center">
