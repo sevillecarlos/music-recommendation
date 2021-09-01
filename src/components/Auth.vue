@@ -11,7 +11,7 @@
               <p class="text">
                 Login
               </p>
-              <b-form @submit.prevent="submitLogin">
+              <b-form @submit.prevent="submitLogin" autocomplete="off">
                 <b-form-group
                   id="input-group-1"
                   label="Email address:"
@@ -54,9 +54,7 @@
                 <p class="error-msg" v-show="errorMsg.length !== 0">
                   {{ errorMsg }}
                 </p>
-                <b-button type="submit" class="btn-login" variant="success"
-                  >Log In</b-button
-                >
+                <b-button type="submit" class="btn-auth">Log In</b-button>
               </b-form>
             </b-tab>
             <b-tab
@@ -67,7 +65,7 @@
               <p class="text">
                 Register
               </p>
-              <b-form @submit.prevent="submitRegister">
+              <b-form @submit.prevent="submitRegister" autocomplete="off">
                 <b-form-group
                   id="input-group-1"
                   class="text-label"
@@ -147,9 +145,7 @@
                 >
                   {{ success ? successMsg : errorMsgRegister }}
                 </p>
-                <b-button type="submit" variant="success" class="btn-login"
-                  >Register</b-button
-                >
+                <b-button type="submit" class="btn-auth">Register</b-button>
               </b-form></b-tab
             >
           </Tabs>
@@ -211,7 +207,6 @@ export default {
 
       if (this.token) {
         this.$store.commit("setLogOutShow", true);
-        this.$router.push("home");
       } else {
         this.showOverlay = false;
         this.errorMsg = this.error;
@@ -228,7 +223,6 @@ export default {
         await this.signUp(this.formRegister);
         if (this.token) {
           this.$store.commit("setLogOutShow", true);
-          this.$router.push("home");
         } else {
           this.showOverlay = false;
           this.errorMsgRegister = this.errorRegister;
@@ -240,4 +234,78 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.btn-auth {
+  width: 100%;
+  background-color: rgb(18, 20, 15) !important;
+  font-size: 20px !important;
+  letter-spacing: 2px;
+  box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
+  color: rgba(0, 255, 21) !important;
+  border-radius: 100px !important;
+  margin-top: 2%;
+}
+
+.success-msg {
+  color: rgba(0, 255, 21) !important;
+}
+
+.form-login {
+  margin-top: 20%;
+}
+.spinner-signin {
+  color: rgb(56, 160, 143);
+}
+.tab {
+  box-shadow: 0 0 7px #fff, 0 0 15px rgb(157, 255, 0);
+  background-color: rgba(18, 20, 15, 0.705) !important;
+  border-radius: 10px !important;
+  width: 80%;
+}
+
+.check-box {
+  padding: 5px;
+}
+
+.tab-sigin {
+  color: antiquewhite;
+}
+.tab-title-class {
+  letter-spacing: 1px;
+  list-style: none;
+}
+.error-msg {
+  color: crimson;
+}
+.text {
+  color: #fff;
+  text-shadow: 0 0 7px rgb(5, 34, 12), 0 0 10px rgb(228, 255, 184);
+  font-size: 25px;
+}
+.text-label {
+  color: #fff;
+  text-shadow: 0 0 7px rgb(5, 34, 12), 0 0 10px rgb(228, 255, 184);
+  font-size: 15px;
+}
+
+.text-input-auth {
+  background-color: transparent !important;
+  border: 2px solid yellowgreen !important;
+  border-radius: 20px !important;
+  color: #fff !important;
+  text-shadow: 0 0 1px rgb(5, 34, 12), 0 0 5px rgb(228, 255, 184) !important;
+  font-size: 15px !important;
+}
+.text-input-auth:focus {
+    outline: none !important;
+}
+.login {
+  height: 90%;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn-auth:hover {
+    background-color: black !important;
+  }
+}
+</style>

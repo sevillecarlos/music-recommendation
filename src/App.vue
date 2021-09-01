@@ -2,9 +2,7 @@
   <div class="app">
     <Header></Header>
     <router-view />
-    <div class="footer">
-      <span>code by Carlos🍒</span>
-    </div>
+    
   </div>
 </template>
 <script>
@@ -18,6 +16,7 @@ export default {
 };
 </script>
 <style>
+
 .app {
   height: 100%;
   width: 90%;

@@ -111,8 +111,10 @@ export default new Vuex.Store({
     },
 
     signOut({ commit }) {
+      
       commit("setToken", null);
       commit("setAccessToken", null);
+
       localStorage.removeItem("@$token");
       localStorage.removeItem("_@ccess");
     },

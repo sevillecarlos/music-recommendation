@@ -14,7 +14,7 @@
       <b-card class="card-auth">
         <template #header>
           <h5 class="title-modal-header">
-            Log to Spotify 
+            Log to Spotify
             <img
               class="logo-model"
               src="../assets/cover-image.png"
@@ -22,12 +22,7 @@
             />
           </h5>
         </template>
-        <b-button
-          class="login-spotify-btn"
-          pill
-          variant="outline-success"
-          :href="urlRedirect"
-        >
+        <b-button class="login-spotify-btn" pill :href="urlRedirect">
         </b-button>
         <div class="w-100">
           <b-button
@@ -46,7 +41,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 import Overlay from "../ui/Overlay.vue";
 
 export default {
@@ -60,6 +55,16 @@ export default {
       urlRedirect: `http://localhost:8888/login-spotify`,
       modalShow: true,
     };
+  },
+  computed: {
+    ...mapState({
+      accessToken: "accessToken",
+    }),
+  },
+  watch: {
+    accessToken() {
+      if (!this.accessToken) this.modalShow = true;
+    },
   },
   methods: {
     ...mapActions({
@@ -93,11 +98,18 @@ export default {
   margin: auto;
   width: 50%;
   margin-left: 25%;
+  border: none !important;
+  border-color: transparent !important;
+  background-color: rgb(18, 20, 15) !important;
   content: url("../assets/spotify-logo.png");
-  box-shadow: 0 0 7px #fff, 0 0 5px rgb(157, 255, 0);
+  box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
+  transition: 0.3s background-color;
+}
+.login-spotify-btn:focus {
+  outline-width: 0;
 }
 .modal {
-  background-color: rgba(55, 66, 43, 0.24);
+  background-color: rgba(0, 0, 0, 0.445);
 }
 .card-auth {
   background-color: transparent !important;
@@ -139,5 +151,14 @@ export default {
   background: transparent !important;
   border: none !important;
   border-radius: 50px !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .login-spotify-btn:hover {
+    background-color: transparent !important;
+  }
+  .return-btn:hover {
+    background-color: transparent !important;
+  }
 }
 </style>

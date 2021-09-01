@@ -1,11 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap");
 
-
 html,
 body {
   height: 100%;
   font-family: "Quicksand", sans-serif !important;
-  background-color: black !important;
+
+  background:black!important;
 }
 
 @media (max-width: 576px) {

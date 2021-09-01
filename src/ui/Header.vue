@@ -34,7 +34,7 @@
 <script>
 import { mapState, mapActions } from "vuex";
 export default {
-  name:'Header',
+  name: "Header",
   data() {
     return {};
   },
@@ -56,10 +56,10 @@ export default {
     }),
     signOut() {
       setTimeout(() => {
+        this.$store.dispatch("signOut");
         this.$router.push("/");
-      }, 2000);
-      this.$store.dispatch("signOut");
-      this.$store.commit("setLogOutShow", false);
+      }, 3000);
+      // this.$store.commit("setLogOutShow", false);
     },
   },
 };
@@ -107,7 +107,8 @@ export default {
 #dropdown-header {
   font-size: 100%;
   color: #fff;
-  text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);  letter-spacing: 1px;
+  text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
+  letter-spacing: 1px;
 }
 
 #dropdown-btn {

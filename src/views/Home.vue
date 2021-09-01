@@ -35,7 +35,7 @@
                   <b-thead>
                     <b-tr>
                       <b-th>Save</b-th>
-                      <b-th>Track</b-th>
+                      <b-th>Demo</b-th>
                       <b-th>Name</b-th>
                       <b-th>Artist/Artists</b-th>
                       <b-th>Album</b-th>
@@ -241,6 +241,7 @@ export default {
     },
     getAccessToken() {
       const { access_token } = hashParams();
+      this.$router.push("/home");
       if (access_token) localStorage.setItem("_@ccess", access_token);
     },
     async getRecommendateTracks() {
@@ -252,7 +253,15 @@ export default {
         body: JSON.stringify({ accessToken: this.accessToken }),
       });
 
-      this.recommenedTracks = await res.json();
+      const data = await res.json();
+      if (data.refreshToken) {
+        localStorage.removeItem("_@ccess");
+        this.$store.commit("setAccessToken", null);
+        this.recommenedTracks = [];
+        return;
+      }
+       console.log('ds')
+      this.recommenedTracks = data;
       this.showOverlayRecommendTable = false;
     },
 
@@ -448,7 +457,7 @@ thead {
 .active-class {
   box-shadow: 0 0 7px #fff, 0 0 10px rgba(157, 255, 0, 0.699);
   border-radius: 16px !important;
-  background-color: rgb(0, 255, 21) !important;
+  background-color: rgb(14, 255, 34) !important;
   color: rgb(0, 0, 0) !important;
 }
 
@@ -478,6 +487,8 @@ thead {
 
 ::-webkit-scrollbar {
   width: 10px;
+   border-radius: 50px;
+  background: rgba(0, 0, 0, 0.322);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -723,8 +734,11 @@ thead {
     background-color: rgba(0, 0, 0, 0.432) !important;
     color: rgb(0, 255, 21) !important;
   }
+  .like-icon:hover{
+
+  }
   .get-tracks-btn:hover {
-    color: rgb(18, 20, 15);
+    color: rgb(173, 173, 172);
     background-color: rgb(0, 255, 21);
   }
 
