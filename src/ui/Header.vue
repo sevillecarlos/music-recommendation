@@ -1,13 +1,13 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" class="header">
-      <b-navbar-brand class="logo-img-text" href="#"
+      <b-navbar-brand class="logo-img-text" href="/"
         ><img class="logo-img" src="../assets/cover-image.png" alt="Logo" />
         Music Recommendation</b-navbar-brand
       >
-      <b-navbar-toggle class="toggle" target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-toggle class="toggle" target="nav-collapse"></b-navbar-toggle>
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown
             class="drop-down-signout"
@@ -72,6 +72,7 @@ export default {
 }
 .logo-img-text {
   margin-left: 30px;
+  font-size: 30px !important;
   color: #fff;
   text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
 }
@@ -120,92 +121,38 @@ export default {
 }
 
 @media only screen and (max-width: 1200px) {
+    .logo-img {
+    width: 90px;
+  }
+  .logo-img-text {
+    font-size: 35px !important;
+  }
 }
 /* Small tablets to big tablets: from 768 to 1032*/
 @media only screen and (max-width: 1032px) {
+  .logo-img {
+    width: 90px;
+  }
   .logo-img-text {
-    font-size: 100% !important;
-  }
-  .signout-btn {
-    background-color: rgb(19, 19, 19);
-    color: aliceblue;
-  }
-  .signout-btn a {
-    color: rgb(50, 205, 50);
-  }
-  .drop-down-signout {
-    font-size: 25px;
-  }
-  .menu-drop-down-signout {
-    width: 30% !important;
-    margin-left: 10% !important;
-  }
-  #dropdown-header {
-    font-size: 9px;
-  }
-
-  #dropdown-btn {
-    font-size: 80%;
-  }
-  .drop-down-signout {
-    margin-left: 20px !important;
+    font-size: 35px !important;
   }
 }
 /* Small phones to small tablets: from 481 to 767*/
 @media only screen and (max-width: 767px) {
+  .logo-img {
+    width: 60px;
+  }
   .logo-img-text {
-    font-size: 15px !important;
-  }
-  .signout-btn {
-    background-color: rgb(19, 19, 19);
-    color: aliceblue;
-  }
-  .signout-btn a {
-    color: rgb(50, 205, 50);
-  }
-  .drop-down-signout {
-    font-size: 15px;
-  }
-  .menu-drop-down-signout {
-    width: 50% !important;
-    margin-left: 10% !important;
-  }
-  #dropdown-header {
-    font-size: 9px;
-  }
-
-  #dropdown-btn {
-    font-size: 70%;
-  }
-  .drop-down-signout {
-    margin-left: 20px !important;
+    font-size: 20px !important;
   }
 }
 /*Small Phone from 0 to 480px*/
 @media only screen and (max-width: 400px) {
+  .logo-img {
+    width: 50px;
+  }
   .logo-img-text {
-    font-size: 15px !important;
-  }
-  .signout-btn {
-    background-color: rgb(19, 19, 19);
-    color: aliceblue;
-  }
-  .signout-btn a {
-    color: rgb(50, 205, 50);
-  }
-  .drop-down-signout {
-    font-size: 15px;
-  }
-  .menu-drop-down-signout {
-    width: 50% !important;
-    margin-left: 10% !important;
-  }
-  #dropdown-header {
-    font-size: 9px;
-  }
-
-  #dropdown-btn {
-    font-size: 70%;
+    font-size: 14px !important;
   }
 }
 </style>

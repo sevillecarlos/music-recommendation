@@ -152,7 +152,66 @@ export default {
   border: none !important;
   border-radius: 50px !important;
 }
+@media only screen and (max-width: 1200px) {
+  .logo-img {
+    width: 90px;
+  }
+  .logo-img-text {
+    font-size: 35px !important;
+  }
+}
+/* Small tablets to big tablets: from 768 to 1032*/
+@media only screen and (max-width: 1032px) {
+  .logo-img {
+    width: 90px;
+  }
+  .logo-img-text {
+    font-size: 35px !important;
+  }
+}
+/* Small phones to small tablets: from 481 to 767*/
+@media only screen and (max-width: 767px) {
+  .logo-img {
+    width: 60px;
+  }
+  .logo-img-text {
+    font-size: 20px !important;
+  }
+}
+/*Small Phone from 0 to 480px*/
+@media only screen and (max-width: 400px) {
+  .login-spotify-btn {
+    margin: auto;
+    width: 45%;
+    margin-left: 25%;
+    border: none !important;
+    border-color: transparent !important;
+    background-color: rgb(18, 20, 15) !important;
+    content: url("../assets/spotify-logo.png");
+    box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
+    transition: 0.3s background-color;
+  }
+  .login-spotify-btn:focus {
+    outline-width: 0;
+  }
+  .modal {
+    background-color: rgba(0, 0, 0, 0.445);
+  }
+  .card-auth {
+    background-color: transparent !important;
+    border: 1px solid green !important;
+    border-radius: 15px !important;
+    box-shadow: 0 0 7px #fff, 0 0 5px rgb(157, 255, 0);
+  }
+  .logo-model {
+    width: 20px;
+  }
 
+
+  .title-modal-header {
+    font-size: 90%;
+  }
+}
 @media (hover: hover) and (pointer: fine) {
   .login-spotify-btn:hover {
     background-color: transparent !important;

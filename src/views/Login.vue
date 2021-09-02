@@ -17,7 +17,7 @@
           </div>
         </b-col>
         <b-col sm="4">
-          <Auth />
+          <Auth class="auth-tabs" />
         </b-col>
       </b-row>
     </b-container>
@@ -49,8 +49,6 @@ export default {
 </script>
 
 <style>
-
-
 .login-image-container {
   margin-top: 10%;
   padding: 1px;
@@ -58,11 +56,13 @@ export default {
 .login-image-container h5 {
   color: #fff;
   text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
-  font-size: 90px;
+  font-size: 500%;
 }
 .img-cover {
   width: 25%;
-  border-radius: 10px;
+}
+.auth-tabs {
+  margin: 20% auto;
 }
 
 ::placeholder {
@@ -71,91 +71,66 @@ export default {
 }
 /* Medias */
 @media only screen and (max-width: 1200px) {
+  .login {
+    margin-top: 5%;
+  }
+  .auth-tabs {
+    margin: 20% auto;
+  }
+  .login-image-container h5 {
+    color: #fff;
+    text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
+    font-size: 50px;
+  }
+  .img-cover {
+    width: 35%;
+  }
 }
 /* Small tablets to big tablets: from 768 to 1032*/
 @media only screen and (max-width: 1032px) {
+  .login {
+    margin-top: 20%;
+  }
+  .auth-tabs {
+    margin: 20% auto;
+  }
+  .login-image-container h5 {
+    color: #fff;
+    text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
+    font-size: 50px;
+  }
+  .img-cover {
+    width: 35%;
+  }
 }
 /* Small phones to small tablets: from 481 to 767*/
 @media only screen and (max-width: 767px) {
-  .text {
-    font-size: 18px !important ;
+  .auth-tabs {
+    margin: 10% auto;
   }
-  .text-input-auth {
-    font-size: 14px !important;
-  }
-  .form-login {
-    margin-top: 20%;
-  }
-  figure {
-    display: none;
-  }
-  .logo-img {
-    width: 30px;
-  }
-  .btn-login {
-    font-size: 14px !important;
-  }
-  .img-cover {
+  .login-image-container {
     display: none;
   }
 }
 /*Medium Phome*/
 @media only screen and (max-width: 568px) {
-  .text {
-    font-size: 15px !important ;
+  .auth-tabs {
+    margin: 10% auto;
   }
-  .text-input-auth {
-    font-size: 10px !important;
-  }
-
-  .cover-img {
-    opacity: 0;
-  }
-  .form-login {
-    margin-top: 10%;
-  }
-  figure {
-    display: none;
-  }
-  .logo-img {
-    width: 30px;
-  }
-  .btn-login {
-    font-size: 10px !important;
-  }
-  .img-cover {
+  .login-image-container {
     display: none;
   }
 }
 /*Small Phone from 0 to 480px*/
 @media only screen and (max-width: 400px) {
-  .text {
-    font-size: 15px !important ;
+  .login {
+    margin-top: 1%;
   }
-  .text-input-auth {
-    font-size: 10px !important;
+  .auth-tabs {
+    margin: 10% auto;
   }
-  .tab {
-    margin-left: 5%;
-  }
-  .cover-img {
-    opacity: 0;
-  }
-  .form-login {
-    margin-top: 10%;
-  }
-  figure {
-    display: none;
-  }
-  .logo-img {
-    width: 25px;
-  }
-  .btn-login {
-    font-size: 10px !important;
-  }
-  .img-cover {
+  .login-image-container {
     display: none;
   }
 }
-
 </style>

@@ -250,9 +250,6 @@ export default {
   color: rgba(0, 255, 21) !important;
 }
 
-.form-login {
-  margin-top: 20%;
-}
 .spinner-signin {
   color: rgb(56, 160, 143);
 }
@@ -308,6 +305,59 @@ export default {
 @media (hover: hover) and (pointer: fine) {
   .btn-auth:hover {
     background-color: black !important;
+  }
+}
+
+/* Medias */
+@media only screen and (max-width: 1200px) {
+}
+/* Small tablets to big tablets: from 768 to 1032*/
+@media only screen and (max-width: 1032px) {
+  .btn-auth {
+    font-size: 20px !important;
+  }
+  .form-login {
+    margin-top: 20%;
+  }
+  .tab {
+    width: 100% !important;
+  }
+}
+/* Small phones to small tablets: from 481 to 767*/
+@media only screen and (max-width: 767px) {
+  .btn-auth {
+    font-size: 20px !important;
+  }
+  .form-login {
+    margin-top: 20%;
+  }
+  .tab {
+    width: 100% !important;
+  }
+}
+
+/*Medium Phome*/
+@media only screen and (max-width: 568px) {
+  .btn-auth {
+    font-size: 20px !important;
+  }
+  .form-login {
+    margin-top: 20%;
+  }
+  .tab {
+    width: 100% !important;
+  }
+}
+/*Small Phone from 0 to 480px*/
+@media only screen and (max-width: 400px) {
+  .btn-auth {
+    font-size: 15px !important;
+  }
+  .form-login {
+    margin-top: 20%;
+  }
+  .tab {
+    width: 100% !important;
   }
 }
 </style>
