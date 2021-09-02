@@ -22,6 +22,15 @@ export default {
   width: 90%;
   margin: auto;
 }
+input:focus {
+  outline: none !important;
+  box-shadow: 0 0 10px #ffffff !important;
+}
+button:focus {
+  outline: none !important;
+  box-shadow: 0 0 10px #ffffff !important;
+}
+
 .footer {
   position: fixed;
   left: 0;

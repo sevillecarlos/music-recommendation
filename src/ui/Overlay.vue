@@ -5,6 +5,7 @@
     variant="transparent"
     opacity="0.98"
     blur="5px"
+    rounded="rounded"
   >
     <template #overlay>
       <div class="d-flex align-items-center">

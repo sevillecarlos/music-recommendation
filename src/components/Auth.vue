@@ -276,6 +276,7 @@ export default {
 }
 .error-msg {
   color: crimson;
+  text-shadow: 0 0 7px rgb(216, 9, 9), 0 0 10px rgb(204, 23, 23);
 }
 .text {
   color: #fff;
@@ -292,12 +293,13 @@ export default {
   background-color: transparent !important;
   border: 2px solid yellowgreen !important;
   border-radius: 20px !important;
+  box-shadow: 0 0 4px #fff, 0 0 1px rgb(157, 255, 0);
   color: #fff !important;
   text-shadow: 0 0 1px rgb(5, 34, 12), 0 0 5px rgb(228, 255, 184) !important;
   font-size: 15px !important;
 }
 .text-input-auth:focus {
-    outline: none !important;
+  outline: none !important;
 }
 .login {
   height: 90%;

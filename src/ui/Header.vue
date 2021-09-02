@@ -59,7 +59,7 @@ export default {
         this.$store.dispatch("signOut");
         this.$router.push("/");
       }, 3000);
-      // this.$store.commit("setLogOutShow", false);
+      this.$store.commit("setOverLayHome", true);
     },
   },
 };

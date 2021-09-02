@@ -15,137 +15,144 @@
           ></b-icon>
         </button>
         <div class="content-table">
-          <Tabs nav-class="item-tab" pills class="tabs-control-table">
-            <b-tab
-              title="Recommendate Tracks"
-              active
-              title-link-class="title-tab"
-              class="tab-recommendate-table"
-            >
-              <template #title>
-                <b-icon icon="music-note-list" font-scale="1"></b-icon>
-                Recommendate Tracks
-              </template>
-              <Overlay :showOverlay="showOverlayRecommendTable">
+          <Overlay
+            :showOverlay="recommenedTracks.length === 0 && accessToken !== null"
+          >
+            <Tabs nav-class="item-tab" pills class="tabs-control-table">
+              <b-tab
+                title="Recommendate Tracks"
+                active
+                title-link-class="title-tab"
+                class="tab-recommendate-table"
+              >
+                <template #title>
+                  <b-icon icon="music-note-list" font-scale="1"></b-icon>
+                  Recommendate Tracks
+                </template>
+                <Overlay :showOverlay="showOverlayRecommendTable">
+                  <b-table-simple
+                    responsive
+                    class="table-recommendate borderless"
+                    v-show="recommenedTracks.length !== 0"
+                  >
+                    <b-thead>
+                      <b-tr>
+                        <b-th>Save</b-th>
+                        <b-th>Demo</b-th>
+                        <b-th>Name</b-th>
+                        <b-th>Artist/Artists</b-th>
+                        <b-th>Album</b-th>
+                        <b-th></b-th>
+                      </b-tr>
+                    </b-thead>
+                    <b-tbody
+                      v-for="tracks in recommenedTracks"
+                      :key="tracks.id"
+                    >
+                      <b-tr>
+                        <b-th class="save-icon-th">
+                          <b-icon
+                            class="like-icon"
+                            @click="toggleSaveTrack(tracks.id)"
+                            :animation="
+                              loadingTrackSave(tracks.id) ? 'throb' : ''
+                            "
+                            :icon="
+                              likeSongs.indexOf(tracks.id) !== -1
+                                ? 'lightning-fill'
+                                : 'lightning'
+                            "
+                            :id="tracks.id"
+                            font-scale="2"
+                          ></b-icon>
+                          <span
+                            class="saving-track-msg"
+                            v-if="loadingTrackSave(tracks.id)"
+                            >Saving...</span
+                          >
+                          <span
+                            class="remove-track-msg"
+                            v-if="loadingTrackRemove(tracks.id)"
+                            >...Removing</span
+                          >
+                        </b-th>
+                        <b-th>
+                          <VueAPlayer
+                            class="vue-aplyer"
+                            theme="rgb(0, 255, 21)"
+                            :mini="true"
+                            :music="{
+                              src: tracks.demoUrl,
+                              pic: tracks.albumCover,
+                            }"
+                          />
+                        </b-th>
+                        <b-td>{{ tracks.track }}</b-td>
+                        <b-td>{{ tracks.artists }}</b-td>
+
+                        <b-td>{{ tracks.album }}</b-td>
+                        <b-td></b-td>
+                      </b-tr>
+                    </b-tbody>
+                  </b-table-simple>
+                </Overlay>
+              </b-tab>
+
+              <b-tab title-link-class="title-tab">
+                <template #title title-link-class="title-tab">
+                  <b-icon
+                    icon="lightning"
+                    animation="fade"
+                    font-scale="1"
+                  ></b-icon>
+                  <strong>Likes Tracks</strong>
+                </template>
                 <b-table-simple
+                  v-if="savedTracks.length !== 0"
                   responsive
                   class="table-recommendate borderless"
-                  v-show="recommenedTracks.length !== 0"
                 >
                   <b-thead>
                     <b-tr>
-                      <b-th>Save</b-th>
-                      <b-th>Demo</b-th>
+                      <b-th>Cover</b-th>
                       <b-th>Name</b-th>
                       <b-th>Artist/Artists</b-th>
                       <b-th>Album</b-th>
                       <b-th></b-th>
                     </b-tr>
                   </b-thead>
-                  <b-tbody v-for="tracks in recommenedTracks" :key="tracks.id">
+                  <b-tbody
+                    v-for="tracks in reverseSavedTrackList"
+                    :key="tracks.id"
+                  >
                     <b-tr>
-                      <b-th class="save-icon-th">
-                        <b-icon
-                          class="like-icon"
-                          @click="toggleSaveTrack(tracks.id)"
-                          :animation="
-                            loadingTrackSave(tracks.id) ? 'throb' : ''
-                          "
-                          :icon="
-                            likeSongs.indexOf(tracks.id) !== -1
-                              ? 'lightning-fill'
-                              : 'lightning'
-                          "
-                          :id="tracks.id"
-                          font-scale="2"
-                        ></b-icon>
-                        <span
-                          class="saving-track-msg"
-                          v-if="loadingTrackSave(tracks.id)"
-                          >Saving...</span
-                        >
-                        <span
-                          class="remove-track-msg"
-                          v-if="loadingTrackRemove(tracks.id)"
-                          >...Removing</span
-                        >
-                      </b-th>
-                      <b-th>
-                        <VueAPlayer
-                          class="vue-aplyer"
-                          theme="rgb(0, 255, 21)"
-                          :mini="true"
-                          :music="{
-                            src: tracks.demoUrl,
-                            pic: tracks.albumCover,
-                          }"
-                        />
-                      </b-th>
+                      <b-td
+                        ><img
+                          class="album-cover-img"
+                          :src="tracks.albumCover"
+                          alt="Album Cover"
+                      /></b-td>
                       <b-td>{{ tracks.track }}</b-td>
                       <b-td>{{ tracks.artists }}</b-td>
-
                       <b-td>{{ tracks.album }}</b-td>
-                      <b-td></b-td>
+                      <b-td
+                        ><a :href="tracks.url" target="_blank">
+                          <img
+                            class="spotify-logo"
+                            src="../assets/listen-on-spotify.png"
+                            alt="spotify-logo"
+                          /> </a
+                      ></b-td>
                     </b-tr>
                   </b-tbody>
                 </b-table-simple>
-              </Overlay>
-            </b-tab>
-
-            <b-tab title-link-class="title-tab">
-              <template #title title-link-class="title-tab">
-                <b-icon
-                  icon="lightning"
-                  animation="fade"
-                  font-scale="1"
-                ></b-icon>
-                <strong>Likes Tracks</strong>
-              </template>
-              <b-table-simple
-                v-if="savedTracks.length !== 0"
-                responsive
-                class="table-recommendate borderless"
-              >
-                <b-thead>
-                  <b-tr>
-                    <b-th>Cover</b-th>
-                    <b-th>Name</b-th>
-                    <b-th>Artist/Artists</b-th>
-                    <b-th>Album</b-th>
-                    <b-th></b-th>
-                  </b-tr>
-                </b-thead>
-                <b-tbody
-                  v-for="tracks in reverseSavedTrackList"
-                  :key="tracks.id"
-                >
-                  <b-tr>
-                    <b-td
-                      ><img
-                        class="album-cover-img"
-                        :src="tracks.albumCover"
-                        alt="Album Cover"
-                    /></b-td>
-                    <b-td>{{ tracks.track }}</b-td>
-                    <b-td>{{ tracks.artists }}</b-td>
-                    <b-td>{{ tracks.album }}</b-td>
-                    <b-td
-                      ><a :href="tracks.url" target="_blank">
-                        <img
-                          class="spotify-logo"
-                          src="../assets/listen-on-spotify.png"
-                          alt="spotify-logo"
-                        /> </a
-                    ></b-td>
-                  </b-tr>
-                </b-tbody>
-              </b-table-simple>
-              <div class="empty-save-track" v-else>
-                <br />
-                <span>You don't have any save track </span>
-              </div>
-            </b-tab>
-          </Tabs>
+                <div class="empty-save-track" v-else>
+                  <br />
+                  <span>You don't have any save track </span>
+                </div>
+              </b-tab>
+            </Tabs>
+          </Overlay>
         </div>
         <AuthoToSpotify />
       </b-container>
@@ -260,7 +267,7 @@ export default {
         this.recommenedTracks = [];
         return;
       }
-       console.log('ds')
+      console.log("ds");
       this.recommenedTracks = data;
       this.showOverlayRecommendTable = false;
     },
@@ -326,7 +333,7 @@ export default {
 .table-recommendate {
   width: 100%;
   box-shadow: 0 0 10px #fff, 0 0 20px rgb(157, 255, 0);
-  border-radius: 10px;
+  border-radius: 15px;
   border: none;
   font-size: 20px;
   height: 65vh;
@@ -452,12 +459,12 @@ thead {
   letter-spacing: 3px;
   color: rgb(0, 255, 21) !important;
   text-shadow: 0 0 1px rgb(0, 0, 0), 0 0 3px;
-  border-radius: 16px !important;
+  border-radius: 15px !important;
 }
 .active-class {
   box-shadow: 0 0 7px #fff, 0 0 10px rgba(157, 255, 0, 0.699);
-  border-radius: 16px !important;
-  background-color: rgb(14, 255, 34) !important;
+  border-radius: 15px !important;
+  background-color: rgb(0, 255, 21) !important;
   color: rgb(0, 0, 0) !important;
 }
 
@@ -481,14 +488,15 @@ thead {
   margin-left: 40%;
   letter-spacing: 2px;
   background-color: rgb(18, 20, 15);
+  border: none !important;
   border-radius: 100px;
   margin-top: 2%;
 }
 
 ::-webkit-scrollbar {
   width: 10px;
-   border-radius: 50px;
-  background: rgba(0, 0, 0, 0.322);
+  border-radius: 50px;
+  background: rgba(0, 0, 0, 0.301);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -722,24 +730,16 @@ thead {
   }
 }
 @media (hover: hover) and (pointer: fine) {
-  .return-btn:hover {
-    box-shadow: 0 0 7px #fff, 0 0 30px rgb(157, 255, 0);
-    background-color: transparent !important;
-  }
-  .login-spotify-btn:hover {
-    box-shadow: 0 0 7px #fff, 0 0 30px rgb(157, 255, 0);
-    background-color: transparent !important;
-  }
   .active-class:hover {
     background-color: rgba(0, 0, 0, 0.432) !important;
     color: rgb(0, 255, 21) !important;
   }
-  .like-icon:hover{
-
+  .like-icon:hover {
+    color: rgb(138, 197, 143);
   }
   .get-tracks-btn:hover {
     color: rgb(173, 173, 172);
-    background-color: rgb(0, 255, 21);
+    background-color: rgb(87, 255, 101);
   }
 
   .spotify-logo:hover {

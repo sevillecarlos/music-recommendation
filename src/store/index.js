@@ -111,10 +111,10 @@ export default new Vuex.Store({
     },
 
     signOut({ commit }) {
-      
       commit("setToken", null);
       commit("setAccessToken", null);
-
+      commit("setOverLayHome", false);
+      
       localStorage.removeItem("@$token");
       localStorage.removeItem("_@ccess");
     },

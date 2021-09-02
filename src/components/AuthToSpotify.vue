@@ -114,7 +114,7 @@ export default {
 .card-auth {
   background-color: transparent !important;
   border: 1px solid green !important;
-  border-radius: 50px !important;
+  border-radius: 15px !important;
   box-shadow: 0 0 7px #fff, 0 0 5px rgb(157, 255, 0);
 }
 .logo-model {
