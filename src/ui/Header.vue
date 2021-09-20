@@ -5,9 +5,8 @@
         ><img class="logo-img" src="../assets/cover-image.png" alt="Logo" />
         Music Recommendation</b-navbar-brand
       >
-
+      <b-navbar-toggle  v-show="token" class="toggle" target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
-        <b-navbar-toggle class="toggle" target="nav-collapse"></b-navbar-toggle>
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown
             class="drop-down-signout"
@@ -15,7 +14,7 @@
             v-show="token"
           >
             <template #button-content>
-              Hi, {{ userName.split(" ")[0] }}
+              Hi {{ userName.split(" ")[0] }}
             </template>
             <b-dropdown-header id="dropdown-header">{{
               userEmail
@@ -66,13 +65,12 @@ export default {
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap");
+
 .logo-img {
-  width: 80px;
+  width: 3.5vw;
 }
 .logo-img-text {
-  margin-left: 30px;
-  font-size: 30px !important;
+  font-size: 2vw !important;
   color: #fff;
   text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
 }
@@ -83,6 +81,8 @@ export default {
 .header {
   box-shadow: 0 0 7px #fff, 0 0 25px rgb(157, 255, 0);
   border-radius: 50px !important;
+  margin-top: 1%;
+  padding: 1%;
 }
 .header:hover {
   box-shadow: 0 0 7px #fff, 0 0 30px rgb(157, 255, 0);
@@ -95,7 +95,8 @@ export default {
   color: rgb(50, 205, 50);
 }
 .drop-down-signout {
-  font-size: 30px;
+  font-size: 1.8vw;
+  left: 25vw;
   color: #fff;
   text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
 }
@@ -106,53 +107,60 @@ export default {
   box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0) !important;
 }
 #dropdown-header {
-  font-size: 100%;
+  font-size: 1vw;
   color: #fff;
   text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
   letter-spacing: 1px;
 }
 
 #dropdown-btn {
-  font-size: 100%;
+  font-size: 1vw;
   background-color: rgb(18, 20, 15) !important;
   color: rgba(0, 255, 21) !important;
   letter-spacing: 1px;
   border-radius: 20px;
 }
 
-@media only screen and (max-width: 1200px) {
-    .logo-img {
-    width: 90px;
-  }
-  .logo-img-text {
-    font-size: 35px !important;
-  }
-}
-/* Small tablets to big tablets: from 768 to 1032*/
-@media only screen and (max-width: 1032px) {
-  .logo-img {
-    width: 90px;
-  }
-  .logo-img-text {
-    font-size: 35px !important;
-  }
-}
+
+
 /* Small phones to small tablets: from 481 to 767*/
 @media only screen and (max-width: 767px) {
+  .toggle {
+    margin: auto;
+  }
   .logo-img {
     width: 60px;
   }
   .logo-img-text {
-    font-size: 20px !important;
+    font-size: 16px !important;
+  }
+  .drop-down-signout {
+    font-size: 20px;
+    margin: auto;
+  }
+  .menu-drop-down-signout {
+    width: 100% !important;
+    font-size: 15px !important;
   }
 }
 /*Small Phone from 0 to 480px*/
 @media only screen and (max-width: 400px) {
+  .toggle {
+    margin: auto;
+  }
   .logo-img {
     width: 50px;
   }
   .logo-img-text {
-    font-size: 14px !important;
+    font-size: 15px !important;
+  }
+  .drop-down-signout {
+    font-size: 15px;
+    margin: auto;
+  }
+  .menu-drop-down-signout {
+    width: 100% !important;
+    font-size: 10px !important;
   }
 }
 </style>

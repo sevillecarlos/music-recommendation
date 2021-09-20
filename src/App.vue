@@ -1,8 +1,15 @@
 <template>
   <div class="app">
-    <Header></Header>
+    <div class="ribbon">
+      <a
+        href="https://github.com/sevillecarlos/music-recommendation"
+        target="_blank"
+      >
+        @sevillecarlos🍒
+      </a>
+    </div>
+    <Header />
     <router-view />
-    
   </div>
 </template>
 <script>
@@ -16,36 +23,78 @@ export default {
 };
 </script>
 <style>
-
 .app {
   height: 100%;
-  width: 90%;
+  width: 75%;
   margin: auto;
+}
+input {
+  background-color: transparent !important;
+  border: 2px solid yellowgreen !important;
+  border-radius: 20px !important;
+  box-shadow: 0 0 4px #fff, 0 0 1px rgb(157, 255, 0);
+  color: #fff !important;
+  text-shadow: 0 0 1px rgb(5, 34, 12), 0 0 5px rgb(228, 255, 184) !important;
+  font-size: 0.9vw !important;
 }
 input:focus {
   outline: none !important;
   box-shadow: 0 0 10px #ffffff !important;
 }
+button {
+  background-color: rgb(18, 20, 15) !important;
+  letter-spacing: 2px;
+  box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
+  color: rgba(0, 255, 21) !important;
+  border-radius: 100px !important;
+  font-size: 1.1vw !important;
+}
+button[type="submit"] {
+  width: 100%;
+}
 button:focus {
   outline: none !important;
   box-shadow: 0 0 10px #ffffff !important;
 }
+.ribbon {
+  overflow: hidden;
+  white-space: nowrap;
+  position: absolute;
+  left: -50px;
+  top: 40px;
 
-.footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
+}
+.ribbon a {
+  border: 1px solid rgb(157, 255, 0);
   color: #fff;
   text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
+  display: block;
+  font: bold 100% "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: 1px 0;
+  padding: 10px 50px;
   text-align: center;
-  font-size: 20px;
-  padding: 15px;
-  font-weight: bold;
-  cursor: pointer;
+  text-decoration: none;
+  text-shadow: 0 0 3px #444;
 }
-.footer:hover {
-  color: #fff;
-  text-shadow: 0 0 15px #fff, 0 0 8px rgb(157, 255, 0);
+.ribbon a:hover {
+  color: rgb(255, 255, 255);
+}
+/*Medium Phome*/
+@media only screen and (max-width: 568px) {
+  .app {
+    width: 100%;
+  }
+}
+/*Small Phone from 0 to 480px*/
+@media only screen and (max-width: 400px) {
+  .app {
+    width: 100%;
+  }
 }
 </style>

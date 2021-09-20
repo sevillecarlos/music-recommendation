@@ -4,11 +4,11 @@
       <b-card class="tab" no-body>
         <Overlay :showOverlay="showOverlay">
           <Tabs class="tabs" :card="true">
-            <b-tab class="signin-pill" title-link-class="title-tab">
+            <b-tab class="signin-pill" title-link-class="title-tab-auth">
               <template #title class="tab-sigin">
                 Sign In
               </template>
-              <p class="text">
+              <p class="text-auth">
                 Login
               </p>
               <b-form @submit.prevent="submitLogin" autocomplete="off">
@@ -60,9 +60,9 @@
             <b-tab
               class="signin-pill"
               title="Sign Up"
-              title-link-class="title-tab"
+              title-link-class="title-tab-auth"
             >
-              <p class="text">
+              <p class="text-auth">
                 Register
               </p>
               <b-form @submit.prevent="submitRegister" autocomplete="off">
@@ -235,17 +235,6 @@ export default {
 </script>
 
 <style>
-.btn-auth {
-  width: 100%;
-  background-color: rgb(18, 20, 15) !important;
-  font-size: 20px !important;
-  letter-spacing: 2px;
-  box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
-  color: rgba(0, 255, 21) !important;
-  border-radius: 100px !important;
-  margin-top: 2%;
-}
-
 .success-msg {
   color: rgba(0, 255, 21) !important;
 }
@@ -265,7 +254,14 @@ export default {
 }
 
 .tab-sigin {
-  color: antiquewhite;
+  color: antiquewhite !important;
+}
+.title-tab-auth {
+  font-size: 1vw !important;
+  letter-spacing: 1px;
+  color: rgb(0, 255, 21) !important;
+  text-shadow: 0 0 1px rgb(0, 0, 0), 0 0 3px;
+  border-radius: 15px !important;
 }
 .tab-title-class {
   letter-spacing: 1px;
@@ -275,31 +271,15 @@ export default {
   color: crimson;
   text-shadow: 0 0 7px rgb(216, 9, 9), 0 0 10px rgb(204, 23, 23);
 }
-.text {
+.text-auth {
   color: #fff;
   text-shadow: 0 0 7px rgb(5, 34, 12), 0 0 10px rgb(228, 255, 184);
-  font-size: 25px;
+  font-size: 1.5vw;
 }
 .text-label {
   color: #fff;
   text-shadow: 0 0 7px rgb(5, 34, 12), 0 0 10px rgb(228, 255, 184);
-  font-size: 15px;
-}
-
-.text-input-auth {
-  background-color: transparent !important;
-  border: 2px solid yellowgreen !important;
-  border-radius: 20px !important;
-  box-shadow: 0 0 4px #fff, 0 0 1px rgb(157, 255, 0);
-  color: #fff !important;
-  text-shadow: 0 0 1px rgb(5, 34, 12), 0 0 5px rgb(228, 255, 184) !important;
-  font-size: 15px !important;
-}
-.text-input-auth:focus {
-  outline: none !important;
-}
-.login {
-  height: 90%;
+  font-size: 0.9vw;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -308,26 +288,9 @@ export default {
   }
 }
 
-/* Medias */
-@media only screen and (max-width: 1200px) {
-}
-/* Small tablets to big tablets: from 768 to 1032*/
-@media only screen and (max-width: 1032px) {
-  .btn-auth {
-    font-size: 20px !important;
-  }
-  .form-login {
-    margin-top: 20%;
-  }
-  .tab {
-    width: 100% !important;
-  }
-}
 /* Small phones to small tablets: from 481 to 767*/
 @media only screen and (max-width: 767px) {
-  .btn-auth {
-    font-size: 20px !important;
-  }
+  
   .form-login {
     margin-top: 20%;
   }
@@ -336,23 +299,9 @@ export default {
   }
 }
 
-/*Medium Phome*/
-@media only screen and (max-width: 568px) {
-  .btn-auth {
-    font-size: 20px !important;
-  }
-  .form-login {
-    margin-top: 20%;
-  }
-  .tab {
-    width: 100% !important;
-  }
-}
 /*Small Phone from 0 to 480px*/
 @media only screen and (max-width: 400px) {
-  .btn-auth {
-    font-size: 15px !important;
-  }
+  
   .form-login {
     margin-top: 20%;
   }

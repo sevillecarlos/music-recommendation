@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <b-container class="bv-example-row">
+    <b-container class="login-container">
       <b-row class="justify-content-lg-center">
         <b-col>
           <div class="login-image-container">
@@ -49,60 +49,24 @@ export default {
 </script>
 
 <style>
-.login-image-container {
-  margin-top: 10%;
-  padding: 1px;
+.login-container {
+  margin-top: 5%;
+  padding: 5%;
 }
 .login-image-container h5 {
   color: #fff;
   text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
-  font-size: 500%;
+  font-size: 5vw;
 }
 .img-cover {
   width: 25%;
-}
-.auth-tabs {
-  margin: 20% auto;
 }
 
 ::placeholder {
   color: rgb(0, 255, 21) !important;
   text-shadow: 0 0 0px rgb(5, 34, 12), 0 0 0px rgb(228, 255, 184) !important;
 }
-/* Medias */
-@media only screen and (max-width: 1200px) {
-  .login {
-    margin-top: 5%;
-  }
-  .auth-tabs {
-    margin: 20% auto;
-  }
-  .login-image-container h5 {
-    color: #fff;
-    text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
-    font-size: 50px;
-  }
-  .img-cover {
-    width: 35%;
-  }
-}
-/* Small tablets to big tablets: from 768 to 1032*/
-@media only screen and (max-width: 1032px) {
-  .login {
-    margin-top: 20%;
-  }
-  .auth-tabs {
-    margin: 20% auto;
-  }
-  .login-image-container h5 {
-    color: #fff;
-    text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
-    font-size: 50px;
-  }
-  .img-cover {
-    width: 35%;
-  }
-}
+
 /* Small phones to small tablets: from 481 to 767*/
 @media only screen and (max-width: 767px) {
   .auth-tabs {

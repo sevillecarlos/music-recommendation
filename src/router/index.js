@@ -29,7 +29,6 @@ router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("@$token");
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (token) {
-      console.log(to.name);
       next();
     } else {
       next("/");

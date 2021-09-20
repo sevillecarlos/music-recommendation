@@ -52,7 +52,7 @@ export default new Vuex.Store({
   actions: {
     async signIn({ commit }, user) {
       try {
-        const res = await fetch(`http://localhost:8888/signin`, {
+        const res = await fetch(`${process.env.VUE_APP_URL}/signin`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -63,7 +63,6 @@ export default new Vuex.Store({
         const valideUser = await res.json();
 
         if (valideUser.error) {
-          console.log(valideUser.error);
           commit("setError", valideUser.error);
           return;
         }
@@ -75,7 +74,7 @@ export default new Vuex.Store({
     },
     async signUp({ commit }, user) {
       try {
-        const res = await fetch(`http://localhost:8888/signup`, {
+        const res = await fetch(`${process.env.VUE_APP_URL}/signup`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -92,7 +91,7 @@ export default new Vuex.Store({
         commit("setToken", valideUser.data.jwtToken);
         localStorage.setItem("@$token", valideUser.data.jwtToken);
       } catch (error) {
-        console.log(error + 78484);
+        console.log(error);
       }
     },
     getToken({ commit }) {
@@ -101,7 +100,6 @@ export default new Vuex.Store({
         commit("setToken", token);
         commit("setLogOutShow", true);
         const { userName, email, id } = jwtDecoded(token);
-        console.log(jwtDecoded(token));
         commit("setUserName", userName);
         commit("setUserEmail", email);
         commit("setUserId", id);

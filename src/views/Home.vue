@@ -2,18 +2,20 @@
   <Overlay :showOverlay="overLayHome">
     <div class="home">
       <b-container fluid>
-        <button
-          :disabled="showOverlayRecommendTable"
-          class="get-tracks-btn"
-          @click="shuffleBtn"
-        >
-          Shuffle!
-          <b-icon
-            class="btn-get-icon"
-            :icon="shuffleIcons"
-            font-scale="1"
-          ></b-icon>
-        </button>
+        <div class="shuffle-btn-container">
+          <button
+            :disabled="showOverlayRecommendTable"
+            class="shuffle-btn"
+            @click="shuffleBtn"
+          >
+            Shuffle!
+            <b-icon
+              class="btn-get-icon"
+              :icon="shuffleIcons"
+              font-scale="1"
+            ></b-icon>
+          </button>
+        </div>
         <div class="content-table">
           <Overlay
             :showOverlay="recommenedTracks.length === 0 && accessToken !== null"
@@ -27,9 +29,12 @@
               >
                 <template #title>
                   <b-icon icon="music-note-list" font-scale="1"></b-icon>
-                  Recommendate Tracks
+                  Tracks
                 </template>
-                <Overlay :showOverlay="showOverlayRecommendTable">
+                <h2 v-if="emptyTracksMsg" class="empty-save-track">
+                  {{ emptyTracksMsg }}
+                </h2>
+                <Overlay v-else :showOverlay="showOverlayRecommendTable">
                   <b-table-simple
                     responsive
                     class="table-recommendate borderless"
@@ -55,7 +60,10 @@
                             class="like-icon"
                             @click="toggleSaveTrack(tracks.id)"
                             :animation="
-                              loadingTrackSave(tracks.id) ? 'throb' : ''
+                              loadingTrackSave(tracks.id) ||
+                              loadingTrackRemove(tracks.id)
+                                ? 'throb'
+                                : ''
                             "
                             :icon="
                               likeSongs.indexOf(tracks.id) !== -1
@@ -65,27 +73,18 @@
                             :id="tracks.id"
                             font-scale="2"
                           ></b-icon>
-                          <span
-                            class="saving-track-msg"
-                            v-if="loadingTrackSave(tracks.id)"
-                            >Saving...</span
-                          >
-                          <span
-                            class="remove-track-msg"
-                            v-if="loadingTrackRemove(tracks.id)"
-                            >...Removing</span
-                          >
                         </b-th>
                         <b-th>
-                          <VueAPlayer
-                            class="vue-aplyer"
-                            theme="rgb(0, 255, 21)"
-                            :mini="true"
-                            :music="{
-                              src: tracks.demoUrl,
-                              pic: tracks.albumCover,
-                            }"
-                          />
+                          <div class="vue-aplyer">
+                            <VueAPlayer
+                              theme="rgb(0, 255, 21)"
+                              :mini="true"
+                              :music="{
+                                src: tracks.demoUrl,
+                                pic: tracks.albumCover,
+                              }"
+                            />
+                          </div>
                         </b-th>
                         <b-td>{{ tracks.track }}</b-td>
                         <b-td>{{ tracks.artists }}</b-td>
@@ -147,8 +146,7 @@
                   </b-tbody>
                 </b-table-simple>
                 <div class="empty-save-track" v-else>
-                  <br />
-                  <span>You don't have any save track </span>
+                  <h2>You don't have any save track</h2>
                 </div>
               </b-tab>
             </Tabs>
@@ -189,6 +187,7 @@ export default {
       showOverlayRecommendTable: false,
       showOverlayCard: false,
       reverseSavedTrackList: [],
+      emptyTracksMsg: "",
     };
   },
   computed: {
@@ -248,11 +247,13 @@ export default {
     },
     getAccessToken() {
       const { access_token } = hashParams();
-      this.$router.push("/home");
-      if (access_token) localStorage.setItem("_@ccess", access_token);
+      if (access_token) {
+        localStorage.setItem("_@ccess", access_token);
+        // this.$router.push("/home");
+      }
     },
     async getRecommendateTracks() {
-      const res = await fetch(`http://localhost:8888/recommendation`, {
+      const res = await fetch(`${process.env.VUE_APP_URL}/recommendation`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -261,19 +262,21 @@ export default {
       });
 
       const data = await res.json();
+      if (data.empty_tracks) {
+        this.emptyTracksMsg = data.empty_tracks;
+      }
       if (data.refreshToken) {
         localStorage.removeItem("_@ccess");
         this.$store.commit("setAccessToken", null);
         this.recommenedTracks = [];
         return;
       }
-      console.log("ds");
       this.recommenedTracks = data;
       this.showOverlayRecommendTable = false;
     },
 
     async getSavedTracks() {
-      const res = await fetch(`http://localhost:8888/saved-tracks`, {
+      const res = await fetch(`${process.env.VUE_APP_URL}/saved-tracks`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -289,7 +292,7 @@ export default {
     async saveTrack(idTrack) {
       const [saveTrack] = this.recommenedTracks.filter((v) => v.id === idTrack);
       this.likeSongs.push(idTrack);
-      const res = await fetch(`http://localhost:8888/save-track`, {
+      const res = await fetch(`${process.env.VUE_APP_URL}/save-track`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -309,7 +312,7 @@ export default {
       const trackIndex = this.likeSongs.indexOf(trackId);
       this.likeSongs.splice(trackIndex, 1);
 
-      const res = await fetch(`http://localhost:8888/remove-save-track`, {
+      const res = await fetch(`${process.env.VUE_APP_URL}/remove-save-track`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -331,96 +334,40 @@ export default {
 </script>
 <style>
 .table-recommendate {
-  width: 100%;
   box-shadow: 0 0 10px #fff, 0 0 20px rgb(157, 255, 0);
   border-radius: 15px;
   border: none;
-  font-size: 20px;
-  height: 65vh;
+  height: 31vw;
+}
+.empty-tracks-msg {
+  color: rgb(0, 255, 21);
+  margin-top: 10%;
+  text-align: center;
 }
 .borderless td,
 .borderless th {
   border: none;
 }
-
-.saving-track-msg {
-  font-size: 100%;
+.save-icon-th {
+  text-align: center;
 }
-.remove-track-msg {
-  font-size: 60%;
-}
-@media only screen and (max-width: 1032px) {
-  .table-recommendate {
-    font-size: 15px;
-    height: 70vh;
-    box-shadow: 0 0 7px #fff, 0 0 13px rgb(157, 255, 0);
-  }
-  th {
-    font-size: 20px;
-  }
-  tr {
-    font-size: 20px;
-  }
-}
-/* Small phones to small tablets: from 481 to 767*/
-@media only screen and (max-width: 767px) {
-  .table-recommendate {
-    font-size: 15px;
-    height: 70vh;
-    box-shadow: 0 0 7px #fff, 0 0 13px rgb(157, 255, 0);
-  }
-  th {
-    font-size: 10px;
-  }
-  tr {
-    font-size: 10px;
-  }
-}
-/*Medium Phome*/
-@media only screen and (max-width: 568px) {
-  .table-recommendate {
-    font-size: 15px;
-    height: 70vh;
-    box-shadow: 0 0 7px #fff, 0 0 13px rgb(157, 255, 0);
-  }
-  th {
-    font-size: 10px;
-  }
-  tr {
-    font-size: 10px;
-  }
-}
-
-/*Small Phone from 0 to 480px*/
-@media only screen and (max-width: 400px) {
-  .table-recommendate {
-    font-size: 15px;
-    height: 70vh;
-    box-shadow: 0 0 7px #fff, 0 0 13px rgb(157, 255, 0);
-  }
-  th {
-    font-size: 10px;
-  }
-  tr {
-    font-size: 10px;
-  }
-}
-
 .content-table {
-  width: 90%;
+  width: 70vw;
   margin: auto;
 }
-.listen-spotify-btn {
-  width: 100px;
-}
 .album-cover-img {
-  width: 100px;
+  width: 6vw;
+}
+.spotify-logo {
+  width: 10vw !important;
+  border-radius: 50px !important;
+  box-shadow: 0 0 7px #fff, 0 0 10px rgba(157, 255, 0, 0.699);
+}
+.spotify-logo:hover {
+  box-shadow: 0 0 10px #fff, 0 0 20px rgba(157, 255, 0, 0.699) !important;
 }
 .like-icon {
-  text-align: center;
-  color: rgb(0, 255, 21);
-  width: 50px;
-  transition: width 0.2s;
+  width: 2.2vw;
 }
 
 .tabs-table {
@@ -428,26 +375,24 @@ export default {
 }
 .empty-save-track {
   text-align: center;
-  font-size: 50px;
+  font-size: 2vw !important;
   color: #fff;
   margin-top: 10%;
   text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
 }
-.save-icon-th {
-  width: 125px;
-  text-align: center;
-}
+
 th {
   color: rgb(62, 228, 29);
   text-shadow: 0 0 7px rgb(10, 9, 9), 0 0 15px rgb(157, 255, 0);
-  font-size: 20px;
-  letter-spacing: 3px;
+  font-size: 1.3vw;
+  letter-spacing: 1px;
 }
 tr {
   color: #fff;
   text-shadow: 0 0 7px rgb(5, 34, 12), 0 0 10px rgb(228, 255, 184);
-  font-size: 25px;
+  font-size: 1.5vw;
   border: none;
+  margin-bottom: 50vw !important;
 }
 thead {
   background-color: rgba(41, 46, 33, 0.582);
@@ -455,7 +400,7 @@ thead {
 }
 
 .title-tab {
-  font-size: 20px;
+  font-size: 1vw;
   letter-spacing: 3px;
   color: rgb(0, 255, 21) !important;
   text-shadow: 0 0 1px rgb(0, 0, 0), 0 0 3px;
@@ -474,18 +419,19 @@ thead {
 .big-spiner {
   color: #dddf00;
 }
-.item-tab {
-  border-radius: 20px;
-  box-shadow: 0 0 7px #fff, 0 0 10px rgba(157, 255, 0, 0.719);
-  margin: auto;
-}
 
-.get-tracks-btn {
+.shuffle-btn-container {
+  text-align: center !important;
+  padding: 1%;
+}
+.shuffle-btn {
   width: 20%;
   box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0);
   color: rgb(0, 255, 21);
-  font-size: 200%;
-  margin-left: 40%;
+  font-size: 1.8vw !important;
+  padding: 10px;
+  margin-left: auto;
+  margin-right: auto;
   letter-spacing: 2px;
   background-color: rgb(18, 20, 15);
   border: none !important;
@@ -511,7 +457,8 @@ thead {
   width: 70%;
 }
 .tabs-control-table {
-  width: 90%;
+  width: 100%;
+  padding: 15px;
 }
 
 .spotify-logo {
@@ -519,214 +466,167 @@ thead {
   border-radius: 20px;
   border: none;
 }
-
-/* Small tablets to big tablets: from 768 to 1032*/
-@media only screen and (max-width: 1032px) {
-  .table-recommendate {
-    font-size: 15px;
-    height: 70vh;
-    box-shadow: 0 0 7px #fff, 0 0 13px rgb(157, 255, 0);
-  }
-  th {
-    font-size: 20px;
-  }
-  tr {
-    font-size: 20px;
-  }
-  .overlay-card {
-    margin-left: 0%;
-    margin-top: 2%;
-    width: 100%;
-  }
-  .tabs-control-table {
-    width: 100%;
-  }
-
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-  .title-tab {
-    font-size: 15px;
-    letter-spacing: 1px;
-  }
-  .get-tracks-btn {
-    width: 50%;
-    font-size: 100%;
-    letter-spacing: 2px;
-    margin-top: 2%;
-    margin-left: 25%;
-  }
-  .album-cover-img {
-    width: 100%;
-  }
-  .spotify-logo {
-    width: 150px;
-  }
-}
 /* Small phones to small tablets: from 481 to 767*/
 @media only screen and (max-width: 767px) {
   .table-recommendate {
-    font-size: 15px;
-    height: 70vh;
-    box-shadow: 0 0 7px #fff, 0 0 13px rgb(157, 255, 0);
+    width: 100%;
+    font-size: 25px;
+    height: 60vh;
+  }
+  .content-table {
+    width: 100%;
+  }
+  .listen-spotify-btn {
+    width: 70px;
+  }
+  .album-cover-img {
+    width: 60px;
+  }
+
+  .tabs-table {
+    height: 75vh;
+  }
+  .spotify-logo {
+    width: 120px;
+    border-radius: 20px;
+    border: none;
+  }
+  .empty-save-track {
+    text-align: center;
+    font-size: 50px;
+    color: #fff;
+    margin-top: 10%;
+    text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
+  }
+  .save-icon-th {
+    width: 125px;
+    text-align: center;
   }
   th {
-    font-size: 10px;
+    font-size: 15px;
+    letter-spacing: 1px;
   }
   tr {
-    font-size: 10px;
+    font-size: 15px;
   }
-  .overlay-card {
-    margin-left: 0%;
-    margin-top: 2%;
-    width: 100%;
+  .title-tab {
+    font-size: 15px;
+    letter-spacing: 1px;
   }
-  .tabs-control-table {
-    width: 100%;
+  .active-class {
+    box-shadow: 0 0 7px #fff, 0 0 10px rgba(157, 255, 0, 0.699);
+    border-radius: 15px !important;
+    background-color: rgb(0, 255, 21) !important;
+    color: rgb(0, 0, 0) !important;
+  }
+  .shuffle-btn {
+    width: 60%;
+    font-size: 20px;
     padding: 10px;
   }
 
-  ::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
-  }
-  .title-tab {
-    font-size: 10px;
-    letter-spacing: 1px;
-  }
-  .get-tracks-btn {
-    width: 70%;
-    font-size: 100%;
-    letter-spacing: 2px;
-    margin-top: 2%;
-    margin-left: 15%;
-  }
-  .album-cover-img {
-    width: 100%;
-  }
-  .spotify-logo {
-    width: 100px;
-  }
-  .return-btn {
-    font-size: 100% !important;
-    margin-top: 25px;
-  }
-  .title-modal-header {
-    font-size: 120%;
-  }
-  .logo-model {
-    width: 30px;
-  }
-}
-/*Medium Phome*/
-@media only screen and (max-width: 568px) {
-  .table-recommendate {
-    font-size: 15px;
-    height: 70vh;
-    box-shadow: 0 0 7px #fff, 0 0 13px rgb(157, 255, 0);
-  }
-  th {
-    font-size: 10px;
-  }
-  tr {
-    font-size: 10px;
-  }
-  .overlay-card {
-    margin-left: 0%;
-    margin-top: 2%;
-    width: 100%;
-  }
   .tabs-control-table {
     width: 100%;
-    padding: 10px;
+    padding: 15px;
+  }
+  .like-icon {
+    text-align: center;
+    color: rgb(0, 255, 21);
+    width: 50px;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
   }
 
-  ::-webkit-scrollbar {
+  ::-webkit-scrollbar-corner {
     width: 5px;
-    height: 5px;
+    background: rgba(0, 0, 0, 0) !important;
   }
-  .title-tab {
-    font-size: 10px;
-    letter-spacing: 1px;
-  }
-  .get-tracks-btn {
-    width: 70%;
-    font-size: 100%;
-    letter-spacing: 2px;
-    margin-top: 2%;
-    margin-left: 15%;
-  }
-  .album-cover-img {
-    width: 100%;
-  }
-  .spotify-logo {
-    width: 100px;
-  }
-  .return-btn {
-    font-size: 100% !important;
-    margin-top: 25px;
-  }
-  .title-modal-header {
-    font-size: 120%;
-  }
-  .logo-model {
-    width: 30px;
+  ::-webkit-scrollbar-thumb {
+    background: rgb(0, 255, 21);
+    border-radius: 10px;
+    box-shadow: 0 0 5px #fff, 0 0 5px rgb(157, 255, 0);
   }
 }
-
 /*Small Phone from 0 to 480px*/
 @media only screen and (max-width: 400px) {
   .table-recommendate {
-    font-size: 15px;
-    height: 70vh;
-    box-shadow: 0 0 7px #fff, 0 0 13px rgb(157, 255, 0);
+    width: 100%;
+    font-size: 20px;
+    height: 60vh;
+  }
+  .content-table {
+    width: 100%;
+  }
+  .listen-spotify-btn {
+    width: 60px;
+  }
+  .album-cover-img {
+    width: 50px;
+  }
+
+  .tabs-table {
+    height: 75vh;
+  }
+  .spotify-logo {
+    width: 100px;
+    border-radius: 20px;
+    border: none;
+  }
+  .empty-save-track {
+    text-align: center;
+    font-size: 50px;
+    color: #fff;
+    margin-top: 10%;
+    text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
+  }
+  .save-icon-th {
+    width: 125px;
+    text-align: center;
   }
   th {
     font-size: 10px;
+    letter-spacing: 1px;
   }
   tr {
     font-size: 10px;
   }
-  .overlay-card {
-    margin-left: 0%;
-    margin-top: 2%;
-    width: 100%;
+  .title-tab {
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+  .active-class {
+    box-shadow: 0 0 7px #fff, 0 0 10px rgba(157, 255, 0, 0.699);
+    border-radius: 15px !important;
+    background-color: rgb(0, 255, 21) !important;
+    color: rgb(0, 0, 0) !important;
+  }
+  .shuffle-btn {
+    width: 50%;
+    font-size: 20px;
+    padding: 10px;
   }
   .tabs-control-table {
     width: 100%;
+    padding: 15px;
+  }
+  .like-icon {
+    text-align: center;
+    color: rgb(0, 255, 21);
+    width: 50px;
+  }
+  ::-webkit-scrollbar {
+    width: 8px;
   }
 
-  ::-webkit-scrollbar {
+  ::-webkit-scrollbar-corner {
     width: 5px;
-    height: 5px;
+    background: rgba(0, 0, 0, 0) !important;
   }
-  .title-tab {
-    font-size: 10px;
-    letter-spacing: 1px;
-  }
-  .get-tracks-btn {
-    width: 70%;
-    font-size: 100%;
-    letter-spacing: 2px;
-    margin-top: 2%;
-    margin-left: 15%;
-  }
-  .album-cover-img {
-    width: 100%;
-  }
-  .spotify-logo {
-    width: 100px;
-  }
-  .return-btn {
-    font-size: 100% !important;
-    margin-top: 25px;
-  }
-  .title-modal-header {
-    font-size: 120%;
-  }
-  .logo-model {
-    width: 30px;
+  ::-webkit-scrollbar-thumb {
+    background: rgb(0, 255, 21);
+    border-radius: 10px;
+    box-shadow: 0 0 5px #fff, 0 0 5px rgb(157, 255, 0);
   }
 }
 @media (hover: hover) and (pointer: fine) {
@@ -734,12 +634,9 @@ thead {
     background-color: rgba(0, 0, 0, 0.432) !important;
     color: rgb(0, 255, 21) !important;
   }
-  .like-icon:hover {
-    color: rgb(138, 197, 143);
-  }
-  .get-tracks-btn:hover {
-    color: rgb(173, 173, 172);
-    background-color: rgb(87, 255, 101);
+
+  .shuffle-btn:hover {
+    background-color: black;
   }
 
   .spotify-logo:hover {
