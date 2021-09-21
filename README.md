@@ -29,6 +29,7 @@ npm install
 npm run serve
 ```
 ### Create your .env file for the environment variables
+#### Server app URL
 * *VUE_APP_URL*
 
 ## Typing Race Server
