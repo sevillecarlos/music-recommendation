@@ -2,7 +2,7 @@
   <div class="login">
     <b-container class="login-container">
       <b-row class="justify-content-lg-center">
-        <b-col>
+        <b-col >
           <div class="login-image-container">
             <b-img-lazy
               class="img-cover"
@@ -56,45 +56,33 @@ export default {
 .login-image-container h5 {
   color: #fff;
   text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
-  font-size: 5vw;
+  font-size: 4.7vw;
 }
 .img-cover {
-  width: 25%;
+  width: 20%;
 }
 
-::placeholder {
-  color: rgb(0, 255, 21) !important;
-  text-shadow: 0 0 0px rgb(5, 34, 12), 0 0 0px rgb(228, 255, 184) !important;
+@media only screen and (max-width: 1035px) {
+  .login-container {
+    margin-top: 5% !important;
+    padding: 1% !important;
+  }
+   
 }
-
 /* Small phones to small tablets: from 481 to 767*/
 @media only screen and (max-width: 767px) {
-  .auth-tabs {
-    margin: 10% auto;
-  }
-  .login-image-container {
-    display: none;
-  }
+
 }
 /*Medium Phome*/
 @media only screen and (max-width: 568px) {
-  .auth-tabs {
-    margin: 10% auto;
-  }
   .login-image-container {
-    display: none;
+    display: none !important;
   }
 }
 /*Small Phone from 0 to 480px*/
 @media only screen and (max-width: 400px) {
-  .login {
-    margin-top: 1%;
-  }
-  .auth-tabs {
-    margin: 10% auto;
-  }
   .login-image-container {
-    display: none;
+    display: none !important;
   }
 }
 </style>

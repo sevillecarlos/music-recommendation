@@ -260,8 +260,8 @@ export default {
   font-size: 1vw !important;
   letter-spacing: 1px;
   color: rgb(0, 255, 21) !important;
-  text-shadow: 0 0 1px rgb(0, 0, 0), 0 0 3px;
   border-radius: 15px !important;
+  font-weight: bold !important;
 }
 .tab-title-class {
   letter-spacing: 1px;
@@ -288,25 +288,73 @@ export default {
   }
 }
 
-/* Small phones to small tablets: from 481 to 767*/
-@media only screen and (max-width: 767px) {
-  
-  .form-login {
-    margin-top: 20%;
-  }
+/********************************************************/
+@media only screen and (max-width: 1035px) {
   .tab {
     width: 100% !important;
+    margin: auto;
+  }
+
+  .check-box {
+    padding: 5px;
+  }
+
+  .title-tab-auth {
+    font-size: 1.8vw !important;
+  }
+  .text-auth {
+    color: #fff;
+    font-size: 2vw !important;
+  }
+  .text-label {
+    font-size: 2vw !important;
+  }
+}
+/* Small phones to small tablets: from 481 to 767*/
+@media only screen and (max-width: 767px) {
+  .tab {
+    width: 80% !important;
+    margin: auto;
+  }
+
+  .check-box {
+    padding: 5px;
+  }
+
+  .title-tab-auth {
+    font-size: 4vw !important;
+  }
+  .text-auth {
+    color: #fff;
+    text-shadow: 0 0 7px rgb(5, 34, 12), 0 0 10px rgb(228, 255, 184);
+    font-size: 5vw !important;
+  }
+  .text-label {
+    color: #fff;
+    text-shadow: 0 0 7px rgb(5, 34, 12), 0 0 10px rgb(228, 255, 184);
+    font-size: 4vw !important;
   }
 }
 
 /*Small Phone from 0 to 480px*/
 @media only screen and (max-width: 400px) {
-  
-  .form-login {
-    margin-top: 20%;
-  }
   .tab {
-    width: 100% !important;
+    width: 80% !important;
+    margin: auto;
+  }
+
+  .check-box {
+    padding: 5px;
+  }
+
+  .title-tab-auth {
+    font-size: 4vw !important;
+  }
+  .text-auth {
+    font-size: 5vw;
+  }
+  .text-label {
+    font-size: 4vw;
   }
 }
 </style>
