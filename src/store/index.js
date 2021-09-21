@@ -1,18 +1,20 @@
 import Vue from "vue";
 import Vuex from "vuex";
-
+import { jwtDecoded } from "../helpers/jwtDecoded";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    token: "",
+    token: null,
     error: "",
     errorRegister: "",
     successMsg: "",
     showLogOut: false,
     userName: "",
     userEmail: "",
+    userId: "",
     overLayHome: false,
+    accessToken: null,
   },
   mutations: {
     setToken(state, payload) {
@@ -36,8 +38,14 @@ export default new Vuex.Store({
     setUserEmail(state, payload) {
       state.userEmail = payload;
     },
+    setUserId(state, payload) {
+      state.userId = payload;
+    },
     setOverLayHome(state, payload) {
       state.overLayHome = payload;
+    },
+    setAccessToken(state, payload) {
+      state.accessToken = payload;
     },
   },
 
@@ -54,15 +62,12 @@ export default new Vuex.Store({
 
         const valideUser = await res.json();
 
-        console.log(valideUser);
         if (valideUser.error) {
-          console.log(valideUser.error);
           commit("setError", valideUser.error);
           return;
         }
         commit("setToken", valideUser.data.jwtToken);
-        localStorage.setItem("auth-token", valideUser.data.jwtToken);
-        localStorage.setItem("ref-log", valideUser.data.userID);
+        localStorage.setItem("@$token", valideUser.data.jwtToken);
       } catch (error) {
         console.log(error);
       }
@@ -82,51 +87,34 @@ export default new Vuex.Store({
         if (valideUser.error) {
           commit("setErrorRegister", valideUser.error);
           return;
-        } else {
-          commit("setSuccessMsg", valideUser.data.msg);
         }
+        commit("setToken", valideUser.data.jwtToken);
+        localStorage.setItem("@$token", valideUser.data.jwtToken);
       } catch (error) {
-        console.log(error + 78484);
+        console.log(error);
       }
     },
     getToken({ commit }) {
-      const token = localStorage.getItem("auth-token");
-      console.log(this.state.userEmail);
+      const token = localStorage.getItem("@$token");
       if (token) {
         commit("setToken", token);
         commit("setLogOutShow", true);
+        const { userName, email, id } = jwtDecoded(token);
+        commit("setUserName", userName);
+        commit("setUserEmail", email);
+        commit("setUserId", id);
       } else {
         commit("setToken", "");
       }
     },
-    async getLog({ commit }) {
-      const idLog = localStorage.getItem("ref-log");
-      console.log(idLog);
-      try {
-        const res = await fetch(`${process.env.VUE_APP_URL}/get-user`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            _id: idLog,
-          }),
-        });
-        const user = await res.json();
-        commit("setUserName", user.name);
-        commit("setUserEmail", user.email);
-      } catch (err) {
-        console.log(err);
-      }
-    },
+
     signOut({ commit }) {
-      commit("setToken", "");
-      commit("setOverLayHome", true);
-      localStorage.removeItem("auth-token");
-      localStorage.removeItem("ref-log");
-      localStorage.removeItem("access-token");
-      document.cookie = "sp_dc=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;"
-      document.cookie = "sp_key=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;"
+      commit("setToken", null);
+      commit("setAccessToken", null);
+      commit("setOverLayHome", false);
+      
+      localStorage.removeItem("@$token");
+      localStorage.removeItem("_@ccess");
     },
   },
   modules: {},

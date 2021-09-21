@@ -4,15 +4,14 @@
       <b-card class="tab" no-body>
         <Overlay :showOverlay="showOverlay">
           <Tabs class="tabs" :card="true">
-            <b-tab class="signin-pill" title-link-class="title-tab">
+            <b-tab class="signin-pill" title-link-class="title-tab-auth">
               <template #title class="tab-sigin">
                 Sign In
               </template>
-              <p class="text">
-                <img class="logo-img" src="../assets/logo.png" alt="Logo" />
+              <p class="text-auth">
                 Login
               </p>
-              <b-form @submit.prevent="submitLogin">
+              <b-form @submit.prevent="submitLogin" autocomplete="off">
                 <b-form-group
                   id="input-group-1"
                   label="Email address:"
@@ -41,7 +40,7 @@
                     placeholder="Enter Password"
                     :type="showPassword ? 'text' : 'password'"
                     v-model="formLogin.password"
-                    required212F45
+                    required
                   ></b-form-input>
                   <b-form-checkbox
                     id="show-password-login"
@@ -55,21 +54,18 @@
                 <p class="error-msg" v-show="errorMsg.length !== 0">
                   {{ errorMsg }}
                 </p>
-                <b-button type="submit" class="btn-login" variant="success"
-                  >Log In</b-button
-                >
+                <b-button type="submit" class="btn-auth">Log In</b-button>
               </b-form>
             </b-tab>
             <b-tab
               class="signin-pill"
               title="Sign Up"
-              title-link-class="title-tab"
+              title-link-class="title-tab-auth"
             >
-              <p class="text">
-                <img class="logo-img" src="../assets/logo.png" alt="Logo" />
+              <p class="text-auth">
                 Register
               </p>
-              <b-form @submit.prevent="submitRegister">
+              <b-form @submit.prevent="submitRegister" autocomplete="off">
                 <b-form-group
                   id="input-group-1"
                   class="text-label"
@@ -149,9 +145,7 @@
                 >
                   {{ success ? successMsg : errorMsgRegister }}
                 </p>
-                <b-button type="submit" variant="success" class="btn-login"
-                  >Register</b-button
-                >
+                <b-button type="submit" class="btn-auth">Register</b-button>
               </b-form></b-tab
             >
           </Tabs>
@@ -208,16 +202,15 @@ export default {
     }),
 
     async submitLogin() {
+      this.showOverlay = true;
       await this.signIn(this.formLogin);
-      if (this.error.length) {
+
+      if (this.token) {
+        this.$store.commit("setLogOutShow", true);
+      } else {
+        this.showOverlay = false;
         this.errorMsg = this.error;
         this.$store.commit("setError", "");
-      } else {
-        this.showOverlay = true;
-        setTimeout(() => {
-          this.$store.commit("setLogOutShow", true);
-          this.$router.push("home");
-        }, 3000);
       }
     },
 
@@ -226,17 +219,14 @@ export default {
       if (password !== this.confirmPassword) {
         this.errorMsgRegister = "Passwords don't match";
       } else {
+        this.showOverlay = true;
         await this.signUp(this.formRegister);
-        if (this.errorRegister) {
+        if (this.token) {
+          this.$store.commit("setLogOutShow", true);
+        } else {
+          this.showOverlay = false;
           this.errorMsgRegister = this.errorRegister;
           this.$store.commit("setErrorRegister", "");
-        } else {
-          this.success = true;
-          this.successMsg = this.successMsgT;
-          this.formRegister.fullName = "";
-          this.formRegister.email = "";
-          this.formRegister.password = "";
-          this.confirmPassword = "";
         }
       }
     },
@@ -244,4 +234,79 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.success-msg {
+  color: rgba(0, 255, 21) !important;
+}
+
+.spinner-signin {
+  color: rgb(56, 160, 143);
+}
+.tab {
+  box-shadow: 0 0 7px #fff, 0 0 15px rgb(157, 255, 0);
+  background-color: rgba(18, 20, 15, 0.705) !important;
+  border-radius: 10px !important;
+  width: 80%;
+}
+
+.check-box {
+  padding: 5px;
+}
+
+.tab-sigin {
+  color: antiquewhite !important;
+}
+.title-tab-auth {
+  font-size: 1vw !important;
+  letter-spacing: 1px;
+  color: rgb(0, 255, 21) !important;
+  text-shadow: 0 0 1px rgb(0, 0, 0), 0 0 3px;
+  border-radius: 15px !important;
+}
+.tab-title-class {
+  letter-spacing: 1px;
+  list-style: none;
+}
+.error-msg {
+  color: crimson;
+  text-shadow: 0 0 7px rgb(216, 9, 9), 0 0 10px rgb(204, 23, 23);
+}
+.text-auth {
+  color: #fff;
+  text-shadow: 0 0 7px rgb(5, 34, 12), 0 0 10px rgb(228, 255, 184);
+  font-size: 1.5vw;
+}
+.text-label {
+  color: #fff;
+  text-shadow: 0 0 7px rgb(5, 34, 12), 0 0 10px rgb(228, 255, 184);
+  font-size: 0.9vw;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn-auth:hover {
+    background-color: black !important;
+  }
+}
+
+/* Small phones to small tablets: from 481 to 767*/
+@media only screen and (max-width: 767px) {
+  
+  .form-login {
+    margin-top: 20%;
+  }
+  .tab {
+    width: 100% !important;
+  }
+}
+
+/*Small Phone from 0 to 480px*/
+@media only screen and (max-width: 400px) {
+  
+  .form-login {
+    margin-top: 20%;
+  }
+  .tab {
+    width: 100% !important;
+  }
+}
+</style>

@@ -1,26 +1,23 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" class="header">
-      <b-navbar-brand class="logo-img-text" href="#"
-        ><img class="logo-img" src="../assets/logo.png" alt="Logo" /> Music
-        Recommendation Spotify</b-navbar-brand
+      <b-navbar-brand class="logo-img-text" href="/"
+        ><img class="logo-img" src="../assets/cover-image.png" alt="Logo" />
+        Music Recommendation</b-navbar-brand
       >
-      <b-navbar-toggle
-        class="toggle"
-        v-show="show"
-        target="nav-collapse"
-      ></b-navbar-toggle>
-
+      <b-navbar-toggle  v-show="token" class="toggle" target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown
             class="drop-down-signout"
             menu-class="menu-drop-down-signout"
-            v-show="show"
+            v-show="token"
           >
-            <template #button-content> Hi, {{ name.split(" ")[0] }} </template>
+            <template #button-content>
+              Hi {{ userName.split(" ")[0] }}
+            </template>
             <b-dropdown-header id="dropdown-header">{{
-              email
+              userEmail
             }}</b-dropdown-header>
             <b-dropdown-divider></b-dropdown-divider>
             <b-dropdown-item id="dropdown-btn" @click="signOut"
@@ -34,63 +31,46 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
 export default {
+  name: "Header",
   data() {
-    return {
-      show: false,
-      name: "",
-      email: "",
-    };
+    return {};
   },
   watch: {
-    showLogOut() {
-      this.show = this.showLogOut;
+    token() {
+      this.getToken();
     },
-    userName() {
-      this.name = this.userName;
-    },
-    userEmail() {
-      this.email = this.userEmail;
-    },
-  },
-  updated() {
-    if (this.userName) {
-      this.name = this.userName;
-    }
-    if (this.userEmail) {
-      this.email = this.userEmail;
-    }
-    if (this.showLogOut) {
-      this.show = this.showLogOut;
-    }
   },
   computed: {
-    showLogOut() {
-      return this.$store.state.showLogOut;
-    },
-    userName() {
-      return this.$store.state.userName;
-    },
-    userEmail() {
-      return this.$store.state.userEmail;
-    },
+    ...mapState({
+      userName: "userName",
+      userEmail: "userEmail",
+      token: "token",
+    }),
   },
   methods: {
+    ...mapActions({
+      getToken: "getToken",
+    }),
     signOut() {
       setTimeout(() => {
+        this.$store.dispatch("signOut");
         this.$router.push("/");
       }, 3000);
-      this.$store.dispatch("signOut");
-      this.$store.commit("setLogOutShow", false);
+      this.$store.commit("setOverLayHome", true);
     },
   },
 };
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap");
+
+.logo-img {
+  width: 3.5vw;
+}
 .logo-img-text {
-  font-family: "Quicksand", sans-serif;
+  font-size: 2vw !important;
   color: #fff;
   text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
 }
@@ -100,6 +80,9 @@ export default {
 }
 .header {
   box-shadow: 0 0 7px #fff, 0 0 25px rgb(157, 255, 0);
+  border-radius: 50px !important;
+  margin-top: 1%;
+  padding: 1%;
 }
 .header:hover {
   box-shadow: 0 0 7px #fff, 0 0 30px rgb(157, 255, 0);
@@ -112,8 +95,8 @@ export default {
   color: rgb(50, 205, 50);
 }
 .drop-down-signout {
-  font-size: 30px;
-  font-family: "Quicksand", sans-serif;
+  font-size: 1.8vw;
+  left: 25vw;
   color: #fff;
   text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
 }
@@ -124,107 +107,60 @@ export default {
   box-shadow: 0 0 7px #fff, 0 0 10px rgb(157, 255, 0) !important;
 }
 #dropdown-header {
-  font-size: 100%;
-  color: #53e21b;
-  text-shadow: 0 0 0px rgb(5, 34, 12), 0 0 0px rgb(228, 255, 184);
+  font-size: 1vw;
+  color: #fff;
+  text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
   letter-spacing: 1px;
 }
 
 #dropdown-btn {
-  font-size: 100%;
+  font-size: 1vw;
   background-color: rgb(18, 20, 15) !important;
   color: rgba(0, 255, 21) !important;
   letter-spacing: 1px;
   border-radius: 20px;
 }
 
-@media only screen and (max-width: 1200px) {
-}
-/* Small tablets to big tablets: from 768 to 1032*/
-@media only screen and (max-width: 1032px) {
-  .logo-img-text {
-    font-size: 100% !important;
-  }
-  .signout-btn {
-    background-color: rgb(19, 19, 19);
-    color: aliceblue;
-  }
-  .signout-btn a {
-    color: rgb(50, 205, 50);
-  }
-  .drop-down-signout {
-    font-size: 25px;
-  }
-  .menu-drop-down-signout {
-    width: 30% !important;
-    margin-left: 10% !important;
-  }
-  #dropdown-header {
-    font-size: 9px;
-  }
 
-  #dropdown-btn {
-    font-size: 80%;
-  }
-  .drop-down-signout {
-    margin-left: 20px !important;
-  }
-}
+
 /* Small phones to small tablets: from 481 to 767*/
 @media only screen and (max-width: 767px) {
+  .toggle {
+    margin: auto;
+  }
+  .logo-img {
+    width: 60px;
+  }
   .logo-img-text {
-    font-size: 15px !important;
-  }
-  .signout-btn {
-    background-color: rgb(19, 19, 19);
-    color: aliceblue;
-  }
-  .signout-btn a {
-    color: rgb(50, 205, 50);
+    font-size: 16px !important;
   }
   .drop-down-signout {
-    font-size: 15px;
+    font-size: 20px;
+    margin: auto;
   }
   .menu-drop-down-signout {
-    width: 50% !important;
-    margin-left: 10% !important;
-  }
-  #dropdown-header {
-    font-size: 9px;
-  }
-
-  #dropdown-btn {
-    font-size: 70%;
-  }
-  .drop-down-signout {
-    margin-left: 20px !important;
+    width: 100% !important;
+    font-size: 15px !important;
   }
 }
 /*Small Phone from 0 to 480px*/
 @media only screen and (max-width: 400px) {
+  .toggle {
+    margin: auto;
+  }
+  .logo-img {
+    width: 50px;
+  }
   .logo-img-text {
     font-size: 15px !important;
   }
-  .signout-btn {
-    background-color: rgb(19, 19, 19);
-    color: aliceblue;
-  }
-  .signout-btn a {
-    color: rgb(50, 205, 50);
-  }
   .drop-down-signout {
     font-size: 15px;
+    margin: auto;
   }
   .menu-drop-down-signout {
-    width: 50% !important;
-    margin-left: 10% !important;
-  }
-  #dropdown-header {
-    font-size: 9px;
-  }
-
-  #dropdown-btn {
-    font-size: 70%;
+    width: 100% !important;
+    font-size: 10px !important;
   }
 }
 </style>
