@@ -17,7 +17,7 @@ Try it! [Music Recommendation ](https://music-recommendation.netlify.app/)
 
 # Getting Start
 ```
-git clone https://github.com/sevillecarlos/imposible-hang-man.git
+git clone https://github.com/sevillecarlos/music-recommendation.git
 ```
 ### or Download the zip.
 ## Project setup
