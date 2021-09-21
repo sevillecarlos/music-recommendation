@@ -56,6 +56,12 @@ button:focus {
   outline: none !important;
   box-shadow: 0 0 10px #ffffff !important;
 }
+
+::placeholder {
+  color: rgb(0, 255, 21) !important;
+  text-shadow: 0 0 0px rgb(5, 34, 12), 0 0 0px rgb(228, 255, 184) !important;
+  letter-spacing: 2px;
+}
 .ribbon {
   overflow: hidden;
   white-space: nowrap;
@@ -85,10 +91,44 @@ button:focus {
 .ribbon a:hover {
   color: rgb(255, 255, 255);
 }
-/*Medium Phome*/
-@media only screen and (max-width: 568px) {
+/******************************************************* */
+@media only screen and (max-width: 1035px) {
   .app {
     width: 100%;
+  }
+  input {
+    font-size: 1.5vw !important;
+  }
+  button {
+    font-size: 2vw !important;
+  }
+ 
+}
+/*Medium Phome*/
+@media only screen and (max-width: 767px) {
+  .app {
+    width: 100%;
+  }
+  input {
+    font-size: 3vw !important;
+  }
+  button {
+    font-size: 3vw !important;
+  }
+    .ribbon {
+    left: -40px;
+    top: 15px;
+    -webkit-transform: rotate(-40deg);
+    -moz-transform: rotate(-40deg);
+    -ms-transform: rotate(-40deg);
+    -o-transform: rotate(-40deg);
+    transform: rotate(-40deg);
+  }
+  .ribbon a {
+    font: bold 100% "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    margin: 2px 0;
+    padding: 5px 30px;
   }
 }
 /*Small Phone from 0 to 480px*/
@@ -96,5 +136,29 @@ button:focus {
   .app {
     width: 100%;
   }
+  input {
+    font-size: 4vw !important;
+  }
+  button {
+    font-size: 4vw !important;
+    text-align: center;
+  }
+  .ribbon {
+    left: -40px;
+    top: 15px;
+    -webkit-transform: rotate(-40deg);
+    -moz-transform: rotate(-40deg);
+    -ms-transform: rotate(-40deg);
+    -o-transform: rotate(-40deg);
+    transform: rotate(-40deg);
+  }
+  .ribbon a {
+    font: bold 100% "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    margin: 2px 0;
+    padding: 5px 30px;
+  }
 }
+
+
 </style>

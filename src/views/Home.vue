@@ -356,16 +356,14 @@ export default {
   margin: auto;
 }
 .album-cover-img {
-  width: 6vw;
+  width: 5vw;
 }
 .spotify-logo {
-  width: 10vw !important;
+  width: 8vw !important;
   border-radius: 50px !important;
   box-shadow: 0 0 7px #fff, 0 0 10px rgba(157, 255, 0, 0.699);
 }
-.spotify-logo:hover {
-  box-shadow: 0 0 10px #fff, 0 0 20px rgba(157, 255, 0, 0.699) !important;
-}
+
 .like-icon {
   width: 2.2vw;
 }
@@ -390,7 +388,7 @@ th {
 tr {
   color: #fff;
   text-shadow: 0 0 7px rgb(5, 34, 12), 0 0 10px rgb(228, 255, 184);
-  font-size: 1.5vw;
+  font-size: 1.2vw;
   border: none;
   margin-bottom: 50vw !important;
 }
@@ -403,14 +401,14 @@ thead {
   font-size: 1vw;
   letter-spacing: 3px;
   color: rgb(0, 255, 21) !important;
-  text-shadow: 0 0 1px rgb(0, 0, 0), 0 0 3px;
   border-radius: 15px !important;
+  font-weight: bold !important;
 }
 .active-class {
   box-shadow: 0 0 7px #fff, 0 0 10px rgba(157, 255, 0, 0.699);
   border-radius: 15px !important;
-  background-color: rgb(0, 255, 21) !important;
-  color: rgb(0, 0, 0) !important;
+  background-color: black !important;
+  color: rgb(0, 255, 21) !important;
 }
 
 .small-spiner {
@@ -436,13 +434,14 @@ thead {
   background-color: rgb(18, 20, 15);
   border: none !important;
   border-radius: 100px;
-  margin-top: 2%;
+  margin-top: 1%;
 }
 
 ::-webkit-scrollbar {
   width: 10px;
+  height: 10px;
   border-radius: 50px;
-  background: rgba(0, 0, 0, 0.301);
+  background: rgba(0, 0, 0, 0.062);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -466,28 +465,24 @@ thead {
   border-radius: 20px;
   border: none;
 }
-/* Small phones to small tablets: from 481 to 767*/
-@media only screen and (max-width: 767px) {
+/*************************************************************************/
+@media only screen and (max-width: 1035px) {
   .table-recommendate {
     width: 100%;
-    font-size: 25px;
-    height: 60vh;
+    height: 70vw;
+    box-shadow: 0 0 10px #fff, 0 0 10px rgb(157, 255, 0);
   }
   .content-table {
     width: 100%;
   }
-  .listen-spotify-btn {
-    width: 70px;
-  }
   .album-cover-img {
-    width: 60px;
+    width: 12vw;
   }
-
   .tabs-table {
     height: 75vh;
   }
   .spotify-logo {
-    width: 120px;
+    width: 15vw !important;
     border-radius: 20px;
     border: none;
   }
@@ -499,45 +494,111 @@ thead {
     text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
   }
   .save-icon-th {
-    width: 125px;
     text-align: center;
   }
   th {
-    font-size: 15px;
-    letter-spacing: 1px;
+    font-size: 3vw;
   }
   tr {
-    font-size: 15px;
+    font-size: 3vw;
   }
   .title-tab {
-    font-size: 15px;
-    letter-spacing: 1px;
-  }
-  .active-class {
-    box-shadow: 0 0 7px #fff, 0 0 10px rgba(157, 255, 0, 0.699);
-    border-radius: 15px !important;
-    background-color: rgb(0, 255, 21) !important;
-    color: rgb(0, 0, 0) !important;
+    font-size: 3vw;
   }
   .shuffle-btn {
-    width: 60%;
-    font-size: 20px;
-    padding: 10px;
+    width: 30%;
+    font-size: 3vw !important;
+    padding: 2%;
   }
-
+  .shuffle-btn-container {
+    padding: 1px;
+    margin-bottom: 3%;
+  }
   .tabs-control-table {
     width: 100%;
-    padding: 15px;
+    padding: 1%;
   }
   .like-icon {
     text-align: center;
     color: rgb(0, 255, 21);
-    width: 50px;
+    width: 8vw;
   }
   ::-webkit-scrollbar {
-    width: 10px;
+    width: 8px;
+    height: 8px;
   }
-
+  ::-webkit-scrollbar-corner {
+    width: 5px;
+    background: rgba(0, 0, 0, 0) !important;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgb(0, 255, 21);
+    border-radius: 10px;
+    box-shadow: 0 0 5px #fff, 0 0 5px rgb(157, 255, 0);
+  }
+}
+/* Small phones to small tablets: from 481 to 767*/
+@media only screen and (max-width: 767px) {
+    .table-recommendate {
+    width: 100%;
+    height: 100vw;
+    box-shadow: 0 0 10px #fff, 0 0 10px rgb(157, 255, 0);
+  }
+  .content-table {
+    width: 100%;
+  }
+  .album-cover-img {
+    width: 12vw;
+  }
+  .tabs-table {
+    height: 75vh;
+  }
+  .spotify-logo {
+    width: 15vw !important;
+    border-radius: 20px;
+    border: none;
+  }
+  .empty-save-track {
+    text-align: center;
+    font-size: 50px;
+    color: #fff;
+    margin-top: 10%;
+    text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
+  }
+  .save-icon-th {
+    text-align: center;
+  }
+  th {
+    font-size: 3vw;
+  }
+  tr {
+    font-size: 3vw;
+  }
+  .title-tab {
+    font-size: 3vw;
+  }
+  .shuffle-btn {
+    width: 50%;
+    font-size: 4vw !important;
+    padding: 2%;
+  }
+  .shuffle-btn-container {
+    padding: 1px;
+    margin-bottom: 8%;
+  }
+  .tabs-control-table {
+    width: 100%;
+    padding: 1%;
+  }
+  .like-icon {
+    text-align: center;
+    color: rgb(0, 255, 21);
+    width: 8vw;
+  }
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
   ::-webkit-scrollbar-corner {
     width: 5px;
     background: rgba(0, 0, 0, 0) !important;
@@ -552,24 +613,20 @@ thead {
 @media only screen and (max-width: 400px) {
   .table-recommendate {
     width: 100%;
-    font-size: 20px;
-    height: 60vh;
+    height: 100vw;
+    box-shadow: 0 0 10px #fff, 0 0 10px rgb(157, 255, 0);
   }
   .content-table {
     width: 100%;
   }
-  .listen-spotify-btn {
-    width: 60px;
-  }
   .album-cover-img {
-    width: 50px;
+    width: 12vw;
   }
-
   .tabs-table {
     height: 75vh;
   }
   .spotify-logo {
-    width: 100px;
+    width: 15vw !important;
     border-radius: 20px;
     border: none;
   }
@@ -581,44 +638,39 @@ thead {
     text-shadow: 0 0 7px #fff, 0 0 1px rgb(157, 255, 0);
   }
   .save-icon-th {
-    width: 125px;
     text-align: center;
   }
   th {
-    font-size: 10px;
-    letter-spacing: 1px;
+    font-size: 3vw;
   }
   tr {
-    font-size: 10px;
+    font-size: 3vw;
   }
   .title-tab {
-    font-size: 13px;
-    letter-spacing: 1px;
-  }
-  .active-class {
-    box-shadow: 0 0 7px #fff, 0 0 10px rgba(157, 255, 0, 0.699);
-    border-radius: 15px !important;
-    background-color: rgb(0, 255, 21) !important;
-    color: rgb(0, 0, 0) !important;
+    font-size: 3vw;
   }
   .shuffle-btn {
     width: 50%;
-    font-size: 20px;
-    padding: 10px;
+    font-size: 4vw !important;
+    padding: 2%;
+  }
+  .shuffle-btn-container {
+    padding: 1px;
+    margin-bottom: 8%;
   }
   .tabs-control-table {
     width: 100%;
-    padding: 15px;
+    padding: 1%;
   }
   .like-icon {
     text-align: center;
     color: rgb(0, 255, 21);
-    width: 50px;
+    width: 8vw;
   }
   ::-webkit-scrollbar {
     width: 8px;
+    height: 8px;
   }
-
   ::-webkit-scrollbar-corner {
     width: 5px;
     background: rgba(0, 0, 0, 0) !important;
@@ -640,10 +692,13 @@ thead {
   }
 
   .spotify-logo:hover {
-    box-shadow: 0 0 7px #fff, 0 0 10px rgba(157, 255, 0, 0.699);
+    box-shadow: 0 0 10px #fff, 0 0 20px rgba(157, 255, 0, 0.699) !important;
   }
   ::-webkit-scrollbar-thumb:hover {
     background: rgb(10, 179, 24);
+  }
+  .active-class:hover {
+    background-color: rgb(44, 39, 39) !important;
   }
 }
 </style>
