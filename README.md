@@ -32,7 +32,7 @@ npm run serve
 * *VUE_APP_URL*
 
 ## Typing Race Server
-Navigate to [Music Recommendation Server ](https://github.com/sevillecarlos/typing-race-beckend) to found the server for the app.
+Navigate to [Music Recommendation Server ](https://github.com/sevillecarlos/music-recommendation-server) to found the server for the app.
 
 # Author
 ## Carlos Alberto Sevilla Fernandez
@@ -41,7 +41,7 @@ Navigate to [Music Recommendation Server ](https://github.com/sevillecarlos/typi
 
 # Contributing
 Contributions, issues and feature requests are welcome!
-Feel free to check the [Issues Page](https://github.com/sevillecarlos/typing-race/issues).
+Feel free to check the [Issues Page](https://github.com/sevillecarlos/music-recommendation/issues).
 
 # License
 This project is [MIT](https://opensource.org/licenses/MIT) licensed.
