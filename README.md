@@ -7,6 +7,7 @@ If you like the sample of the song, you can save it and listen to it on your spo
 # Built
 ## Development Technologies
 - Vue.js 
+- Vuex
 ## Libraries
 - BootstrapVue
 ## Plugins
