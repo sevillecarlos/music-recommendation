@@ -249,7 +249,7 @@ export default {
       const { access_token } = hashParams();
       if (access_token) {
         localStorage.setItem("_@ccess", access_token);
-        // this.$router.push("/home");
+        this.$router.push("/home");
       }
     },
     async getRecommendateTracks() {
@@ -623,7 +623,7 @@ thead {
     width: 12vw;
   }
   .tabs-table {
-    height: 75vh;
+    height: 70vh;
   }
   .spotify-logo {
     width: 15vw !important;
