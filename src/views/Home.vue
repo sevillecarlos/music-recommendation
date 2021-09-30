@@ -337,7 +337,7 @@ export default {
   box-shadow: 0 0 10px #fff, 0 0 20px rgb(157, 255, 0);
   border-radius: 15px;
   border: none;
-  height: 31vw;
+  height: 29vw;
 }
 .empty-tracks-msg {
   color: rgb(0, 255, 21);
