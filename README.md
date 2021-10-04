@@ -6,10 +6,9 @@ If you like the sample of the song, you can save it and listen to it on your spo
 
 # Built
 ## Development Technologies
-- Vue.js 
-- Vuex
-## Libraries
-- BootstrapVue
+![](https://img.shields.io/badge/Front--End-Vue-green)
+![](https://img.shields.io/badge/Progamming--Language-JavaScript-yellow)
+![](https://img.shields.io/badge/Library-Vuex-green)
 ## Plugins
 - [APlayer ](https://github.com/DIYgod/APlayer)
 
