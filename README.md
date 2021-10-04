@@ -1,5 +1,5 @@
 # Music Recommendation
-A music recommender based on your music that you like on spotify.<br>
+> A music recommender based on your music that you like on spotify.<br>
 If you like the sample of the song, you can save it and listen to it on your spotify account and if you want another recommendation click the button **SHUFFLE!** to get more.
 
 ![Music Recommendation!](/assets/images/music-recommendation-image.png "Music Recommendation")
