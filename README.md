@@ -32,7 +32,7 @@ npm run serve
 #### Server app URL
 * *VUE_APP_URL*
 
-## Typing Race Server
+## Music Recommendation Server
 Navigate to [Music Recommendation Server ](https://github.com/sevillecarlos/music-recommendation-server) to found the server for the app.
 
 # Author
